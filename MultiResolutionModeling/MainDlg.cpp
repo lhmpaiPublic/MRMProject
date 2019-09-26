@@ -3,10 +3,11 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "resource.h"
 
 #include "aboutdlg.h"
 #include "MainDlg.h"
+#include "LogDlg.h"
+#include "UnitSize.h"
 
 BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
 {
@@ -37,6 +38,15 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	pLoop->AddIdleHandler(this);
 
 	UIAddChildWindowContainer(m_hWnd);
+
+	if(NULL == CLogDlg::gLogDlg)
+	{
+		CLogDlg::gLogDlg = new CLogDlg();
+		CLogDlg::gLogDlg->Create(m_hWnd);
+	} 
+
+	CUnitSize untSize;
+	untSize.loadCSVFile("UnitSizeInfo.csv");
 
 	return TRUE;
 }
@@ -76,4 +86,16 @@ void CMainDlg::CloseDialog(int nVal)
 {
 	DestroyWindow();
 	::PostQuitMessage(nVal);
+}
+
+LRESULT CMainDlg::OnBnClickedLogwindow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if(NULL == CLogDlg::gLogDlg)
+	{
+		CLogDlg::gLogDlg = new CLogDlg();
+		CLogDlg::gLogDlg->Create(m_hWnd);
+	}
+	CLogDlg::gLogDlg->ShowWindow(SW_SHOW);
+	return 0;
 }
