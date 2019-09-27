@@ -6,8 +6,7 @@
 
 CCSVFile::CCSVFile()
 {
-	infileLoad = false;
-	outfileLoad = false;
+	loadType=NONELOAD;
 }
 CCSVFile::~CCSVFile()
 {
@@ -17,17 +16,24 @@ CCSVFile::~CCSVFile()
 bool CCSVFile::loadCSVFile(string fileName, LOADTYPE _loadType)
 {
 	bool b = false;
+	//Load 타입
 	loadType = _loadType;
-	switch (loadType)
+	//Load 타입이 현재와 같다면..
+	if(fileLoad(_loadType))
 	{
-	case WRITE:outfile.open(fileName.c_str());
-		outfileLoad = outfile.fail() ? false : true;
-		b = outfileLoad;
+		unloadCSVFile();
+	}
+	//Load 타입에 맞게 스트림 생성
+	switch (_loadType)
+	{
+	case WRITELOAD: outfile.open(fileName.c_str());
+		b = true;
 		break;
-	case READ:
-	default:infile.open(fileName.c_str());
-		infileLoad = infile.fail() ? false : true;
-		b = infileLoad;
+	case READLOAD: infile.open(fileName.c_str());
+		b = true;
+		break;
+	case NONELOAD: b = unloadCSVFile();
+	default:
 		break;
 	}
 	return b;
@@ -36,28 +42,36 @@ bool CCSVFile::loadCSVFile(string fileName, LOADTYPE _loadType)
 bool CCSVFile::fileLoad(LOADTYPE _loadType)
 {
 	bool b = false;
-	switch (loadType)
+	switch (_loadType)
 	{
-	case WRITE: b = outfileLoad ? true : false;
+	case WRITELOAD: b = (WRITELOAD == loadType) ? true : false;
 		break;
-	case READ:
-	default: b = infileLoad ? true : false;
+	case READLOAD:  b = (READLOAD == loadType) ? true : false;
+		break;
+	case NONELOAD:
+	default: b = (NONELOAD == loadType) ? true : false;
 		break;
 	}
 	return b;
 }
 
-void CCSVFile::unloadCSVFile()
+bool CCSVFile::unloadCSVFile()
 {
+	bool b = false;
 	switch (loadType)
 	{
-	case WRITE:outfile.close();
+	case WRITELOAD:outfile.close();
+		b = true;
 		break;
-	case READ:
-	default:infile.close();
+	case READLOAD:infile.close();
+		b = true;
+		break;
+	case NONELOAD:
+	default: b = false;
 		break;
 	}
-
+	loadType = NONELOAD;
+	return b;
 }
 
 ifstream& CCSVFile::inStream()

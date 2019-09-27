@@ -80,3 +80,21 @@ vector<int> CUnitSize::getARTILLERYSize(MILITARYBRANCH_AR mil, MOVETYPE mo, FORC
 	return size;
 }
 
+vector<int> CUnitSize::unitZoneSize(InputVal in)
+{
+	vector<int> size;
+	switch (in.combat)
+	{
+	case INFANTRY:
+		size = getINFANTRYSize(in.milVal.mil, in.moveType, in.force);
+		break;
+	case ARMORED:
+		size = getARMOREDSize(in.milVal.mil, in.moveType, in.force);
+		break;
+	case ARTILLERY:
+		size = getARTILLERYSize(in.milVal.mil_AR, in.moveType, in.force);
+	default:
+		break;
+	}
+	return size;
+}

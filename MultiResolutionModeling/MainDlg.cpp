@@ -7,7 +7,7 @@
 #include "aboutdlg.h"
 #include "MainDlg.h"
 #include "LogDlg.h"
-#include "UnitSize.h"
+
 
 BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
 {
@@ -44,9 +44,6 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 		CLogDlg::gLogDlg = new CLogDlg();
 		CLogDlg::gLogDlg->Create(m_hWnd);
 	} 
-
-	CUnitSize untSize;
-	untSize.loadCSVFile("UnitSizeInfo.csv");
 
 	return TRUE;
 }

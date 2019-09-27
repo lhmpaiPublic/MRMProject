@@ -23,18 +23,24 @@ extern CAppModule _Module;
 #include <atldlgs.h>
 #include <atlstr.h>
 
-#include "resource.h"
-#include <stdio.h>
-#include <tchar.h>
 #include <string>
 #include <vector>
-#include <atlcoll.h>
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <istream>
 using namespace std;
+
+#include "resource.h"
+#include <stdio.h>
+#include <tchar.h>
+#include <atlcoll.h>
+
+//================================
+#include "vector2d.h"
+#include "vector3d.h"
+
+
 
 #if defined _M_IX86
   #pragma comment(linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")

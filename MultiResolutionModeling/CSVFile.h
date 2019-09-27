@@ -8,32 +8,41 @@ public:
 	~CCSVFile();
 
 public:
+	//CSV open Type 정의
 	enum LOADTYPE
 	{
-		READ = 0,
-		WRITE = 1
+		NONELOAD = 0,
+		READLOAD,
+		WRITELOAD
 	};
 public:
+	//CSV load stream 객체 생성(open 디폴트 타입 READ)
+	bool loadCSVFile(string fileName, LOADTYPE _loadType = READLOAD);
 
-	bool loadCSVFile(string fileName, LOADTYPE _loadType = READ);
+	//CSV unload 객체 파괴
+	bool unloadCSVFile();
 
-	void unloadCSVFile();
+	//CSV 파일이 load 되어 있나 검사
+	bool fileLoad(LOADTYPE _loadType = READLOAD);
 
-	bool fileLoad(LOADTYPE _loadType = READ);
-
+	//읽기 스트림 객체
 	ifstream& inStream();
 	
+	//쓰기 스트림 객체
 	ofstream& outStream();
 
+	//읽기 스트림 객체로 읽어 오기(string 객체 리턴)
 	static vector<string> csv_read_row(istream& file, char delimiter);
 
+	//읽기 스트림 객체로 읽어 오기(int 객체 리턴)
 	static vector<int> csv_read_row_int(istream& file, char delimiter);
 
 
 private:
+	//읽기 스트림 객체
 	ifstream infile;
-	bool infileLoad;
+	//쓰기 스트림 객체
 	ofstream outfile;
-	bool outfileLoad;
+	//스트림 load 타입
 	LOADTYPE loadType;
 };
