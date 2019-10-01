@@ -12,15 +12,17 @@ public:
 	enum DIRECTIONTYPE
 	{
 		NONE_DIRECTION = 0,
-		N_DIRECTION,
-		NE_DIRECTION,
-		E_DIRECTION,
-		SE_DIRECTION,
-		S_DIRECTION,
-		SW_DIRECTION,
-		W_DIRECTION,
-		NW_DIRECTION
+		N_DIRECTION,			//북
+		NE_DIRECTION,			//북동
+		E_DIRECTION,			//동
+		SE_DIRECTION,			//남동
+		S_DIRECTION,			//남
+		SW_DIRECTION,			//남서
+		W_DIRECTION,			//서
+		NW_DIRECTION			//북서
 	};
+	static CString strDirectionType(CResolutionChange::DIRECTIONTYPE em);
+	static CResolutionChange::DIRECTIONTYPE emDirectionType(int selNum);
 
 	//위치 계산 Type 정의
 	enum CALCPOSITIONTYPE
@@ -53,6 +55,8 @@ public:
 		DEP_LINE,					// 횡대
 		DEP_COLUMN					// 종대
 	};
+	static CString strDeploymentType(CResolutionChange::DEPLOYMENTTYPE em);
+	static CResolutionChange::DEPLOYMENTTYPE emDeploymentType(int selNum);
 
 	//분해 요소 Type 정의
 	enum DISAGGREGATEDTYPE
@@ -60,11 +64,13 @@ public:
 		DISAGG_NUM1 = 0,
 		DISAGG_NUM2,
 		DISAGG_NUM3,
-		DISAGG_NUM4
+		DISAGG_NUM4,
+		DISAGG_SIZE
 	};
 
 	struct inputPosVal
 	{
+		inputPosVal(){}
 		CVector2d parent;
 		DIRECTIONTYPE dir;
 		DEPLOYMENTTYPE dep;
@@ -78,7 +84,7 @@ public:
 
 	void changeDisaggregated();
 
-	void changeDisaggregatedPosition(inputPosVal val);
+	vector<CVector2d> changeDisaggregatedPosition(inputPosVal val);
 
 	CVector2d frontDirection(DIRECTIONTYPE dir);
 

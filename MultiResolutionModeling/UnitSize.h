@@ -9,9 +9,10 @@ public:
 public:
 	enum MOVETYPE
 	{
-		DEFENCE = 0,	//공격
-		OFFENCE = 4		//방어
+		DEFENCE = 0,	//방어
+		OFFENCE = 4		//공격
 	};
+	static CString strMoveType(CUnitSize::MOVETYPE em);
 
 	enum UNITDEPTH
 	{
@@ -24,6 +25,7 @@ public:
 		BLUEFORCE = 0,	//청군
 		REDFORCE = 1	//홍군
 	};
+	static CString strForce(CUnitSize::FORCE em);
 
 	enum UNITSIZE
 	{
@@ -37,6 +39,7 @@ public:
 		ARMORED = 4,	//전차
 		ARTILLERY = 8	//포병
 	};
+	static CString strCombatent(CUnitSize::COMBATANT em);
 
 	enum MILITARYBRANCH
 	{
@@ -45,12 +48,14 @@ public:
 		COMPANY = 2,	//중대
 		BATTALION = 3,	//대대
 	};
+	static CString strMilitarybranch(CUnitSize::MILITARYBRANCH em);
 
 	enum MILITARYBRANCH_AR
 	{
 		ARTILLERYUNIT = 0, //포대
 		ARTILLERYBT = 1		//대대
 	};
+	static CString strMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em);
 
 	struct InputVal
 	{
@@ -62,13 +67,17 @@ public:
 			MILITARYBRANCH mil;
 			MILITARYBRANCH_AR mil_AR;
 		}milVal;
+		InputVal()
+		{
+			moveType = OFFENCE; force = BLUEFORCE; combat = INFANTRY; milVal.mil = BATTALION;
+		}
 		InputVal(MOVETYPE _moveType, FORCE _force, COMBATANT _combat, MILITARYBRANCH _mil)
 		{
-			moveType = _moveType; force = _force; combat = _combat; milVal.mil = _mil; milVal.mil_AR = ARTILLERYBT;
+			moveType = _moveType; force = _force; combat = _combat; milVal.mil = _mil;
 		}
 		InputVal(MOVETYPE _moveType, FORCE _force, COMBATANT _combat, MILITARYBRANCH_AR _mil_AR)
 		{
-			moveType = _moveType; force = _force; combat = _combat; milVal.mil_AR = _mil_AR; milVal.mil = BATTALION;
+			moveType = _moveType; force = _force; combat = _combat; milVal.mil_AR = _mil_AR;
 		}
 	};
 

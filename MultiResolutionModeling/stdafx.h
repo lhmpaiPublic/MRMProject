@@ -16,11 +16,17 @@
 
 extern CAppModule _Module;
 
+//윈도우 기반의 기본 클래스
 #include <atlwin.h>
+
+// MSG_WM_ 메시지를 사용하기 위한 클래스
+#include <atlcrack.h>
 
 #include <atlframe.h>
 #include <atlctrls.h>
 #include <atldlgs.h>
+#include <atlcoll.h>
+
 #include <atlstr.h>
 
 #include <string>
@@ -35,6 +41,9 @@ using namespace std;
 #include <stdio.h>
 #include <tchar.h>
 #include <atlcoll.h>
+
+//================================
+#include "subControl.h"
 
 //================================
 #include "vector2d.h"

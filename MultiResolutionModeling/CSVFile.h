@@ -4,10 +4,6 @@
 class CCSVFile
 {
 public:
-	CCSVFile();
-	~CCSVFile();
-
-public:
 	//CSV open Type 정의
 	enum LOADTYPE
 	{
@@ -15,6 +11,11 @@ public:
 		READLOAD,
 		WRITELOAD
 	};
+public:
+	CCSVFile();
+	CCSVFile(string file, LOADTYPE type = READLOAD);
+	~CCSVFile();
+
 public:
 	//CSV load stream 객체 생성(open 디폴트 타입 READ)
 	bool loadCSVFile(string fileName, LOADTYPE _loadType = READLOAD);

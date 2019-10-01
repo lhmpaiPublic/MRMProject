@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GAgt.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\LogDlg.cpp"
 				>
 			</File>
@@ -207,6 +211,10 @@
 			</File>
 			<File
 				RelativePath=".\ResolutionChange.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ResolutionPositionDlg.cpp"
 				>
 			</File>
 			<File
@@ -255,6 +263,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GAgt.h"
+				>
+			</File>
+			<File
 				RelativePath=".\LogDlg.h"
 				>
 			</File>
@@ -267,11 +279,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ResolutionPositionDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\resource.h"
 				>
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\subControl.h"
 				>
 			</File>
 			<File
@@ -299,6 +319,62 @@
 				RelativePath=".\MultiResolutionModeling.rc"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="SubCombo"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\SubCombo\SubCombo.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubCombo\SuperCombo.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubCombo\SuperComboId.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\SubCombo\SuperCombo.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="SubEdit"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\SubEdit\SubEdit.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubEdit\SuperEditId.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubEdit\SuperEditImpl.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\SubEdit\SuperEditImpl.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

@@ -5,8 +5,12 @@
 #include "LogDlg.h"
 
 CLogDlg* CLogDlg::gLogDlg=NULL;
+std::stringstream CLogDlg::mkLog;
+bool CLogDlg::bFirst;
 CLogDlg::CLogDlg()
 {
+	mkLog.str("");
+	bFirst = true;
 }
 CLogDlg::~CLogDlg()
 {
@@ -51,10 +55,70 @@ void CLogDlg::AddLogText(vector<int> text, char delimiter)
 	if(gLogDlg)
 	{
 		std::stringstream coutLog;
+		bool _bFirst = true;
 		for (int i = 0; i <(int) text.size(); i++)
 		{
-			coutLog  << text[i] << delimiter;
+			if(false == _bFirst) coutLog  << delimiter;
+			_bFirst = false;
+			coutLog  << text[i];
 		}
 		gLogDlg->setLogText(coutLog.str().c_str());
+	}
+}
+
+void CLogDlg::AddLogText(vector<string> text, char delimiter)
+{
+	if(gLogDlg)
+	{
+		std::stringstream coutLog;
+		bool _bFirst = true;
+		for (int i = 0; i <(int) text.size(); i++)
+		{
+			if(false == _bFirst) coutLog  << delimiter;
+			_bFirst = false;
+			coutLog  << text[i].c_str();
+		}
+		gLogDlg->setLogText(coutLog.str().c_str());
+	}
+}
+
+void CLogDlg::initStream()
+{
+	mkLog.str("");
+	bFirst = true;
+}
+
+void CLogDlg::insertStream(string str, char delimiter)
+{
+	if(false == bFirst) mkLog  << delimiter;
+	bFirst = false;
+	mkLog  << str.c_str();	
+}
+
+void CLogDlg::insertStreamVec(vector<int> val, char delimiter)
+{
+	for (int i = 0; i <(int) val.size(); i++)
+	{
+		if(false == bFirst) mkLog  << delimiter;
+		bFirst = false;
+		mkLog  << val[i];
+	}
+
+}
+void CLogDlg::insertStreamVec(vector<string> val, char delimiter)
+{
+	for (int i = 0; i <(int) val.size(); i++)
+	{
+		if(false == bFirst) mkLog  << delimiter;
+		bFirst = false;
+		mkLog  << val[i];
+	}
+}
+
+void CLogDlg::addLogTextStream()
+{
+	if(gLogDlg)
+	{
+		gLogDlg->setLogText(mkLog.str().c_str());
 	}
 }

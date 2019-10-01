@@ -8,21 +8,33 @@ CCSVFile::CCSVFile()
 {
 	loadType=NONELOAD;
 }
+
+CCSVFile::CCSVFile(string file, LOADTYPE type)
+{
+	//Load 타입에 맞게 스트림 생성
+	switch (type)
+	{
+	case WRITELOAD: outfile.open(file.c_str());
+		break;
+	case READLOAD: infile.open(file.c_str());
+		break;
+	case NONELOAD:
+	default:
+		break;
+	}
+	//Load 타입
+	loadType = type;
+}
+
 CCSVFile::~CCSVFile()
 {
-
+	unloadCSVFile();
 }
 
 bool CCSVFile::loadCSVFile(string fileName, LOADTYPE _loadType)
 {
 	bool b = false;
-	//Load 타입
-	loadType = _loadType;
-	//Load 타입이 현재와 같다면..
-	if(fileLoad(_loadType))
-	{
-		unloadCSVFile();
-	}
+
 	//Load 타입에 맞게 스트림 생성
 	switch (_loadType)
 	{
@@ -32,10 +44,12 @@ bool CCSVFile::loadCSVFile(string fileName, LOADTYPE _loadType)
 	case READLOAD: infile.open(fileName.c_str());
 		b = true;
 		break;
-	case NONELOAD: b = unloadCSVFile();
+	case NONELOAD:;
 	default:
 		break;
 	}
+	//Load 타입
+	loadType = _loadType;
 	return b;
 }
 

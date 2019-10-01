@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "ResolutionChange.h"
 #include "UnitSize.h"
+#include "LogDlg.h"
 
 
 CResolutionChange::CResolutionChange()
@@ -23,10 +24,49 @@ void CResolutionChange::changeAggregated()
 
 void CResolutionChange::changeDisaggregated()
 {
+	inputPosVal val;
+	val.dep = DEP_INVERTEDTRIANGLE;
+	CLogDlg::initStream();
+	CLogDlg::insertStream("전개대형 :");
+	CLogDlg::insertStream(CStringA(strDeploymentType(DEP_INVERTEDTRIANGLE)).GetBuffer());
+	CLogDlg::addLogTextStream();
 
+	val.dir = N_DIRECTION;
+	CLogDlg::initStream();
+	CLogDlg::insertStream("지향방향 :");
+	CLogDlg::insertStream(CStringA(strDirectionType(N_DIRECTION)).GetBuffer());
+	CLogDlg::addLogTextStream();
+
+	val.parent = CVector2d(308320.0f, 4191390.0f);
+	CLogDlg::initStream();
+	CLogDlg::insertStream("입력좌표 :");
+	CLogDlg::insertStream("308320", '	');
+	CLogDlg::insertStream("4191390", '	');
+	CLogDlg::addLogTextStream();
+
+	CLogDlg::initStream();
+	CLogDlg::insertStream("부대반경 입력 :");
+	CLogDlg::insertStream(CStringA(CUnitSize::strMoveType(CUnitSize::MOVETYPE::OFFENCE)).GetBuffer(), '	');
+	CLogDlg::insertStream(CStringA(CUnitSize::strForce(CUnitSize::FORCE::BLUEFORCE)).GetBuffer(), '	');
+	CLogDlg::insertStream(CStringA(CUnitSize::strCombatent(CUnitSize::COMBATANT::INFANTRY)).GetBuffer(), '	');
+	CLogDlg::insertStream(CStringA(CUnitSize::strMilitarybranch(CUnitSize::MILITARYBRANCH::BATTALION)).GetBuffer(), '	');
+	CLogDlg::addLogTextStream();
+	val.unitSizeVal = CUnitSize::InputVal(CUnitSize::MOVETYPE::OFFENCE,CUnitSize::FORCE::BLUEFORCE, CUnitSize::COMBATANT::INFANTRY, CUnitSize::MILITARYBRANCH::BATTALION);
+	
+
+	vector<CVector2d> vecHiData = changeDisaggregatedPosition(val);
+
+	CVector2d centroid = changeAggregatedPosition(vecHiData);
+	vector<int> logVal;
+	logVal.push_back((int)centroid.x);
+	logVal.push_back((int)centroid.y);
+	CLogDlg::initStream();
+	CLogDlg::insertStream("Agg 좌표 :");
+	CLogDlg::insertStreamVec(logVal,'	');
+	CLogDlg::addLogTextStream();
 }
 
-void CResolutionChange::changeDisaggregatedPosition(inputPosVal val)
+vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val)
 {
 	//지향방향 노말 벡터
 	CVector2d front = frontDirection(val.dir);
@@ -34,8 +74,25 @@ void CResolutionChange::changeDisaggregatedPosition(inputPosVal val)
 	CVector2d cross = crossDirection(front);
 	//부대 반경
 	vector<int> sizeUnit = unitSizeVal->unitZoneSize(val.unitSizeVal);
+	CLogDlg::initStream();
+	CLogDlg::insertStream("부대반경 :");
+	CLogDlg::insertStreamVec(sizeUnit, '	');
+	CLogDlg::addLogTextStream();
+
 	//최종 분해 요소 값
 	vector<CVector2d> vecHiData = deploymentPosition(val.dep, val.parent, front, cross, sizeUnit);
+	vector<int> logVal;
+	for(int i = 0; i < (int)vecHiData.size(); i++)
+	{
+		logVal.push_back((int)vecHiData[i].x);
+		logVal.push_back((int)vecHiData[i].y);
+	}
+	CLogDlg::initStream();
+	CLogDlg::insertStream("DisAgg 값 :");
+	CLogDlg::insertStreamVec(logVal, '	');
+	CLogDlg::addLogTextStream();
+
+	return vecHiData;
 }
 
 CVector2d CResolutionChange::frontDirection(DIRECTIONTYPE dir)
@@ -127,6 +184,7 @@ CVector2d CResolutionChange::calcPosition(CALCPOSITIONTYPE calcType, CVector2d p
 vector<CVector2d> CResolutionChange::deploymentPosition(DEPLOYMENTTYPE deployment, CVector2d parent, CVector2d front, CVector2d cross, vector<int> sizeUnit)
 {
 	vector<CVector2d> result;
+	result.resize(DISAGG_SIZE);
 	switch (deployment)
 	{
 	case DEP_INVERTEDTRIANGLE:		// 역삼각대
@@ -229,4 +287,64 @@ CVector2d CResolutionChange::changeAggregatedPosition(vector<CVector2d> posList)
 	}
 
 	return centroid;
+}
+
+CString CResolutionChange::strDirectionType(CResolutionChange::DIRECTIONTYPE em)
+{
+	CString strEm = "UNKNOW";
+	switch (em)
+	{
+	case N_DIRECTION:strEm = "북";
+		break;
+	case NE_DIRECTION:strEm = "북동";
+		break;
+	case E_DIRECTION:strEm = "동";
+		break;
+	case SE_DIRECTION:strEm = "남동";
+		break;
+	case S_DIRECTION:strEm = "남";
+		break;
+	case SW_DIRECTION:strEm = "남서";
+		break;
+	case W_DIRECTION:strEm = "서";
+		break;
+	case NW_DIRECTION:strEm = "북서";
+		break;
+	default:
+		break;
+	}
+	return strEm;
+}
+
+CResolutionChange::DIRECTIONTYPE CResolutionChange::emDirectionType(int selNum)
+{
+	CResolutionChange::DIRECTIONTYPE em = NONE_DIRECTION;
+
+	return em;
+}
+
+CString CResolutionChange::strDeploymentType(CResolutionChange::DEPLOYMENTTYPE em)
+{
+	CString strEm = "UNKNOW";
+	switch (em)
+	{
+	case DEP_INVERTEDTRIANGLE:strEm = "역삼각대";
+		break;
+	case DEP_TRIANGLE:strEm = "삼각대(원형)";
+		break;
+	case DEP_LINE:strEm = "횡대";
+		break;
+	case DEP_COLUMN:strEm = "종대";
+		break;
+	default:
+		break;
+	}
+	return strEm;
+}
+
+CResolutionChange::DEPLOYMENTTYPE CResolutionChange::emDeploymentType(int selNum)
+{
+	CResolutionChange::DEPLOYMENTTYPE em = DEP_NONE;
+
+	return em;
 }

@@ -21,6 +21,7 @@ void CUnitSize::loadCSVFile(string fileName)
 	CCSVFile readCSV;
 
 	char delimiter = ',';
+	CLogDlg::AddLogText("<부대반경 표>");
 	if (readCSV.loadCSVFile(fileName)) {
 		int loop = 0;
 		VECVECINT vecinfantry;
@@ -28,7 +29,7 @@ void CUnitSize::loadCSVFile(string fileName)
 		VECVECINT vecartillery;
 		while (readCSV.inStream().good()) {
 			vector<int> row = CCSVFile::csv_read_row_int(readCSV.inStream(), delimiter);
-			CLogDlg::AddLogText(row);
+			CLogDlg::AddLogText(row, '	');
 			if (loop < (int)ARMORED) {
 				vecinfantry.push_back(row);
 			}
@@ -97,4 +98,85 @@ vector<int> CUnitSize::unitZoneSize(InputVal in)
 		break;
 	}
 	return size;
+}
+
+CString CUnitSize::strMoveType(CUnitSize::MOVETYPE em)
+{
+	CString strEm = "UNKNOW";
+	switch (em)
+	{
+	case DEFENCE:strEm = "방어";
+		break;
+	case OFFENCE:strEm = "공격";
+		break;
+	default:
+		break;
+	}
+	return strEm;
+}
+
+CString CUnitSize::strForce(CUnitSize::FORCE em)
+{
+	CString strEm = "UNKNOW";
+	switch (em)
+	{
+	case BLUEFORCE:strEm = "청군";
+		break;
+	case REDFORCE:strEm = "홍군";
+		break;
+	default:
+		break;
+	}
+	return strEm;
+}
+
+CString CUnitSize::strCombatent(CUnitSize::COMBATANT em)
+{
+	CString strEm = "UNKNOW";
+	switch (em)
+	{
+	case INFANTRY:strEm = "보병";
+		break;
+	case ARMORED:strEm = "전차";
+		break;
+	case ARTILLERY:strEm = "포병";
+		break;
+	default:
+		break;
+	}
+	return strEm;
+}
+
+CString CUnitSize::strMilitarybranch(CUnitSize::MILITARYBRANCH em)
+{
+	CString strEm = "UNKNOW";
+	switch (em)
+	{
+	case SQUAD:strEm = "분대";
+		break;
+	case PLATOON:strEm = "소대";
+		break;
+	case COMPANY:strEm = "중대";
+		break;
+	case BATTALION:strEm = "대대";
+		break;
+	default:
+		break;
+	}
+	return strEm;
+}
+
+CString CUnitSize::strMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em)
+{
+	CString strEm = "UNKNOW";
+	switch (em)
+	{
+	case ARTILLERYUNIT:strEm = "포대";
+		break;
+	case ARTILLERYBT:strEm = "대대";
+		break;
+	default:
+		break;
+	}
+	return strEm;
 }
