@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "GAgt.h"
 #include "ResolutionPositionDlg.h"
+#include "ResolutionChange.h"
 //초기화
 CGAgt* CGAgt::mG = NULL;
 //전역객체 생성
@@ -14,10 +15,16 @@ CGAgt* CGAgt::G()
 	return mG;
 }
 
+CResolutionChange* CGAgt::GResCha()
+{
+	return G()->ResCha();
+}
+
 CGAgt::CGAgt()
 {
 	mG = this;
 	mResPosDlg = NULL;
+	mResCha = NULL;
 }
 
 CGAgt::~CGAgt()
@@ -27,6 +34,8 @@ CGAgt::~CGAgt()
 void CGAgt::initGAgt(HWND _hParent)
 {
 	hParent = _hParent;
+	mResCha = new CResolutionChange();
+
 	mResPosDlg = new CResolutionPositionDlg();
 	if(mResPosDlg)	mResPosDlg->Create(hParent);
 }
@@ -61,4 +70,9 @@ void CGAgt::HideDlg(DLGNAME name)
 CResolutionPositionDlg* CGAgt::ResPosDlg()
 {
 	return mResPosDlg;
+}
+
+CResolutionChange* CGAgt::ResCha()
+{
+	return mResCha;
 }

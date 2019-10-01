@@ -24,37 +24,35 @@ void CResolutionChange::changeAggregated()
 
 void CResolutionChange::changeDisaggregated()
 {
-	inputPosVal val;
-	val.dep = DEP_INVERTEDTRIANGLE;
 	CLogDlg::initStream();
 	CLogDlg::insertStream("전개대형 :");
-	CLogDlg::insertStream(CStringA(strDeploymentType(DEP_INVERTEDTRIANGLE)).GetBuffer());
+	CLogDlg::insertStream(CStringA(strDeploymentType(inPosVal.dep)).GetBuffer());
 	CLogDlg::addLogTextStream();
 
-	val.dir = N_DIRECTION;
 	CLogDlg::initStream();
 	CLogDlg::insertStream("지향방향 :");
-	CLogDlg::insertStream(CStringA(strDirectionType(N_DIRECTION)).GetBuffer());
+	CLogDlg::insertStream(CStringA(strDirectionType(inPosVal.dir)).GetBuffer());
 	CLogDlg::addLogTextStream();
 
-	val.parent = CVector2d(308320.0f, 4191390.0f);
 	CLogDlg::initStream();
 	CLogDlg::insertStream("입력좌표 :");
-	CLogDlg::insertStream("308320", '	');
-	CLogDlg::insertStream("4191390", '	');
+	CLogDlg::insertStream((int)inPosVal.parent.x, '	');
+	CLogDlg::insertStream((int)inPosVal.parent.y, '	');
 	CLogDlg::addLogTextStream();
 
 	CLogDlg::initStream();
 	CLogDlg::insertStream("부대반경 입력 :");
-	CLogDlg::insertStream(CStringA(CUnitSize::strMoveType(CUnitSize::MOVETYPE::OFFENCE)).GetBuffer(), '	');
-	CLogDlg::insertStream(CStringA(CUnitSize::strForce(CUnitSize::FORCE::BLUEFORCE)).GetBuffer(), '	');
-	CLogDlg::insertStream(CStringA(CUnitSize::strCombatent(CUnitSize::COMBATANT::INFANTRY)).GetBuffer(), '	');
-	CLogDlg::insertStream(CStringA(CUnitSize::strMilitarybranch(CUnitSize::MILITARYBRANCH::BATTALION)).GetBuffer(), '	');
+	CLogDlg::insertStream(CStringA(CUnitSize::strMoveType(inPosVal.unitSizeVal.moveType)).GetBuffer(), '	');
+	CLogDlg::insertStream(CStringA(CUnitSize::strForce(inPosVal.unitSizeVal.force)).GetBuffer(), '	');
+	CLogDlg::insertStream(CStringA(CUnitSize::strCombatent(inPosVal.unitSizeVal.combat)).GetBuffer(), '	');
+	if(inPosVal.unitSizeVal.combat != CUnitSize::ARTILLERY)
+		CLogDlg::insertStream(CStringA(CUnitSize::strMilitarybranch(inPosVal.unitSizeVal.milVal.mil)).GetBuffer(), '	');
+	else
+		CLogDlg::insertStream(CStringA(CUnitSize::strMilitarybranch_AR(inPosVal.unitSizeVal.milVal.mil_AR)).GetBuffer(), '	');
 	CLogDlg::addLogTextStream();
-	val.unitSizeVal = CUnitSize::InputVal(CUnitSize::MOVETYPE::OFFENCE,CUnitSize::FORCE::BLUEFORCE, CUnitSize::COMBATANT::INFANTRY, CUnitSize::MILITARYBRANCH::BATTALION);
-	
 
-	vector<CVector2d> vecHiData = changeDisaggregatedPosition(val);
+
+	vector<CVector2d> vecHiData = changeDisaggregatedPosition(inPosVal);
 
 	CVector2d centroid = changeAggregatedPosition(vecHiData);
 	vector<int> logVal;
@@ -319,7 +317,27 @@ CString CResolutionChange::strDirectionType(CResolutionChange::DIRECTIONTYPE em)
 CResolutionChange::DIRECTIONTYPE CResolutionChange::emDirectionType(int selNum)
 {
 	CResolutionChange::DIRECTIONTYPE em = NONE_DIRECTION;
-
+	switch (selNum)
+	{
+	case 0: em = N_DIRECTION;
+		break;
+	case 1: em = NE_DIRECTION;
+		break;
+	case 2: em = E_DIRECTION;
+		break;
+	case 3: em = SE_DIRECTION;
+		break;
+	case 4: em = S_DIRECTION;
+		break;
+	case 5: em = SW_DIRECTION;
+		break;
+	case 6: em = W_DIRECTION;
+		break;
+	case 7: em = NW_DIRECTION;
+		break;
+	default:
+		break;
+	}
 	return em;
 }
 
@@ -345,6 +363,58 @@ CString CResolutionChange::strDeploymentType(CResolutionChange::DEPLOYMENTTYPE e
 CResolutionChange::DEPLOYMENTTYPE CResolutionChange::emDeploymentType(int selNum)
 {
 	CResolutionChange::DEPLOYMENTTYPE em = DEP_NONE;
-
+	switch (selNum)
+	{
+	case 0: em = DEP_INVERTEDTRIANGLE;
+		break;
+	case 1: em = DEP_TRIANGLE;
+		break;
+	case 2: em = DEP_LINE;
+		break;
+	case 3: em = DEP_COLUMN;
+		break;
+	default:
+		break;
+	}
 	return em;
+}
+
+void CResolutionChange::setParentPos(CVector2d parentPos)
+{
+	inPosVal.parent = parentPos;
+}
+
+void CResolutionChange::setDirectionType(DIRECTIONTYPE em)
+{
+	inPosVal.dir = em;
+}
+
+void CResolutionChange::setDeploymentType(DEPLOYMENTTYPE em)
+{
+	inPosVal.dep = em;
+}
+
+void CResolutionChange::setMoveType(CUnitSize::MOVETYPE em)
+{
+	inPosVal.unitSizeVal.moveType = em;
+}
+
+void CResolutionChange::setForce(CUnitSize::FORCE em)
+{
+	inPosVal.unitSizeVal.force = em;
+}
+
+void CResolutionChange::setCombatent(CUnitSize::COMBATANT em)
+{
+	inPosVal.unitSizeVal.combat = em;
+}
+
+void CResolutionChange::setMilitarybranch(CUnitSize::MILITARYBRANCH em)
+{
+	inPosVal.unitSizeVal.milVal.mil = em;
+}
+
+void CResolutionChange::setMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em)
+{
+	inPosVal.unitSizeVal.milVal.mil_AR = em;
 }

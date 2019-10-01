@@ -78,6 +78,17 @@ public:
 	};
 private:
 	CUnitSize *unitSizeVal;
+	inputPosVal inPosVal;
+
+public:
+	void setParentPos(CVector2d parentPos);
+	void setDirectionType(DIRECTIONTYPE em);
+	void setDeploymentType(DEPLOYMENTTYPE em);
+	void setMoveType(CUnitSize::MOVETYPE em);
+	void setForce(CUnitSize::FORCE em);
+	void setCombatent(CUnitSize::COMBATANT em);
+	void setMilitarybranch(CUnitSize::MILITARYBRANCH em);
+	void setMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em);
 public:	
 
 	void changeAggregated();

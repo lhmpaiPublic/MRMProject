@@ -18,6 +18,8 @@
 #define IDCC_INUNITSCALE                1008
 #define IDCC_INMAPIMPACT                1009
 #define IDCC_INDIVISIONCOUNT            1010
+#define IDC_BUTTON1                     1011
+#define IDCB_RESOLUTIONCHANGE           1011
 #define IDC_LOGWINDOW                   57665
 #define IDC_RESPOSWIN                   57666
 
@@ -27,7 +29,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        203
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1003
+#define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -1,12 +1,14 @@
 #pragma once
 
 class CResolutionPositionDlg;
+class CResolutionChange;
 class CGAgt
 {
 	HWND hParent;
 	static CGAgt* mG;
 public:
 	static CGAgt* G();
+	static CResolutionChange* GResCha();
 	CGAgt();
 	~CGAgt();
 
@@ -16,7 +18,7 @@ public:
 
 private:
 	CResolutionPositionDlg* mResPosDlg;
-
+	CResolutionChange* mResCha;
 public:
 	//CSV open Type Á¤ÀÇ
 	enum DLGNAME
@@ -25,6 +27,8 @@ public:
 	};
 	void ShowDlg(DLGNAME name);
 	void HideDlg(DLGNAME name);
+
 	CResolutionPositionDlg* ResPosDlg();
 
+	CResolutionChange* ResCha();
 };

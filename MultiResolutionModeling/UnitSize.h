@@ -13,6 +13,7 @@ public:
 		OFFENCE = 4		//공격
 	};
 	static CString strMoveType(CUnitSize::MOVETYPE em);
+	static CUnitSize::MOVETYPE emMoveType(int selNum);
 
 	enum UNITDEPTH
 	{
@@ -26,6 +27,7 @@ public:
 		REDFORCE = 1	//홍군
 	};
 	static CString strForce(CUnitSize::FORCE em);
+	static CUnitSize::FORCE emForce(int selNum);
 
 	enum UNITSIZE
 	{
@@ -40,6 +42,7 @@ public:
 		ARTILLERY = 8	//포병
 	};
 	static CString strCombatent(CUnitSize::COMBATANT em);
+	static CUnitSize::COMBATANT emCombatent(int selNum);
 
 	enum MILITARYBRANCH
 	{
@@ -49,6 +52,7 @@ public:
 		BATTALION = 3,	//대대
 	};
 	static CString strMilitarybranch(CUnitSize::MILITARYBRANCH em);
+	static CUnitSize::MILITARYBRANCH emMilitarybranch(int selNum);
 
 	enum MILITARYBRANCH_AR
 	{
@@ -56,6 +60,7 @@ public:
 		ARTILLERYBT = 1		//대대
 	};
 	static CString strMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em);
+	static CUnitSize::MILITARYBRANCH_AR emMilitarybranch_AR(int selNum);
 
 	struct InputVal
 	{

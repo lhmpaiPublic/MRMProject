@@ -50,9 +50,6 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
 	CGAgt::G()->initGAgt(m_hWnd);
 
-	CResolutionChange reCh;
-	reCh.changeDisaggregated();
-
 	return TRUE;
 }
 

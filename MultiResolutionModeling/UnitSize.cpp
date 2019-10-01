@@ -115,6 +115,21 @@ CString CUnitSize::strMoveType(CUnitSize::MOVETYPE em)
 	return strEm;
 }
 
+CUnitSize::MOVETYPE CUnitSize::emMoveType(int selNum)
+{
+	CUnitSize::MOVETYPE em = DEFENCE;
+	switch (selNum)
+	{
+	case 0: em = DEFENCE;
+		break;
+	case 1: em = OFFENCE;
+		break;
+	default:
+		break;
+	}
+	return em;
+}
+
 CString CUnitSize::strForce(CUnitSize::FORCE em)
 {
 	CString strEm = "UNKNOW";
@@ -128,6 +143,21 @@ CString CUnitSize::strForce(CUnitSize::FORCE em)
 		break;
 	}
 	return strEm;
+}
+
+CUnitSize::FORCE CUnitSize::emForce(int selNum)
+{
+	CUnitSize::FORCE em = BLUEFORCE;
+	switch (selNum)
+	{
+	case 0: em = BLUEFORCE;
+		break;
+	case 1: em = REDFORCE;
+		break;
+	default:
+		break;
+	}
+	return em;
 }
 
 CString CUnitSize::strCombatent(CUnitSize::COMBATANT em)
@@ -145,6 +175,23 @@ CString CUnitSize::strCombatent(CUnitSize::COMBATANT em)
 		break;
 	}
 	return strEm;
+}
+
+CUnitSize::COMBATANT CUnitSize::emCombatent(int selNum)
+{
+	CUnitSize::COMBATANT em = INFANTRY;
+	switch (selNum)
+	{
+	case 0: em = INFANTRY;
+		break;
+	case 1: em = ARMORED;
+		break;
+	case 2: em = ARTILLERY;
+		break;
+	default:
+		break;
+	}
+	return em;
 }
 
 CString CUnitSize::strMilitarybranch(CUnitSize::MILITARYBRANCH em)
@@ -166,6 +213,25 @@ CString CUnitSize::strMilitarybranch(CUnitSize::MILITARYBRANCH em)
 	return strEm;
 }
 
+CUnitSize::MILITARYBRANCH CUnitSize::emMilitarybranch(int selNum)
+{
+	CUnitSize::MILITARYBRANCH em = SQUAD;
+	switch (selNum)
+	{
+	case 0: em = SQUAD;
+		break;
+	case 1: em = PLATOON;
+		break;
+	case 2: em = COMPANY;
+		break;
+	case 3: em = BATTALION;
+		break;
+	default:
+		break;
+	}
+	return em;
+}
+
 CString CUnitSize::strMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em)
 {
 	CString strEm = "UNKNOW";
@@ -179,4 +245,19 @@ CString CUnitSize::strMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em)
 		break;
 	}
 	return strEm;
+}
+
+CUnitSize::MILITARYBRANCH_AR CUnitSize::emMilitarybranch_AR(int selNum)
+{
+	CUnitSize::MILITARYBRANCH_AR em = ARTILLERYUNIT;
+	switch (selNum)
+	{
+	case 0: em = ARTILLERYUNIT;
+		break;
+	case 1: em = ARTILLERYBT;
+		break;
+	default:
+		break;
+	}
+	return em;
 }
