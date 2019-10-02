@@ -5,6 +5,7 @@
 #include "ResolutionChange.h"
 #include "UnitSize.h"
 #include "LogDlg.h"
+#include <math.h>
 
 
 CResolutionChange::CResolutionChange()
@@ -24,6 +25,8 @@ void CResolutionChange::changeAggregated()
 
 void CResolutionChange::changeDisaggregated()
 {
+	CLogDlg::AddLogText("<=================>");
+	CLogDlg::AddLogText("<입력 값>");
 	CLogDlg::initStream();
 	CLogDlg::insertStream("전개대형 :");
 	CLogDlg::insertStream(CStringA(strDeploymentType(inPosVal.dep)).GetBuffer());
@@ -45,23 +48,45 @@ void CResolutionChange::changeDisaggregated()
 	CLogDlg::insertStream(CStringA(CUnitSize::strMoveType(inPosVal.unitSizeVal.moveType)).GetBuffer(), '	');
 	CLogDlg::insertStream(CStringA(CUnitSize::strForce(inPosVal.unitSizeVal.force)).GetBuffer(), '	');
 	CLogDlg::insertStream(CStringA(CUnitSize::strCombatent(inPosVal.unitSizeVal.combat)).GetBuffer(), '	');
-	if(inPosVal.unitSizeVal.combat != CUnitSize::ARTILLERY)
-		CLogDlg::insertStream(CStringA(CUnitSize::strMilitarybranch(inPosVal.unitSizeVal.milVal.mil)).GetBuffer(), '	');
-	else
-		CLogDlg::insertStream(CStringA(CUnitSize::strMilitarybranch_AR(inPosVal.unitSizeVal.milVal.mil_AR)).GetBuffer(), '	');
+	CLogDlg::insertStream(CStringA(CUnitSize::strMilitarybranch(inPosVal.unitSizeVal.combat, inPosVal.unitSizeVal.mil)).GetBuffer(), '	');
+
 	CLogDlg::addLogTextStream();
 
 
+	CLogDlg::AddLogText("<====================>");
+	CLogDlg::AddLogText("<출력 값>");
 	vector<CVector2d> vecHiData = changeDisaggregatedPosition(inPosVal);
 
 	CVector2d centroid = changeAggregatedPosition(vecHiData);
 	vector<int> logVal;
+	vector<int> logVal_sub;
 	logVal.push_back((int)centroid.x);
 	logVal.push_back((int)centroid.y);
+
+	int subX = (int)inPosVal.parent.x - (int)centroid.x;
+	int subY = (int)inPosVal.parent.y - (int)centroid.y;
+
+	logVal_sub.push_back(subX);
+	logVal_sub.push_back(subY);
+
+	int Aggdistance = (int)sqrt((pow((float)subX, 2)+pow((float)subY, 2)));
+
 	CLogDlg::initStream();
 	CLogDlg::insertStream("Agg 좌표 :");
 	CLogDlg::insertStreamVec(logVal,'	');
 	CLogDlg::addLogTextStream();
+
+	CLogDlg::initStream();
+	CLogDlg::insertStream("Agg Sub : ");
+	CLogDlg::insertStreamVec(logVal_sub,'	');
+	CLogDlg::addLogTextStream();
+
+	CLogDlg::initStream();
+	CLogDlg::insertStream("Agg 거리 :");
+	CLogDlg::insertStream(Aggdistance,'	');
+	CLogDlg::addLogTextStream();
+
+	CLogDlg::AddLogText("<====================>");
 }
 
 vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val)
@@ -80,14 +105,24 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val
 	//최종 분해 요소 값
 	vector<CVector2d> vecHiData = deploymentPosition(val.dep, val.parent, front, cross, sizeUnit);
 	vector<int> logVal;
+	vector<int> logVal_sub;
 	for(int i = 0; i < (int)vecHiData.size(); i++)
 	{
 		logVal.push_back((int)vecHiData[i].x);
 		logVal.push_back((int)vecHiData[i].y);
+
+		logVal_sub.push_back((int)val.parent.x - (int)vecHiData[i].x);
+		logVal_sub.push_back((int)val.parent.y - (int)vecHiData[i].y);
 	}
 	CLogDlg::initStream();
 	CLogDlg::insertStream("DisAgg 값 :");
 	CLogDlg::insertStreamVec(logVal, '	');
+	CLogDlg::addLogTextStream();
+
+
+	CLogDlg::initStream();
+	CLogDlg::insertStream("DisAgg Sub :");
+	CLogDlg::insertStreamVec(logVal_sub, '	');
 	CLogDlg::addLogTextStream();
 
 	return vecHiData;
@@ -168,12 +203,19 @@ CVector2d CResolutionChange::calcPosition(CALCPOSITIONTYPE calcType, CVector2d p
 	case CALC_POS7:		// 8
 		vecVal = parent + cross*(sizeUnit[SIZEVEC_WIDTH] * 2.0f / 8.0f);
 		break;
-	case CALC_POS8:		// 8
+	case CALC_POS8:		// 9
 		vecVal = parent + front*(-(sizeUnit[SIZEVEC_HIGHT] * 2.0f / 8.0f));
 		break;
-	case CALC_POS9:		// 8
-	default:
+	case CALC_POS9:		// 10
 		vecVal = parent + front*(-(sizeUnit[SIZEVEC_HIGHT] * 3.0f / 8.0f));
+		break;
+	case CALC_POS10:		// 11
+		vecVal = parent + cross*(-(sizeUnit[SIZEVEC_WIDTH] * 2.0f / 8.0f)) + front*(-(sizeUnit[SIZEVEC_HIGHT] * 2.0f / 8.0f));
+		break;
+	case CALC_POS11:		// 12
+		vecVal = parent + cross*(sizeUnit[SIZEVEC_WIDTH] * 2.0f / 8.0f) + front*(-(sizeUnit[SIZEVEC_HIGHT] * 2.0f / 8.0f));
+		break;
+	default:
 		break;
 	}
 	return vecVal;
@@ -191,23 +233,29 @@ vector<CVector2d> CResolutionChange::deploymentPosition(DEPLOYMENTTYPE deploymen
 		result[DISAGG_NUM3] = calcPosition(CALC_POS8, parent, front, cross, sizeUnit);
 		result[DISAGG_NUM4] = calcPosition(CALC_POS9, parent, front, cross, sizeUnit);
 		break;
-	case DEP_TRIANGLE:		// 삼각대(원형)
+	case DEP_CIRCLE:		// 원형
 		result[DISAGG_NUM1] = calcPosition(CALC_POS2, parent, front, cross, sizeUnit);
 		result[DISAGG_NUM2] = calcPosition(CALC_POS5, parent, front, cross, sizeUnit);
 		result[DISAGG_NUM3] = calcPosition(CALC_POS7, parent, front, cross, sizeUnit);
 		result[DISAGG_NUM4] = calcPosition(CALC_POS8, parent, front, cross, sizeUnit);
 		break;
 	case DEP_LINE:		// 횡대
-		result[DISAGG_NUM1] = calcPosition(CALC_POS0, parent, front, cross, sizeUnit);
-		result[DISAGG_NUM2] = calcPosition(CALC_POS2, parent, front, cross, sizeUnit);
+		result[DISAGG_NUM1] = calcPosition(CALC_POS2, parent, front, cross, sizeUnit);
+		result[DISAGG_NUM2] = calcPosition(CALC_POS0, parent, front, cross, sizeUnit);
 		result[DISAGG_NUM3] = calcPosition(CALC_POS4, parent, front, cross, sizeUnit);
 		result[DISAGG_NUM4] = calcPosition(CALC_POS8, parent, front, cross, sizeUnit);
 		break;
 	case DEP_COLUMN:		// 종대
 		result[DISAGG_NUM1] = calcPosition(CALC_POS2, parent, front, cross, sizeUnit);
 		result[DISAGG_NUM2] = calcPosition(CALC_POS6, parent, front, cross, sizeUnit);
-		result[DISAGG_NUM3] = calcPosition(CALC_POS9, parent, front, cross, sizeUnit);
-		result[DISAGG_NUM4] = calcPosition(CALC_POS8, parent, front, cross, sizeUnit);
+		result[DISAGG_NUM3] = calcPosition(CALC_POS8, parent, front, cross, sizeUnit);
+		result[DISAGG_NUM4] = calcPosition(CALC_POS9, parent, front, cross, sizeUnit);
+		break;
+	case DEP_TRIANGLE:		// 삼각대
+		result[DISAGG_NUM1] = calcPosition(CALC_POS2, parent, front, cross, sizeUnit);
+		result[DISAGG_NUM2] = calcPosition(CALC_POS10, parent, front, cross, sizeUnit);
+		result[DISAGG_NUM3] = calcPosition(CALC_POS11, parent, front, cross, sizeUnit);
+		result[DISAGG_NUM4] = calcPosition(CALC_POS9, parent, front, cross, sizeUnit);
 		break;
 	default:					// 역삼각대
 		result[DISAGG_NUM1] = calcPosition(CALC_POS1, parent, front, cross, sizeUnit);
@@ -348,11 +396,13 @@ CString CResolutionChange::strDeploymentType(CResolutionChange::DEPLOYMENTTYPE e
 	{
 	case DEP_INVERTEDTRIANGLE:strEm = "역삼각대";
 		break;
-	case DEP_TRIANGLE:strEm = "삼각대(원형)";
+	case DEP_CIRCLE:strEm = "원형";
 		break;
 	case DEP_LINE:strEm = "횡대";
 		break;
 	case DEP_COLUMN:strEm = "종대";
+		break;
+	case DEP_TRIANGLE:strEm = "삼각대";
 		break;
 	default:
 		break;
@@ -367,11 +417,13 @@ CResolutionChange::DEPLOYMENTTYPE CResolutionChange::emDeploymentType(int selNum
 	{
 	case 0: em = DEP_INVERTEDTRIANGLE;
 		break;
-	case 1: em = DEP_TRIANGLE;
+	case 1: em = DEP_CIRCLE;
 		break;
 	case 2: em = DEP_LINE;
 		break;
 	case 3: em = DEP_COLUMN;
+		break;
+	case 4: em = DEP_TRIANGLE;
 		break;
 	default:
 		break;
@@ -411,10 +463,5 @@ void CResolutionChange::setCombatent(CUnitSize::COMBATANT em)
 
 void CResolutionChange::setMilitarybranch(CUnitSize::MILITARYBRANCH em)
 {
-	inPosVal.unitSizeVal.milVal.mil = em;
-}
-
-void CResolutionChange::setMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em)
-{
-	inPosVal.unitSizeVal.milVal.mil_AR = em;
+	inPosVal.unitSizeVal.mil = em;
 }

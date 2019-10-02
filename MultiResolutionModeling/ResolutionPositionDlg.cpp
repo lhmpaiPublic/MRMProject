@@ -50,9 +50,10 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 
 	incDeployment.Attach(GetDlgItem(IDCC_INDEPLOYMENT));
 	incDeployment.AddString(CStringW("역삼각대"));
-	incDeployment.AddString(CStringW("삼각대(원형)"));
+	incDeployment.AddString(CStringW("원형"));
 	incDeployment.AddString(CStringW("종대"));
 	incDeployment.AddString(CStringW("횡대"));
+	incDeployment.AddString(CStringW("삼각대"));
 	incDeployment.SetCurSel(0);
 	CGAgt::GResCha()->setDeploymentType(CResolutionChange::DEP_INVERTEDTRIANGLE);
 	
@@ -90,24 +91,14 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	incUnitBlueRed.SetCurSel(0);
 	CGAgt::GResCha()->setForce(CUnitSize::BLUEFORCE);
 
-	if(combatType != CUnitSize::ARTILLERY)
+	incUnitScale.Attach(GetDlgItem(IDCC_INUNITSCALE));
+	vector<CString> unitScale = CUnitSize::strMilitarybranch(combatType);
+	for (int i = 0; i < (int)unitScale.size(); i++)
 	{
-		incUnitScale.Attach(GetDlgItem(IDCC_INUNITSCALE));
-		incUnitScale.AddString(CStringW("분대"));
-		incUnitScale.AddString(CStringW("소대"));
-		incUnitScale.AddString(CStringW("중대"));
-		incUnitScale.AddString(CStringW("대대"));
-		incUnitScale.SetCurSel(0);
-		CGAgt::GResCha()->setMilitarybranch(CUnitSize::SQUAD);
+		incUnitScale.AddString(unitScale[i]);
 	}
-	else
-	{
-		incUnitScale.Attach(GetDlgItem(IDCC_INUNITSCALE));
-		incUnitScale.AddString(CStringW("포대"));
-		incUnitScale.AddString(CStringW("대대"));
-		incUnitScale.SetCurSel(0);
-		CGAgt::GResCha()->setMilitarybranch_AR(CUnitSize::ARTILLERYUNIT);
-	}	
+	incUnitScale.SetCurSel(0);
+	CGAgt::GResCha()->setMilitarybranch(CUnitSize::emMilitarybranch(combatType, 0));
 
 	incMapImpact.Attach(GetDlgItem(IDCC_INMAPIMPACT));
 	incMapImpact.AddString(CStringW("개체1"));
@@ -169,14 +160,7 @@ LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/
 	CGAgt::GResCha()->setCombatent(combatType);
 	CGAgt::GResCha()->setForce(CUnitSize::emForce(incUnitBlueRed.GetCurSel()));
 
-	if(combatType != CUnitSize::ARTILLERY)
-	{
-		CGAgt::GResCha()->setMilitarybranch(CUnitSize::emMilitarybranch(incUnitScale.GetCurSel()));
-	}
-	else
-	{
-		CGAgt::GResCha()->setMilitarybranch_AR(CUnitSize::emMilitarybranch_AR(incUnitScale.GetCurSel()));
-	}
+	CGAgt::GResCha()->setMilitarybranch(CUnitSize::emMilitarybranch(combatType, incUnitScale.GetCurSel()));
 
 	CGAgt::GResCha()->changeDisaggregated();
 	return 0;
@@ -188,20 +172,12 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, W
 
 	incUnitScale.ResetContent();
 	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
-	if(combatType != CUnitSize::ARTILLERY)
+	vector<CString> unitScale = CUnitSize::strMilitarybranch(combatType);
+	for (int i = 0; i < (int)unitScale.size(); i++)
 	{
-		incUnitScale.AddString(CStringW("분대"));
-		incUnitScale.AddString(CStringW("소대"));
-		incUnitScale.AddString(CStringW("중대"));
-		incUnitScale.AddString(CStringW("대대"));
-		incUnitScale.SetCurSel(0);
+		incUnitScale.AddString(unitScale[i]);
 	}
-	else
-	{
-		incUnitScale.AddString(CStringW("포대"));
-		incUnitScale.AddString(CStringW("대대"));
-		incUnitScale.SetCurSel(0);
-	}	
+	incUnitScale.SetCurSel(0);
 
 	return 0;
 }

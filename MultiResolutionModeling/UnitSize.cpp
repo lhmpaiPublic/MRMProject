@@ -70,7 +70,7 @@ vector<int> CUnitSize::getARMOREDSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE fo)
 	return size;
 }
 
-vector<int> CUnitSize::getARTILLERYSize(MILITARYBRANCH_AR mil, MOVETYPE mo, FORCE fo)
+vector<int> CUnitSize::getARTILLERYSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE fo)
 {
 	vector<int> size;
 	VECVECINT infVal = mapCombatant[ARTILLERY];
@@ -87,13 +87,13 @@ vector<int> CUnitSize::unitZoneSize(InputVal in)
 	switch (in.combat)
 	{
 	case INFANTRY:
-		size = getINFANTRYSize(in.milVal.mil, in.moveType, in.force);
+		size = getINFANTRYSize(in.mil, in.moveType, in.force);
 		break;
 	case ARMORED:
-		size = getARMOREDSize(in.milVal.mil, in.moveType, in.force);
+		size = getARMOREDSize(in.mil, in.moveType, in.force);
 		break;
 	case ARTILLERY:
-		size = getARTILLERYSize(in.milVal.mil_AR, in.moveType, in.force);
+		size = getARTILLERYSize(in.mil, in.moveType, in.force);
 	default:
 		break;
 	}
@@ -194,18 +194,49 @@ CUnitSize::COMBATANT CUnitSize::emCombatent(int selNum)
 	return em;
 }
 
-CString CUnitSize::strMilitarybranch(CUnitSize::MILITARYBRANCH em)
+CString CUnitSize::strMilitarybranch(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH em)
 {
 	CString strEm = "UNKNOW";
-	switch (em)
+	switch (combat)
 	{
-	case SQUAD:strEm = "분대";
+	case INFANTRY:
+		switch (em)
+		{
+		case INFANTRY_SQUAD:strEm = "분대";
+			break;
+		case INFANTRY_PLATOON:strEm = "소대";
+			break;
+		case INFANTRY_COMPANY:strEm = "중대";
+			break;
+		case INFANTRY_BATTALION:strEm = "대대";
+			break;
+		default:
+			break;
+		}
 		break;
-	case PLATOON:strEm = "소대";
+	case ARMORED:
+		switch (em)
+		{
+		case ARMORED_PLATOON:strEm = "소대";
+			break;
+		case ARMORED_COMPANY:strEm = "중대";
+			break;
+		case ARMORED_BATTALION:strEm = "대대";
+			break;
+		default:
+			break;
+		}
 		break;
-	case COMPANY:strEm = "중대";
-		break;
-	case BATTALION:strEm = "대대";
+	case ARTILLERY:
+		switch (em)
+		{
+		case ARTILLERY_COMPANY:strEm = "포대";
+			break;
+		case ARTILLERY_BATTALION:strEm = "대대";
+			break;
+		default:
+			break;
+		}
 		break;
 	default:
 		break;
@@ -213,33 +244,26 @@ CString CUnitSize::strMilitarybranch(CUnitSize::MILITARYBRANCH em)
 	return strEm;
 }
 
-CUnitSize::MILITARYBRANCH CUnitSize::emMilitarybranch(int selNum)
+vector<CString> CUnitSize::strMilitarybranch(CUnitSize::COMBATANT combat)
 {
-	CUnitSize::MILITARYBRANCH em = SQUAD;
-	switch (selNum)
+	vector<CString> strEm;
+	strEm.clear();
+	switch (combat)
 	{
-	case 0: em = SQUAD;
+	case INFANTRY:
+		strEm.push_back("분대");
+		strEm.push_back("소대");
+		strEm.push_back("중대");
+		strEm.push_back("대대");
 		break;
-	case 1: em = PLATOON;
+	case ARMORED:
+		strEm.push_back("소대");
+		strEm.push_back("중대");
+		strEm.push_back("대대");
 		break;
-	case 2: em = COMPANY;
-		break;
-	case 3: em = BATTALION;
-		break;
-	default:
-		break;
-	}
-	return em;
-}
-
-CString CUnitSize::strMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em)
-{
-	CString strEm = "UNKNOW";
-	switch (em)
-	{
-	case ARTILLERYUNIT:strEm = "포대";
-		break;
-	case ARTILLERYBT:strEm = "대대";
+	case ARTILLERY:
+		strEm.push_back("포대");
+		strEm.push_back("대대");
 		break;
 	default:
 		break;
@@ -247,17 +271,53 @@ CString CUnitSize::strMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em)
 	return strEm;
 }
 
-CUnitSize::MILITARYBRANCH_AR CUnitSize::emMilitarybranch_AR(int selNum)
+CUnitSize::MILITARYBRANCH CUnitSize::emMilitarybranch(CUnitSize::COMBATANT combat, int selNum)
 {
-	CUnitSize::MILITARYBRANCH_AR em = ARTILLERYUNIT;
-	switch (selNum)
+	CUnitSize::MILITARYBRANCH em = INFANTRY_SQUAD;
+	switch (combat)
 	{
-	case 0: em = ARTILLERYUNIT;
+	case INFANTRY:
+		switch (selNum)
+		{
+		case 0: em = INFANTRY_SQUAD;
+			break;
+		case 1: em = INFANTRY_PLATOON;
+			break;
+		case 2: em = INFANTRY_COMPANY;
+			break;
+		case 3: em = INFANTRY_BATTALION;
+			break;
+		default:
+			break;
+		}
 		break;
-	case 1: em = ARTILLERYBT;
+	case ARMORED:
+		switch (selNum)
+		{
+		case 0: em = ARMORED_PLATOON;
+			break;
+		case 1: em = ARMORED_COMPANY;
+			break;
+		case 2: em = ARMORED_BATTALION;
+			break;
+		default:
+			break;
+		}
+		break;
+	case ARTILLERY:
+		switch (selNum)
+		{
+		case 0: em = ARTILLERY_COMPANY;
+			break;
+		case 1: em = ARTILLERY_BATTALION;
+			break;
+		default:
+			break;
+		}
 		break;
 	default:
 		break;
 	}
+
 	return em;
 }

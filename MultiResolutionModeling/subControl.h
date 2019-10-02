@@ -5,10 +5,12 @@
 
 #pragma once
 
+#include "GlobalApi/GlobalApi.h"
+
+#include "ImageLoadApi/ImageLoadApi.h"
+
 #include "SubCombo/SubCombo.h"
-#include "SubCombo/SuperCombo.h"
-#include "SubCombo/SuperComboId.h"
 
 #include "SubEdit/SubEdit.h"
-#include "SubEdit/SuperEditId.h"
-#include "SubEdit/SuperEditImpl.h"
+
+#include "SubStatic/SubStatic.h"

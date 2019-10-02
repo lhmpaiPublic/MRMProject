@@ -41,6 +41,10 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	pLoop->AddIdleHandler(this);
 
 	UIAddChildWindowContainer(m_hWnd);
+	//=============================================
+	//  Gdiplus 사용 시작
+	//=============================================
+	CGdiPlusBitmap::GdiStart();
 
 	if(NULL == CLogDlg::gLogDlg)
 	{
@@ -60,6 +64,11 @@ LRESULT CMainDlg::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 	ATLASSERT(pLoop != NULL);
 	pLoop->RemoveMessageFilter(this);
 	pLoop->RemoveIdleHandler(this);
+
+	//=============================================
+	//  Gdiplus 사용 종료
+	//=============================================
+	CGdiPlusBitmap::GdiShut();
 
 	return 0;
 }

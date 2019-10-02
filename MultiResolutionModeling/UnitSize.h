@@ -39,50 +39,40 @@ public:
 	{
 		INFANTRY = 0,	//보병
 		ARMORED = 4,	//전차
-		ARTILLERY = 8	//포병
+		ARTILLERY = 7	//포병
 	};
 	static CString strCombatent(CUnitSize::COMBATANT em);
 	static CUnitSize::COMBATANT emCombatent(int selNum);
 
 	enum MILITARYBRANCH
 	{
-		SQUAD = 0,		//분대
-		PLATOON = 1,	//소대
-		COMPANY = 2,	//중대
-		BATTALION = 3,	//대대
+		INFANTRY_SQUAD = 0,		//보병 분대
+		INFANTRY_PLATOON = 1,	//보병 소대
+		INFANTRY_COMPANY = 2,	//보병 중대
+		INFANTRY_BATTALION = 3,	//보병 대대
+		ARMORED_PLATOON = 0,	//전차 소대
+		ARMORED_COMPANY = 1,	//전차 중대
+		ARMORED_BATTALION = 2,	//전차 대대
+		ARTILLERY_COMPANY = 0,	//포대
+		ARTILLERY_BATTALION = 1		//포병 대대
 	};
-	static CString strMilitarybranch(CUnitSize::MILITARYBRANCH em);
-	static CUnitSize::MILITARYBRANCH emMilitarybranch(int selNum);
-
-	enum MILITARYBRANCH_AR
-	{
-		ARTILLERYUNIT = 0, //포대
-		ARTILLERYBT = 1		//대대
-	};
-	static CString strMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em);
-	static CUnitSize::MILITARYBRANCH_AR emMilitarybranch_AR(int selNum);
+	static CString strMilitarybranch(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH em);
+	static vector<CString> strMilitarybranch(CUnitSize::COMBATANT combat);
+	static CUnitSize::MILITARYBRANCH emMilitarybranch(CUnitSize::COMBATANT combat, int selNum);
 
 	struct InputVal
 	{
 		MOVETYPE moveType;
 		FORCE force;
 		COMBATANT combat;
-		union
-		{
-			MILITARYBRANCH mil;
-			MILITARYBRANCH_AR mil_AR;
-		}milVal;
+		MILITARYBRANCH mil;
 		InputVal()
 		{
-			moveType = OFFENCE; force = BLUEFORCE; combat = INFANTRY; milVal.mil = BATTALION;
+			moveType = OFFENCE; force = BLUEFORCE; combat = INFANTRY; mil = INFANTRY_SQUAD;
 		}
 		InputVal(MOVETYPE _moveType, FORCE _force, COMBATANT _combat, MILITARYBRANCH _mil)
 		{
-			moveType = _moveType; force = _force; combat = _combat; milVal.mil = _mil;
-		}
-		InputVal(MOVETYPE _moveType, FORCE _force, COMBATANT _combat, MILITARYBRANCH_AR _mil_AR)
-		{
-			moveType = _moveType; force = _force; combat = _combat; milVal.mil_AR = _mil_AR;
+			moveType = _moveType; force = _force; combat = _combat; mil = _mil;
 		}
 	};
 
@@ -92,7 +82,7 @@ public:
 
 	vector<int> getARMOREDSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE fo);
 
-	vector<int> getARTILLERYSize(MILITARYBRANCH_AR mil, MOVETYPE mo, FORCE fo);
+	vector<int> getARTILLERYSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE fo);
 
 	vector<int> unitZoneSize(InputVal in);
 

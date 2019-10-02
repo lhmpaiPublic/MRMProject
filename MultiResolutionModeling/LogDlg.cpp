@@ -85,6 +85,7 @@ void CLogDlg::AddLogText(vector<string> text, char delimiter)
 void CLogDlg::initStream()
 {
 	mkLog.str("");
+	mkLog.clear();
 	bFirst = true;
 }
 

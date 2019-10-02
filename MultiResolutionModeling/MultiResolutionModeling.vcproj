@@ -100,6 +100,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			ATLMinimizesCRunTimeLibraryUsage="true"
@@ -372,6 +373,106 @@
 				>
 				<File
 					RelativePath=".\SubEdit\SuperEditImpl.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="SubStatic"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\SubStatic\SubStatic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubStatic\SuperStatic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubStatic\SuperStaticId.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\SubStatic\SuperStatic.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="GlobalApi"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\GlobalApi\GAFileStream.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GlobalApi\GARgn.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GlobalApi\GASound.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GlobalApi\GlobalApi.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\GlobalApi\GAFileStream.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GlobalApi\GARgn.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GlobalApi\GASound.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="ImageLoadApi"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\ImageLoadApi\GdiPlusBitmap.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ImageLoadApi\ImageEx.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ImageLoadApi\ImageLoadApi.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\ImageLoadApi\GdiPlusBitmap.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ImageLoadApi\ImageEx.cpp"
 					>
 				</File>
 			</Filter>

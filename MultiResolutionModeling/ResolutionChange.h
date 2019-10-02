@@ -37,6 +37,8 @@ public:
 		CALC_POS7,
 		CALC_POS8,
 		CALC_POS9,
+		CALC_POS10,
+		CALC_POS11,
 	};
 
 	//SIZE VECTOR Type 정의
@@ -51,9 +53,10 @@ public:
 	{
 		DEP_NONE = 0,
 		DEP_INVERTEDTRIANGLE = 1,	// 역삼각대
-		DEP_TRIANGLE,				// 삼각대(원형)
+		DEP_CIRCLE,					// 원형
 		DEP_LINE,					// 횡대
-		DEP_COLUMN					// 종대
+		DEP_COLUMN,					// 종대
+		DEP_TRIANGLE				// 삼각대
 	};
 	static CString strDeploymentType(CResolutionChange::DEPLOYMENTTYPE em);
 	static CResolutionChange::DEPLOYMENTTYPE emDeploymentType(int selNum);
@@ -88,7 +91,6 @@ public:
 	void setForce(CUnitSize::FORCE em);
 	void setCombatent(CUnitSize::COMBATANT em);
 	void setMilitarybranch(CUnitSize::MILITARYBRANCH em);
-	void setMilitarybranch_AR(CUnitSize::MILITARYBRANCH_AR em);
 public:	
 
 	void changeAggregated();
