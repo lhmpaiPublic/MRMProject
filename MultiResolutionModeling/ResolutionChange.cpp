@@ -29,7 +29,7 @@ void CResolutionChange::changeDisaggregated()
 	CLogDlg::AddLogText("<입력 값>");
 	CLogDlg::initStream();
 	CLogDlg::insertStream("전개대형 :");
-	CLogDlg::insertStream(CStringA(strDeploymentType(inPosVal.dep)).GetBuffer());
+	CLogDlg::insertStream(CStringA(strDeploymentType(inPosVal.unitSizeVal.combat, inPosVal.unitSizeVal.mil, inPosVal.dep)).GetBuffer());
 	CLogDlg::addLogTextStream();
 
 	CLogDlg::initStream();
@@ -55,36 +55,73 @@ void CResolutionChange::changeDisaggregated()
 
 	CLogDlg::AddLogText("<====================>");
 	CLogDlg::AddLogText("<출력 값>");
-	vector<CVector2d> vecHiData = changeDisaggregatedPosition(inPosVal);
 
-	CVector2d centroid = changeAggregatedPosition(vecHiData);
-	vector<int> logVal;
-	vector<int> logVal_sub;
-	logVal.push_back((int)centroid.x);
-	logVal.push_back((int)centroid.y);
+	if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_SQUAD)
+	{
+		vector<CVector2d> vecHiData = changeDisaggregatedPositionInfantrySquad(inPosVal);
+		CVector2d centroid = changeAggregatedPositionInfantrySquad(vecHiData);
 
-	int subX = (int)inPosVal.parent.x - (int)centroid.x;
-	int subY = (int)inPosVal.parent.y - (int)centroid.y;
+		vector<int> logVal;
+		vector<int> logVal_sub;
+		logVal.push_back((int)centroid.x);
+		logVal.push_back((int)centroid.y);
 
-	logVal_sub.push_back(subX);
-	logVal_sub.push_back(subY);
+		int subX = (int)centroid.x - (int)inPosVal.parent.x;
+		int subY = (int)centroid.y - (int)inPosVal.parent.y;
 
-	int Aggdistance = (int)sqrt((pow((float)subX, 2)+pow((float)subY, 2)));
+		logVal_sub.push_back(subX);
+		logVal_sub.push_back(subY);
 
-	CLogDlg::initStream();
-	CLogDlg::insertStream("Agg 좌표 :");
-	CLogDlg::insertStreamVec(logVal,'	');
-	CLogDlg::addLogTextStream();
+		int Aggdistance = (int)sqrt((pow((float)subX, 2)+pow((float)subY, 2)));
 
-	CLogDlg::initStream();
-	CLogDlg::insertStream("Agg Sub : ");
-	CLogDlg::insertStreamVec(logVal_sub,'	');
-	CLogDlg::addLogTextStream();
+		CLogDlg::initStream();
+		CLogDlg::insertStream("Agg 좌표 :");
+		CLogDlg::insertStreamVec(logVal,'	');
+		CLogDlg::addLogTextStream();
 
-	CLogDlg::initStream();
-	CLogDlg::insertStream("Agg 거리 :");
-	CLogDlg::insertStream(Aggdistance,'	');
-	CLogDlg::addLogTextStream();
+		CLogDlg::initStream();
+		CLogDlg::insertStream("Agg Sub : ");
+		CLogDlg::insertStreamVec(logVal_sub,'	');
+		CLogDlg::addLogTextStream();
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("Agg 거리 :");
+		CLogDlg::insertStream(Aggdistance,'	');
+		CLogDlg::addLogTextStream();
+	}
+	else
+	{
+		vector<CVector2d> vecHiData = changeDisaggregatedPosition(inPosVal);
+
+		CVector2d centroid = changeAggregatedPosition(vecHiData);
+		vector<int> logVal;
+		vector<int> logVal_sub;
+		logVal.push_back((int)centroid.x);
+		logVal.push_back((int)centroid.y);
+
+		int subX = (int)centroid.x - (int)inPosVal.parent.x;
+		int subY = (int)centroid.y - (int)inPosVal.parent.y;
+
+		logVal_sub.push_back(subX);
+		logVal_sub.push_back(subY);
+
+		int Aggdistance = (int)sqrt((pow((float)subX, 2)+pow((float)subY, 2)));
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("Agg 좌표 :");
+		CLogDlg::insertStreamVec(logVal,'	');
+		CLogDlg::addLogTextStream();
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("Agg Sub : ");
+		CLogDlg::insertStreamVec(logVal_sub,'	');
+		CLogDlg::addLogTextStream();
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("Agg 거리 :");
+		CLogDlg::insertStream(Aggdistance,'	');
+		CLogDlg::addLogTextStream();
+	}	
 
 	CLogDlg::AddLogText("<====================>");
 }
@@ -111,8 +148,8 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val
 		logVal.push_back((int)vecHiData[i].x);
 		logVal.push_back((int)vecHiData[i].y);
 
-		logVal_sub.push_back((int)val.parent.x - (int)vecHiData[i].x);
-		logVal_sub.push_back((int)val.parent.y - (int)vecHiData[i].y);
+		logVal_sub.push_back((int)vecHiData[i].x - (int)val.parent.x);
+		logVal_sub.push_back((int)vecHiData[i].y - (int)val.parent.y);
 	}
 	CLogDlg::initStream();
 	CLogDlg::insertStream("DisAgg 값 :");
@@ -126,6 +163,144 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val
 	CLogDlg::addLogTextStream();
 
 	return vecHiData;
+}
+
+vector<CVector2d> CResolutionChange::changeDisaggregatedPositionInfantrySquad(inputPosVal val)
+{
+	//지향방향 노말 벡터
+	CVector2d front = frontDirection(val.dir);
+	//직각 y 방향 벡터
+	CVector2d cross = crossDirection(front);
+
+	vector<CVector2d> result;
+	result.resize(SQUDISAGG_SIZE);
+
+	switch (val.unitSizeVal.moveType)
+	{
+	case CUnitSize::DEFENCE:
+		switch (val.dep)
+		{
+		case DEP_CIRCLE:		// 원형
+			result[SQUDISAGG_NUM01] = val.parent + cross*(-10) + front*(20);
+			result[SQUDISAGG_NUM02] = val.parent + cross*(10) + front*(20);
+			result[SQUDISAGG_NUM03] = val.parent + cross*(-20) + front*(10);
+			result[SQUDISAGG_NUM04] = val.parent + cross*(20) + front*(10);
+			result[SQUDISAGG_NUM05] = val.parent + cross*(-20) + front*(-10);
+			result[SQUDISAGG_NUM06] = val.parent + cross*(20) + front*(-10);
+			result[SQUDISAGG_NUM07] = val.parent + cross*(-10) + front*(-20);
+			result[SQUDISAGG_NUM08] = val.parent + cross*(10) + front*(-20);
+			result[SQUDISAGG_NUM09] = val.parent + cross*(-20);
+			result[SQUDISAGG_NUM10] = val.parent + cross*(20);
+			result[SQUDISAGG_NUM11] = val.parent + front*(20);
+			result[SQUDISAGG_NUM12] = val.parent + front*(-20);
+			break;
+		case DEP_LINE:		// 횡대
+			result[SQUDISAGG_NUM01] = val.parent + cross*(-20) + front*(5);
+			result[SQUDISAGG_NUM02] = val.parent + cross*(20) + front*(5);
+			result[SQUDISAGG_NUM03] = val.parent + cross*(-40) + front*(5);
+			result[SQUDISAGG_NUM04] = val.parent + cross*(40) + front*(5);
+			result[SQUDISAGG_NUM05] = val.parent + cross*(-30) + front*(-5);
+			result[SQUDISAGG_NUM06] = val.parent + cross*(10) + front*(-5);
+			result[SQUDISAGG_NUM07] = val.parent + cross*(-50) + front*(-5);
+			result[SQUDISAGG_NUM08] = val.parent + cross*(30) + front*(-5);
+			result[SQUDISAGG_NUM09] = val.parent + cross*(-60) + front*(5);
+			result[SQUDISAGG_NUM10] = val.parent + cross*(-10) + front*(-5);
+			result[SQUDISAGG_NUM11] = val.parent + cross*(60) + front*(5);
+			result[SQUDISAGG_NUM12] = val.parent + cross*(50) + front*(-5);
+			break;
+		case DEP_COLUMN:		// 종대
+			result[SQUDISAGG_NUM01] = val.parent + cross*(-5) + front*(25);
+			result[SQUDISAGG_NUM02] = val.parent + cross*(-15) + front*(15);
+			result[SQUDISAGG_NUM03] = val.parent + cross*(5) + front*(15);
+			result[SQUDISAGG_NUM04] = val.parent + cross*(15) + front*(5);
+			result[SQUDISAGG_NUM05] = val.parent + cross*(5) + front*(5);
+			result[SQUDISAGG_NUM06] = val.parent + cross*(-5) + front*(-5);
+			result[SQUDISAGG_NUM07] = val.parent + cross*(15) + front*(-5);
+			result[SQUDISAGG_NUM08] = val.parent + cross*(-15) + front*(-15);
+			result[SQUDISAGG_NUM09] = val.parent + cross*(-25) + front*(5);
+			result[SQUDISAGG_NUM10] = val.parent + cross*(-25) + front*(-25);
+			result[SQUDISAGG_NUM11] = val.parent + cross*(25) + front*(-5);
+			result[SQUDISAGG_NUM12] = val.parent + cross*(25) + front*(-15);
+			break;
+		default:
+			break;
+		}
+		break;
+	case CUnitSize::OFFENCE:
+		switch (val.dep)
+		{
+		case DEP_CIRCLE:		// 원형
+			result[SQUDISAGG_NUM01] = val.parent + cross*(-5) + front*(10);
+			result[SQUDISAGG_NUM02] = val.parent + cross*(5) + front*(10);
+			result[SQUDISAGG_NUM03] = val.parent + cross*(-10) + front*(5);
+			result[SQUDISAGG_NUM04] = val.parent + cross*(10) + front*(5);
+			result[SQUDISAGG_NUM05] = val.parent + cross*(-10) + front*(-5);
+			result[SQUDISAGG_NUM06] = val.parent + cross*(10) + front*(-5);
+			result[SQUDISAGG_NUM07] = val.parent + cross*(-5) + front*(-10);
+			result[SQUDISAGG_NUM08] = val.parent + cross*(5) + front*(-10);
+			result[SQUDISAGG_NUM09] = val.parent + cross*(-10);
+			result[SQUDISAGG_NUM10] = val.parent + cross*(10);
+			result[SQUDISAGG_NUM11] = val.parent + front*(10);
+			result[SQUDISAGG_NUM12] = val.parent + front*(-10);
+			break;
+		case DEP_LINE:		// 횡대
+			result[SQUDISAGG_NUM01] = val.parent + cross*(-10) + front*(2.5);
+			result[SQUDISAGG_NUM02] = val.parent + cross*(10) + front*(2.5);
+			result[SQUDISAGG_NUM03] = val.parent + cross*(-20) + front*(2.5);
+			result[SQUDISAGG_NUM04] = val.parent + cross*(20) + front*(2.5);
+			result[SQUDISAGG_NUM05] = val.parent + cross*(-15) + front*(-2.5);
+			result[SQUDISAGG_NUM06] = val.parent + cross*(5) + front*(-2.5);
+			result[SQUDISAGG_NUM07] = val.parent + cross*(-25) + front*(-2.5);
+			result[SQUDISAGG_NUM08] = val.parent + cross*(15) + front*(-2.5);
+			result[SQUDISAGG_NUM09] = val.parent + cross*(-30) + front*(2.5);
+			result[SQUDISAGG_NUM10] = val.parent + cross*(-5) + front*(-2.5);
+			result[SQUDISAGG_NUM11] = val.parent + cross*(30) + front*(2.5);
+			result[SQUDISAGG_NUM12] = val.parent + cross*(25) + front*(-2.5);
+			break;
+		case DEP_COLUMN:		// 종대
+			result[SQUDISAGG_NUM01] = val.parent + cross*(-2.5) + front*(12.5);
+			result[SQUDISAGG_NUM02] = val.parent + cross*(-7.5) + front*(7.5);
+			result[SQUDISAGG_NUM03] = val.parent + cross*(2.5) + front*(7.5);
+			result[SQUDISAGG_NUM04] = val.parent + cross*(7.5) + front*(2.5);
+			result[SQUDISAGG_NUM05] = val.parent + cross*(2.5) + front*(2.5);
+			result[SQUDISAGG_NUM06] = val.parent + cross*(-2.5) + front*(-2.5);
+			result[SQUDISAGG_NUM07] = val.parent + cross*(7.5) + front*(-2.5);
+			result[SQUDISAGG_NUM08] = val.parent + cross*(-7.5) + front*(-7.5);
+			result[SQUDISAGG_NUM09] = val.parent + cross*(-12.5) + front*(2.5);
+			result[SQUDISAGG_NUM10] = val.parent + cross*(-12.5) + front*(-12.5);
+			result[SQUDISAGG_NUM11] = val.parent + cross*(12.5) + front*(-2.5);
+			result[SQUDISAGG_NUM12] = val.parent + cross*(12.5) + front*(-7.5);
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+
+	vector<int> logVal;
+	vector<float> logVal_sub;
+	for(int i = 0; i < (int)result.size(); i++)
+	{
+		logVal.push_back((int)result[i].x);
+		logVal.push_back((int)result[i].y);
+
+		logVal_sub.push_back(ceilf((result[i].x - val.parent.x)*100)/100);
+		logVal_sub.push_back(ceilf((result[i].y - val.parent.y)*100)/100);
+	}
+	CLogDlg::initStream();
+	CLogDlg::insertStream("DisAgg 값 :");
+	CLogDlg::insertStreamVec(logVal, '	');
+	CLogDlg::addLogTextStream();
+
+
+	CLogDlg::initStream();
+	CLogDlg::insertStream("DisAgg Sub :");
+	CLogDlg::insertStreamVec(logVal_sub, '	');
+	CLogDlg::addLogTextStream();
+
+	return result;
 }
 
 CVector2d CResolutionChange::frontDirection(DIRECTIONTYPE dir)
@@ -335,6 +510,17 @@ CVector2d CResolutionChange::changeAggregatedPosition(vector<CVector2d> posList)
 	return centroid;
 }
 
+CVector2d CResolutionChange::changeAggregatedPositionInfantrySquad(vector<CVector2d> posList)
+{
+	CVector2d centroid(0.0f, 0.0f);
+	for (int i = 0; i < (int)posList.size(); ++i)
+	{
+		centroid = centroid + posList[i];
+	}
+	centroid = centroid/(float)posList.size();
+	return centroid;
+}
+
 CString CResolutionChange::strDirectionType(CResolutionChange::DIRECTIONTYPE em)
 {
 	CString strEm = "UNKNOW";
@@ -359,6 +545,21 @@ CString CResolutionChange::strDirectionType(CResolutionChange::DIRECTIONTYPE em)
 	default:
 		break;
 	}
+	return strEm;
+}
+
+vector<CString> CResolutionChange::strDirectionType()
+{
+	vector<CString> strEm;
+	strEm.clear();
+	strEm.push_back("북");
+	strEm.push_back("북동");
+	strEm.push_back("동");
+	strEm.push_back("남동");
+	strEm.push_back("남");
+	strEm.push_back("남서");
+	strEm.push_back("서");
+	strEm.push_back("북서");
 	return strEm;
 }
 
@@ -389,44 +590,99 @@ CResolutionChange::DIRECTIONTYPE CResolutionChange::emDirectionType(int selNum)
 	return em;
 }
 
-CString CResolutionChange::strDeploymentType(CResolutionChange::DEPLOYMENTTYPE em)
+CString CResolutionChange::strDeploymentType(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil, CResolutionChange::DEPLOYMENTTYPE em)
 {
 	CString strEm = "UNKNOW";
-	switch (em)
+	if(CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil)
 	{
-	case DEP_INVERTEDTRIANGLE:strEm = "역삼각대";
-		break;
-	case DEP_CIRCLE:strEm = "원형";
-		break;
-	case DEP_LINE:strEm = "횡대";
-		break;
-	case DEP_COLUMN:strEm = "종대";
-		break;
-	case DEP_TRIANGLE:strEm = "삼각대";
-		break;
-	default:
-		break;
+		switch (em)
+		{
+		case DEP_CIRCLE:strEm = "원형";
+			break;
+		case DEP_LINE:strEm = "횡대";
+			break;
+		case DEP_COLUMN:strEm = "종대";
+			break;
+		default:
+			break;
+		}
 	}
+	else
+	{
+		switch (em)
+		{
+		case DEP_INVERTEDTRIANGLE:strEm = "역삼각대";
+			break;
+		case DEP_CIRCLE:strEm = "원형";
+			break;
+		case DEP_LINE:strEm = "횡대";
+			break;
+		case DEP_COLUMN:strEm = "종대";
+			break;
+		case DEP_TRIANGLE:strEm = "삼각대";
+			break;
+		default:
+			break;
+		}
+	}	
 	return strEm;
 }
 
-CResolutionChange::DEPLOYMENTTYPE CResolutionChange::emDeploymentType(int selNum)
+vector<CString> CResolutionChange::strDeploymentType(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil)
+{
+	vector<CString> strEm;
+	strEm.clear();
+	if(CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil)
+	{
+		strEm.push_back("원형");
+		strEm.push_back("횡대");
+		strEm.push_back("종대");
+	}
+	else
+	{
+		strEm.push_back("역삼각대");
+		strEm.push_back("원형");
+		strEm.push_back("횡대");
+		strEm.push_back("종대");
+		strEm.push_back("삼각대");
+	}	
+	return strEm;
+}
+
+CResolutionChange::DEPLOYMENTTYPE CResolutionChange::emDeploymentType(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil, int selNum)
 {
 	CResolutionChange::DEPLOYMENTTYPE em = DEP_NONE;
-	switch (selNum)
+	if(CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil)
 	{
-	case 0: em = DEP_INVERTEDTRIANGLE;
-		break;
-	case 1: em = DEP_CIRCLE;
-		break;
-	case 2: em = DEP_LINE;
-		break;
-	case 3: em = DEP_COLUMN;
-		break;
-	case 4: em = DEP_TRIANGLE;
-		break;
-	default:
-		break;
+		switch (selNum)
+		{
+		case 0: em = DEP_CIRCLE;
+			break;
+		case 1: em = DEP_LINE;
+			break;
+		case 2: em = DEP_COLUMN;
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		switch (selNum)
+		{
+		case 0: em = DEP_INVERTEDTRIANGLE;
+			break;
+		case 1: em = DEP_CIRCLE;
+			break;
+		case 2: em = DEP_LINE;
+			break;
+		case 3: em = DEP_COLUMN;
+			break;
+		case 4: em = DEP_TRIANGLE;
+			break;
+		default:
+			break;
+		}
 	}
 	return em;
 }

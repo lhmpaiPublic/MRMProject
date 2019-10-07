@@ -49,47 +49,52 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	CGAgt::GResCha()->setParentPos(CVector2d(308320.0f, 4191390.0f));
 
 	incDeployment.Attach(GetDlgItem(IDCC_INDEPLOYMENT));
-	incDeployment.AddString(CStringW("역삼각대"));
-	incDeployment.AddString(CStringW("원형"));
-	incDeployment.AddString(CStringW("종대"));
-	incDeployment.AddString(CStringW("횡대"));
-	incDeployment.AddString(CStringW("삼각대"));
+	vector<CString> deployment = CResolutionChange::strDeploymentType(CUnitSize::INFANTRY, CUnitSize::INFANTRY_SQUAD);
+	for (int i = 0; i < (int)deployment.size(); i++)
+	{
+		incDeployment.AddString(deployment[i]);
+	}
 	incDeployment.SetCurSel(0);
-	CGAgt::GResCha()->setDeploymentType(CResolutionChange::DEP_INVERTEDTRIANGLE);
+	CGAgt::GResCha()->setDeploymentType(CResolutionChange::emDeploymentType(CUnitSize::INFANTRY, CUnitSize::INFANTRY_SQUAD, incDeployment.GetCurSel()));
 	
 
 	incDirection.Attach(GetDlgItem(IDCC_INDIRECTION));
-	incDirection.AddString(CStringW("북"));
-	incDirection.AddString(CStringW("북동"));
-	incDirection.AddString(CStringW("동"));
-	incDirection.AddString(CStringW("남동"));
-	incDirection.AddString(CStringW("남"));
-	incDirection.AddString(CStringW("남서"));
-	incDirection.AddString(CStringW("서"));
-	incDirection.AddString(CStringW("북서"));
+	vector<CString> dirctionType = CResolutionChange::strDirectionType();
+	for (int i = 0; i < (int)dirctionType.size(); i++)
+	{
+		incDirection.AddString(dirctionType[i]);
+	}
 	incDirection.SetCurSel(0);
-	CGAgt::GResCha()->setDirectionType(CResolutionChange::N_DIRECTION);
+	CGAgt::GResCha()->setDirectionType(CResolutionChange::emDirectionType(incDirection.GetCurSel()));
 	
 	incUnitPosture.Attach(GetDlgItem(IDCC_INUNITPOSTURE));
-	incUnitPosture.AddString(CStringW("방어"));
-	incUnitPosture.AddString(CStringW("공격"));
+	vector<CString> unitPosture = CUnitSize::strMoveType();
+	for (int i = 0; i < (int)unitPosture.size(); i++)
+	{
+		incUnitPosture.AddString(unitPosture[i]);
+	}
 	incUnitPosture.SetCurSel(0);
-	CGAgt::GResCha()->setMoveType(CUnitSize::DEFENCE);
+	CGAgt::GResCha()->setMoveType(CUnitSize::emMoveType(incUnitPosture.GetCurSel()));
 
 	incUnitType.Attach(GetDlgItem(IDCC_INUNITTYPE));
-	incUnitType.AddString(CStringW("보병"));
-	incUnitType.AddString(CStringW("전차"));
-	incUnitType.AddString(CStringW("포병"));
+	vector<CString> unitType = CUnitSize::strCombatent();
+	for (int i = 0; i < (int)unitType.size(); i++)
+	{
+		incUnitType.AddString(unitType[i]);
+	}
 	incUnitType.SetCurSel(0);
-	CGAgt::GResCha()->setCombatent(CUnitSize::INFANTRY);
+	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
+	CGAgt::GResCha()->setCombatent(combatType);
 
-	CUnitSize::COMBATANT combatType = CUnitSize::INFANTRY;
 
 	incUnitBlueRed.Attach(GetDlgItem(IDCC_INUNITBLUERED));
-	incUnitBlueRed.AddString(CStringW("청군"));
-	incUnitBlueRed.AddString(CStringW("홍군"));
+	vector<CString> unitBlueRed = CUnitSize::strForce();
+	for (int i = 0; i < (int)unitBlueRed.size(); i++)
+	{
+		incUnitBlueRed.AddString(unitBlueRed[i]);
+	}
 	incUnitBlueRed.SetCurSel(0);
-	CGAgt::GResCha()->setForce(CUnitSize::BLUEFORCE);
+	CGAgt::GResCha()->setForce(CUnitSize::emForce(incUnitBlueRed.GetCurSel()));
 
 	incUnitScale.Attach(GetDlgItem(IDCC_INUNITSCALE));
 	vector<CString> unitScale = CUnitSize::strMilitarybranch(combatType);
@@ -98,7 +103,7 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 		incUnitScale.AddString(unitScale[i]);
 	}
 	incUnitScale.SetCurSel(0);
-	CGAgt::GResCha()->setMilitarybranch(CUnitSize::emMilitarybranch(combatType, 0));
+	CGAgt::GResCha()->setMilitarybranch(CUnitSize::emMilitarybranch(combatType, incUnitScale.GetCurSel()));
 
 	incMapImpact.Attach(GetDlgItem(IDCC_INMAPIMPACT));
 	incMapImpact.AddString(CStringW("개체1"));
@@ -151,16 +156,15 @@ void CResolutionPositionDlg::CloseDialog(int nVal)
 LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
+	CUnitSize::MILITARYBRANCH mil = CUnitSize::emMilitarybranch(combatType, incUnitScale.GetCurSel());
 	CGAgt::GResCha()->setParentPos(CVector2d((float)GetDlgItemInt(IDCE_INPOSX), (float)GetDlgItemInt(IDCE_INPOSY)));
-	CGAgt::GResCha()->setDeploymentType(CResolutionChange::emDeploymentType(incDeployment.GetCurSel()));
+	CGAgt::GResCha()->setDeploymentType(CResolutionChange::emDeploymentType(combatType, mil, incDeployment.GetCurSel()));
 	CGAgt::GResCha()->setDirectionType(CResolutionChange::emDirectionType(incDirection.GetCurSel()));
 	CGAgt::GResCha()->setMoveType(CUnitSize::emMoveType(incUnitPosture.GetCurSel()));
-	CGAgt::GResCha()->setCombatent(CUnitSize::emCombatent(incUnitType.GetCurSel()));
-	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
 	CGAgt::GResCha()->setCombatent(combatType);
 	CGAgt::GResCha()->setForce(CUnitSize::emForce(incUnitBlueRed.GetCurSel()));
-
-	CGAgt::GResCha()->setMilitarybranch(CUnitSize::emMilitarybranch(combatType, incUnitScale.GetCurSel()));
+	CGAgt::GResCha()->setMilitarybranch(mil);
 
 	CGAgt::GResCha()->changeDisaggregated();
 	return 0;
@@ -178,6 +182,26 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, W
 		incUnitScale.AddString(unitScale[i]);
 	}
 	incUnitScale.SetCurSel(0);
+
+	SendMessage(WM_COMMAND, MAKEWPARAM(IDCC_INUNITSCALE, CBN_SELCHANGE), (LPARAM)incUnitScale.m_hWnd);
+
+	return 0;
+}
+
+LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	incDeployment.ResetContent();
+	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
+	CUnitSize::MILITARYBRANCH mil = CUnitSize::emMilitarybranch(combatType, incUnitScale.GetCurSel());
+
+	vector<CString> deployment = CResolutionChange::strDeploymentType(combatType, mil);
+	for (int i = 0; i < (int)deployment.size(); i++)
+	{
+		incDeployment.AddString(deployment[i]);
+	}
+	incDeployment.SetCurSel(0);
 
 	return 0;
 }

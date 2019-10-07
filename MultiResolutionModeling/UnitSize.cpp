@@ -115,6 +115,15 @@ CString CUnitSize::strMoveType(CUnitSize::MOVETYPE em)
 	return strEm;
 }
 
+vector<CString> CUnitSize::strMoveType()
+{
+	vector<CString> strEm;
+	strEm.clear();
+	strEm.push_back("방어");
+	strEm.push_back("공격");
+	return strEm;
+}
+
 CUnitSize::MOVETYPE CUnitSize::emMoveType(int selNum)
 {
 	CUnitSize::MOVETYPE em = DEFENCE;
@@ -142,6 +151,15 @@ CString CUnitSize::strForce(CUnitSize::FORCE em)
 	default:
 		break;
 	}
+	return strEm;
+}
+
+vector<CString> CUnitSize::strForce()
+{
+	vector<CString> strEm;
+	strEm.clear();
+	strEm.push_back("청군");
+	strEm.push_back("홍군");
 	return strEm;
 }
 
@@ -174,6 +192,16 @@ CString CUnitSize::strCombatent(CUnitSize::COMBATANT em)
 	default:
 		break;
 	}
+	return strEm;
+}
+
+vector<CString> CUnitSize::strCombatent()
+{
+	vector<CString> strEm;
+	strEm.clear();
+	strEm.push_back("보병");
+	strEm.push_back("전차");
+	strEm.push_back("포병");
 	return strEm;
 }
 

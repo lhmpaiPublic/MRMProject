@@ -35,8 +35,9 @@ public:
 		COMMAND_ID_HANDLER(IDCANCEL, OnCancel)
 		COMMAND_HANDLER(IDCB_RESOLUTIONCHANGE, BN_CLICKED, OnBnClickedResolutionchange)
 		COMMAND_HANDLER(IDCC_INUNITTYPE, CBN_SELCHANGE, OnCbnSelchangeInunittype)
-
+		COMMAND_HANDLER(IDCC_INUNITSCALE, CBN_SELCHANGE, OnCbnSelchangeInunitscale)
 		REFLECT_NOTIFICATIONS()		
+		
 	END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -53,4 +54,5 @@ public:
 	void CloseDialog(int nVal);
 	
 	LRESULT OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };

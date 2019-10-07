@@ -113,6 +113,18 @@ void CLogDlg::insertStreamVec(vector<int> val, char delimiter)
 	}
 
 }
+
+void CLogDlg::insertStreamVec(vector<float> val, char delimiter)
+{
+	for (int i = 0; i <(int) val.size(); i++)
+	{
+		if(false == bFirst) mkLog  << delimiter;
+		bFirst = false;
+		mkLog  << val[i];
+	}
+
+}
+
 void CLogDlg::insertStreamVec(vector<string> val, char delimiter)
 {
 	for (int i = 0; i <(int) val.size(); i++)

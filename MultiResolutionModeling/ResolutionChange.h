@@ -22,6 +22,7 @@ public:
 		NW_DIRECTION			//북서
 	};
 	static CString strDirectionType(CResolutionChange::DIRECTIONTYPE em);
+	static vector<CString> strDirectionType();
 	static CResolutionChange::DIRECTIONTYPE emDirectionType(int selNum);
 
 	//위치 계산 Type 정의
@@ -58,8 +59,9 @@ public:
 		DEP_COLUMN,					// 종대
 		DEP_TRIANGLE				// 삼각대
 	};
-	static CString strDeploymentType(CResolutionChange::DEPLOYMENTTYPE em);
-	static CResolutionChange::DEPLOYMENTTYPE emDeploymentType(int selNum);
+	static CString strDeploymentType(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil, CResolutionChange::DEPLOYMENTTYPE em);
+	static vector<CString> strDeploymentType(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil);
+	static CResolutionChange::DEPLOYMENTTYPE emDeploymentType(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil, int selNum);
 
 	//분해 요소 Type 정의
 	enum DISAGGREGATEDTYPE
@@ -69,6 +71,24 @@ public:
 		DISAGG_NUM3,
 		DISAGG_NUM4,
 		DISAGG_SIZE
+	};
+
+	//보병분대 분해 요소 Type 정의
+	enum INFANTRYSQUADDISAGGREGATEDTYPE
+	{
+		SQUDISAGG_NUM01 = 0,
+		SQUDISAGG_NUM02,
+		SQUDISAGG_NUM03,
+		SQUDISAGG_NUM04,
+		SQUDISAGG_NUM05,
+		SQUDISAGG_NUM06,
+		SQUDISAGG_NUM07,
+		SQUDISAGG_NUM08,
+		SQUDISAGG_NUM09,
+		SQUDISAGG_NUM10,
+		SQUDISAGG_NUM11,
+		SQUDISAGG_NUM12,
+		SQUDISAGG_SIZE
 	};
 
 	struct inputPosVal
@@ -98,6 +118,7 @@ public:
 	void changeDisaggregated();
 
 	vector<CVector2d> changeDisaggregatedPosition(inputPosVal val);
+	vector<CVector2d> changeDisaggregatedPositionInfantrySquad(inputPosVal val);
 
 	CVector2d frontDirection(DIRECTIONTYPE dir);
 
@@ -108,4 +129,6 @@ public:
 	vector<CVector2d> deploymentPosition(DEPLOYMENTTYPE deployment, CVector2d parent, CVector2d front, CVector2d cross, vector<int> sizeUnit);
 
 	CVector2d changeAggregatedPosition(vector<CVector2d> posList);
+
+	CVector2d changeAggregatedPositionInfantrySquad(vector<CVector2d> posList);
 };

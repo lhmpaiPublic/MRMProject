@@ -13,6 +13,7 @@ public:
 		OFFENCE = 4		//공격
 	};
 	static CString strMoveType(CUnitSize::MOVETYPE em);
+	static vector<CString> strMoveType();
 	static CUnitSize::MOVETYPE emMoveType(int selNum);
 
 	enum UNITDEPTH
@@ -27,6 +28,7 @@ public:
 		REDFORCE = 1	//홍군
 	};
 	static CString strForce(CUnitSize::FORCE em);
+	static vector<CString> strForce();
 	static CUnitSize::FORCE emForce(int selNum);
 
 	enum UNITSIZE
@@ -42,6 +44,7 @@ public:
 		ARTILLERY = 7	//포병
 	};
 	static CString strCombatent(CUnitSize::COMBATANT em);
+	static vector<CString> strCombatent();
 	static CUnitSize::COMBATANT emCombatent(int selNum);
 
 	enum MILITARYBRANCH
