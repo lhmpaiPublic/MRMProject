@@ -3,12 +3,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
-#include "LogDlg.h"
 #include "ResolutionPositionDlg.h"
-#include "GAgt.h"
-#include "ResolutionChange.h"
-
+#include "SubMapPosDlg.h"
 
 
 BOOL CResolutionPositionDlg::PreTranslateMessage(MSG* pMsg)
@@ -119,6 +115,12 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	incDivisionCount.AddString(CStringW("4"));
 	incDivisionCount.SetCurSel(3);
 
+	//CSubMapPosDlg
+	subMapPosDlg = new CSubMapPosDlg();
+	subMapPosDlg->init(m_hWnd);
+	subMapPosDlg->Create(m_hWnd);
+	subMapPosDlg->ShowWindow(SW_SHOW);
+
 	return TRUE;
 }
 
@@ -204,4 +206,9 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, 
 	incDeployment.SetCurSel(0);
 
 	return 0;
+}
+
+void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp)
+{
+	subMapPosDlg->drawResolutionPosition(pos, typeOp);
 }

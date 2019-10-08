@@ -2,9 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "ResolutionChange.h"
 #include "UnitSize.h"
-#include "LogDlg.h"
 #include <math.h>
 
 
@@ -56,21 +54,73 @@ void CResolutionChange::changeDisaggregated()
 	CLogDlg::AddLogText("<====================>");
 	CLogDlg::AddLogText("<출력 값>");
 
+	vector<CVector2d> drawPosItem;
+	int typeOp = 0;
+	if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_SQUAD)
+	{
+		typeOp = 1;
+	}
+	else if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_BATTALION)
+	{
+		typeOp = 2;
+	}
+	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARMORED && inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_BATTALION)
+	{
+		typeOp = 3;
+	}
+	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARMORED && inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_COMPANY)
+	{
+		typeOp = 4;
+	}
+	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARTILLERY && inPosVal.unitSizeVal.mil == CUnitSize::ARTILLERY_BATTALION)
+	{
+		typeOp = 2;
+	}
+	else
+	{
+		typeOp = 0;
+	}
+
 	if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_SQUAD)
 	{
 		vector<CVector2d> vecHiData = changeDisaggregatedPositionInfantrySquad(inPosVal);
-		CVector2d centroid = changeAggregatedPositionInfantrySquad(vecHiData);
 
 		vector<int> logVal;
-		vector<int> logVal_sub;
+		vector<float> logVal_sub;
+		for(int i = 0; i < (int)vecHiData.size(); i++)
+		{
+			logVal.push_back((int)vecHiData[i].x);
+			logVal.push_back((int)vecHiData[i].y);
+
+			logVal_sub.push_back(ceilf((vecHiData[i].x - inPosVal.parent.x)*100)/100);
+			logVal_sub.push_back(ceilf((vecHiData[i].y - inPosVal.parent.y)*100)/100);
+
+			drawPosItem.push_back(CVector2d(ceilf((vecHiData[i].x - inPosVal.parent.x)*100)/100,
+			ceilf((vecHiData[i].y - inPosVal.parent.y)*100)/100));
+		}
+		CLogDlg::initStream();
+		CLogDlg::insertStream("DisAgg 값 :");
+		CLogDlg::insertStreamVec(logVal, '	');
+		CLogDlg::addLogTextStream();
+
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("DisAgg Sub :");
+		CLogDlg::insertStreamVec(logVal_sub, '	');
+		CLogDlg::addLogTextStream();
+
+		CVector2d centroid = changeAggregatedPositionInfantrySquad(vecHiData);
+
+		logVal.clear();
+		logVal_sub.clear();
 		logVal.push_back((int)centroid.x);
 		logVal.push_back((int)centroid.y);
 
 		int subX = (int)centroid.x - (int)inPosVal.parent.x;
 		int subY = (int)centroid.y - (int)inPosVal.parent.y;
 
-		logVal_sub.push_back(subX);
-		logVal_sub.push_back(subY);
+		logVal_sub.push_back((float)subX);
+		logVal_sub.push_back((float)subY);
 
 		int Aggdistance = (int)sqrt((pow((float)subX, 2)+pow((float)subY, 2)));
 
@@ -92,10 +142,34 @@ void CResolutionChange::changeDisaggregated()
 	else
 	{
 		vector<CVector2d> vecHiData = changeDisaggregatedPosition(inPosVal);
-
-		CVector2d centroid = changeAggregatedPosition(vecHiData);
 		vector<int> logVal;
 		vector<int> logVal_sub;
+		for(int i = 0; i < (int)vecHiData.size(); i++)
+		{
+			logVal.push_back((int)vecHiData[i].x);
+			logVal.push_back((int)vecHiData[i].y);
+
+			logVal_sub.push_back((int)vecHiData[i].x - (int)inPosVal.parent.x);
+			logVal_sub.push_back((int)vecHiData[i].y - (int)inPosVal.parent.y);
+
+			drawPosItem.push_back(CVector2d(ceilf((vecHiData[i].x - inPosVal.parent.x)*100)/100,
+				ceilf((vecHiData[i].y - inPosVal.parent.y)*100)/100));
+		}
+		CLogDlg::initStream();
+		CLogDlg::insertStream("DisAgg 값 :");
+		CLogDlg::insertStreamVec(logVal, '	');
+		CLogDlg::addLogTextStream();
+
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("DisAgg Sub :");
+		CLogDlg::insertStreamVec(logVal_sub, '	');
+		CLogDlg::addLogTextStream();
+
+		CVector2d centroid = changeAggregatedPosition(vecHiData);
+
+		logVal.clear();
+		logVal_sub.clear();
 		logVal.push_back((int)centroid.x);
 		logVal.push_back((int)centroid.y);
 
@@ -123,6 +197,8 @@ void CResolutionChange::changeDisaggregated()
 		CLogDlg::addLogTextStream();
 	}	
 
+	CGAgt::G()->drawResolutionPosition(drawPosItem, typeOp);
+
 	CLogDlg::AddLogText("<====================>");
 }
 
@@ -141,26 +217,6 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val
 
 	//최종 분해 요소 값
 	vector<CVector2d> vecHiData = deploymentPosition(val.dep, val.parent, front, cross, sizeUnit);
-	vector<int> logVal;
-	vector<int> logVal_sub;
-	for(int i = 0; i < (int)vecHiData.size(); i++)
-	{
-		logVal.push_back((int)vecHiData[i].x);
-		logVal.push_back((int)vecHiData[i].y);
-
-		logVal_sub.push_back((int)vecHiData[i].x - (int)val.parent.x);
-		logVal_sub.push_back((int)vecHiData[i].y - (int)val.parent.y);
-	}
-	CLogDlg::initStream();
-	CLogDlg::insertStream("DisAgg 값 :");
-	CLogDlg::insertStreamVec(logVal, '	');
-	CLogDlg::addLogTextStream();
-
-
-	CLogDlg::initStream();
-	CLogDlg::insertStream("DisAgg Sub :");
-	CLogDlg::insertStreamVec(logVal_sub, '	');
-	CLogDlg::addLogTextStream();
 
 	return vecHiData;
 }
@@ -278,28 +334,6 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPositionInfantrySquad(in
 	default:
 		break;
 	}
-
-	vector<int> logVal;
-	vector<float> logVal_sub;
-	for(int i = 0; i < (int)result.size(); i++)
-	{
-		logVal.push_back((int)result[i].x);
-		logVal.push_back((int)result[i].y);
-
-		logVal_sub.push_back(ceilf((result[i].x - val.parent.x)*100)/100);
-		logVal_sub.push_back(ceilf((result[i].y - val.parent.y)*100)/100);
-	}
-	CLogDlg::initStream();
-	CLogDlg::insertStream("DisAgg 값 :");
-	CLogDlg::insertStreamVec(logVal, '	');
-	CLogDlg::addLogTextStream();
-
-
-	CLogDlg::initStream();
-	CLogDlg::insertStream("DisAgg Sub :");
-	CLogDlg::insertStreamVec(logVal_sub, '	');
-	CLogDlg::addLogTextStream();
-
 	return result;
 }
 

@@ -42,6 +42,7 @@ using namespace std;
 #include <tchar.h>
 #include <atlcoll.h>
 
+
 //================================
 //이미지 관련 클래스
 #include <atlimage.h> //CImage Class 사용
@@ -51,6 +52,14 @@ using namespace std;
 #include "vector2d.h"
 #include "vector3d.h"
 
+#include "ImageLoadApi/ImageLoadApi.h"
+//================================
+//에이전트 클래스
+#include "GAgt.h"
+//로그 출력 클래스
+#include "LogDlg.h"
+//변환 공통 클래스
+#include "ResolutionChange.h"
 
 
 #if defined _M_IX86

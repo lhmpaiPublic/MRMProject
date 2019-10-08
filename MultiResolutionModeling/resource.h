@@ -7,6 +7,13 @@
 #define IDD_MAINDLG                     129
 #define IDD_LOGPOPUP                    201
 #define IDD_RESOLUTIONPOSITION          202
+#define IDD_SUBMAPPOSDLG                203
+#define IDB_RP_MAPGRID_1                205
+#define IDB_RP_MAPGRID_2                206
+#define IDB_RP_MAPGRID_3                207
+#define IDB_RP_MAPGRID_4                208
+#define IDB_PNG1                        209
+#define IDB_RP_MAPGRID_5                209
 #define IDC_LOGTEXT                     1000
 #define IDCC_INDEPLOYMENT               1001
 #define IDCE_INPOSX                     1002
@@ -18,7 +25,6 @@
 #define IDCC_INUNITSCALE                1008
 #define IDCC_INMAPIMPACT                1009
 #define IDCC_INDIVISIONCOUNT            1010
-#define IDC_BUTTON1                     1011
 #define IDCB_RESOLUTIONCHANGE           1011
 #define IDC_LOGWINDOW                   57665
 #define IDC_RESPOSWIN                   57666
@@ -27,7 +33,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        203
+#define _APS_NEXT_RESOURCE_VALUE        210
 #define _APS_NEXT_COMMAND_VALUE         32775
 #define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           101

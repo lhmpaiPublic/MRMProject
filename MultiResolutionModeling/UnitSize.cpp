@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "UnitSize.h"
 #include "CSVFile.h"
-#include "LogDlg.h"
 
 
 CUnitSize::CUnitSize()

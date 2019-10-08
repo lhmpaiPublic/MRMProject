@@ -215,10 +215,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ResolutionPositionDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -277,10 +273,6 @@
 			</File>
 			<File
 				RelativePath=".\ResolutionChange.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ResolutionPositionDlg.h"
 				>
 			</File>
 			<File
@@ -477,6 +469,58 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="ResolutionPosition"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\ResolutionPosition\ResolutionPosition.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ResolutionPosition\ResolutionPositionDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ResolutionPosition\SubMapPosDlg.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\ResolutionPosition\ResolutionPositionDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ResolutionPosition\SubMapPosDlg.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<File
+			RelativePath=".\res\ResolutionPosition\mapGrid_1.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\ResolutionPosition\mapGrid_2.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\ResolutionPosition\mapGrid_3.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\ResolutionPosition\mapGrid_4.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\ResolutionPosition\mapGrid_5.png"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global

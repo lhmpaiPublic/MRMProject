@@ -58,7 +58,7 @@ BEGIN
     EDITTEXT        IDC_LOGTEXT,7,36,692,322,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_VSCROLL | WS_HSCROLL
 END
 
-IDD_RESOLUTIONPOSITION DIALOGEX 0, 0, 548, 417
+IDD_RESOLUTIONPOSITION DIALOGEX 0, 0, 706, 700
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "위치변환"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -87,6 +87,12 @@ BEGIN
     COMBOBOX        IDCC_INMAPIMPACT,319,42,70,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDCC_INDIVISIONCOUNT,318,71,70,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "변환",IDCB_RESOLUTIONCHANGE,405,22,38,66
+END
+
+IDD_SUBMAPPOSDLG DIALOGEX 0, 0, 316, 219
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
 END
 
 
@@ -125,13 +131,32 @@ BEGIN
     IDD_RESOLUTIONPOSITION, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 541
+        RIGHTMARGIN, 699
         TOPMARGIN, 7
-        BOTTOMMARGIN, 410
+        BOTTOMMARGIN, 693
+    END
+
+    IDD_SUBMAPPOSDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 212
     END
 END
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_RP_MAPGRID_1        PNG                     "res\\ResolutionPosition\\mapGrid_1.png"
+IDB_RP_MAPGRID_2        PNG                     "res\\ResolutionPosition\\mapGrid_2.png"
+IDB_RP_MAPGRID_3        PNG                     "res\\ResolutionPosition\\mapGrid_3.png"
+IDB_RP_MAPGRID_4        PNG                     "res\\ResolutionPosition\\mapGrid_4.png"
+IDB_RP_MAPGRID_5        PNG                     "res\\ResolutionPosition\\mapGrid_5.png"
 #endif    // 한국어 resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -3,12 +3,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "GAgt.h"
 #include "MainDlg.h"
 #include "aboutdlg.h"
-#include "LogDlg.h"
-#include "ResolutionPositionDlg.h"
-#include "ResolutionChange.h"
 #include "CSVFile.h"
 
 

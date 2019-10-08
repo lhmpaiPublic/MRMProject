@@ -4,6 +4,7 @@
 
 #pragma once
 
+class CSubMapPosDlg;
 class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, public CUpdateUI<CResolutionPositionDlg>,
 		public CMessageFilter, public CIdleHandler
 {
@@ -18,6 +19,7 @@ class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, publi
 	CComboBox incMapImpact;
 	CComboBox incDivisionCount;
 
+	CSubMapPosDlg* subMapPosDlg;
 public:
 	enum { IDD = IDD_RESOLUTIONPOSITION };
 
@@ -55,4 +57,6 @@ public:
 	
 	LRESULT OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+	void drawResolutionPosition(vector<CVector2d> pos, int typeOp);
 };

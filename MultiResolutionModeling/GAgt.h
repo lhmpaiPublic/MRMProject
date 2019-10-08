@@ -31,4 +31,6 @@ public:
 	CResolutionPositionDlg* ResPosDlg();
 
 	CResolutionChange* ResCha();
+
+	void drawResolutionPosition(vector<CVector2d> pos, int typeOp);
 };

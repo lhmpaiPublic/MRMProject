@@ -2,9 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "GAgt.h"
-#include "ResolutionPositionDlg.h"
-#include "ResolutionChange.h"
+#include "ResolutionPosition/ResolutionPosition.h"
+
 //초기화
 CGAgt* CGAgt::mG = NULL;
 //전역객체 생성
@@ -75,4 +74,11 @@ CResolutionPositionDlg* CGAgt::ResPosDlg()
 CResolutionChange* CGAgt::ResCha()
 {
 	return mResCha;
+}
+
+
+
+void CGAgt::drawResolutionPosition(vector<CVector2d> pos, int typeOp)
+{
+	mResPosDlg->drawResolutionPosition(pos, typeOp);
 }
