@@ -152,11 +152,14 @@ END
 // PNG
 //
 
-IDB_RP_MAPGRID_1        PNG                     "res\\ResolutionPosition\\mapGrid_1.png"
-IDB_RP_MAPGRID_2        PNG                     "res\\ResolutionPosition\\mapGrid_2.png"
-IDB_RP_MAPGRID_3        PNG                     "res\\ResolutionPosition\\mapGrid_3.png"
-IDB_RP_MAPGRID_4        PNG                     "res\\ResolutionPosition\\mapGrid_4.png"
-IDB_RP_MAPGRID_5        PNG                     "res\\ResolutionPosition\\mapGrid_5.png"
+IDB_RP_MAPGRID_1        PNG                  "res\\ResolutionPosition\\mapGrid_1.png"
+IDB_RP_MAPGRID_2        PNG                  "res\\ResolutionPosition\\mapGrid_2.png"
+IDB_RP_MAPGRID_3        PNG                  "res\\ResolutionPosition\\mapGrid_3.png"
+IDB_RP_MAPGRID_4        PNG                  "res\\ResolutionPosition\\mapGrid_4.png"
+IDB_RP_MAPGRID_5        PNG                  "res\\ResolutionPosition\\mapGrid_5.png"
+IDB_RP_MAPGRID_6        PNG                     "res\\ResolutionPosition\\mapGrid_6.png"
+IDB_RP_MAPGRID_7        PNG                     "res\\ResolutionPosition\\mapGrid_7.png"
+IDB_RP_MAPGRID_8        PNG                     "res\\ResolutionPosition\\mapGrid_8.png"
 #endif    // ÇÑ±¹¾î resources
 /////////////////////////////////////////////////////////////////////////////
 

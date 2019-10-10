@@ -11,7 +11,7 @@
 #define SUBMAPOSDLG_CENTERPOSX 450
 #define SUBMAPOSDLG_CENTERPOSY 450
 
-#define SUBMAPOSDLG_RECSIZE 3
+#define SUBMAPOSDLG_CENTERSIZE 10
 #define SUBMAPOSDLG_RECREDSIZE 5
 
 CSubMapPosDlg::CSubMapPosDlg()
@@ -30,7 +30,10 @@ UINT CSubMapPosDlg::imgId[IMAGE_MAX]=
 	IDB_RP_MAPGRID_2,
 	IDB_RP_MAPGRID_3,
 	IDB_RP_MAPGRID_4,
-	IDB_RP_MAPGRID_5
+	IDB_RP_MAPGRID_5,
+	IDB_RP_MAPGRID_6,
+	IDB_RP_MAPGRID_7,
+	IDB_RP_MAPGRID_8
 };
 
 LRESULT CSubMapPosDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
@@ -121,7 +124,7 @@ BOOL CSubMapPosDlg::OnEraseBkgnd(CDCHandle dc)
 	CBrush blue;
 	blue.CreateSolidBrush(RGB(0, 100, 255));
 	CBrush old_brush = dc.SelectBrush(blue);
-	dc.Rectangle(SUBMAPOSDLG_CENTERPOSX-SUBMAPOSDLG_RECSIZE, SUBMAPOSDLG_CENTERPOSY-SUBMAPOSDLG_RECSIZE, SUBMAPOSDLG_CENTERPOSX+SUBMAPOSDLG_RECSIZE, SUBMAPOSDLG_CENTERPOSY+SUBMAPOSDLG_RECSIZE);
+	dc.Ellipse(SUBMAPOSDLG_CENTERPOSX-SUBMAPOSDLG_CENTERSIZE, SUBMAPOSDLG_CENTERPOSY-SUBMAPOSDLG_CENTERSIZE, SUBMAPOSDLG_CENTERPOSX+SUBMAPOSDLG_CENTERSIZE, SUBMAPOSDLG_CENTERPOSY+SUBMAPOSDLG_CENTERSIZE);
 	dc.SelectBrush(old_brush);
 
 	if(drawPosItem.size())
@@ -137,6 +140,10 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	Red.CreateSolidBrush(RGB(255, 0, 0));
 	CBrush old_brush = dc.SelectBrush(Red);
 
+	CPen penRed;
+	penRed.CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+	CPen old_pen = dc.SelectPen(penRed);
+
 	float opt = 1.0f;
 	if(typeOption == 1)
 	{
@@ -148,11 +155,36 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	}
 	else if(typeOption == 3)
 	{
-		opt = 0.4f;
+		opt = 0.25f;
 	}
 	else if(typeOption == 4)
 	{
+		opt = 0.2f;
+	}
+	else if(typeOption == 5)
+	{
 		opt = 0.8f;
+	}
+	else if(typeOption == 6)
+	{
+		opt = 0.2f;
+	}
+	else if(typeOption == 7)
+	{
+		opt = 0.088f;
+	}
+
+
+	if(drawAreaPosItem.size() >= 4)
+	{
+		CPoint pt[5];
+		pt[0] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[0].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[0].y*opt)));
+		pt[1] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[1].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[1].y*opt)));
+		pt[2] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[2].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[2].y*opt)));
+		pt[3] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[3].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[3].y*opt)));
+		pt[4] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[0].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[0].y*opt)));
+
+		dc.Polyline(pt, 5);
 	}
 
 	for (int i = 0; i < (int)drawPosItem.size(); i++)
@@ -163,14 +195,24 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 		int bottom = (int)(SUBMAPOSDLG_CENTERPOSY - (drawPosItem[i].y*opt))+SUBMAPOSDLG_RECREDSIZE;
 		dc.Rectangle(left, top, right, bottom);
 	}
+
+	int left = (int)(SUBMAPOSDLG_CENTERPOSX - (drawAggPosItem.x*opt))-SUBMAPOSDLG_RECREDSIZE;
+	int top = (int)(SUBMAPOSDLG_CENTERPOSY - (drawAggPosItem.y*opt))-SUBMAPOSDLG_RECREDSIZE;
+	int right = (int)(SUBMAPOSDLG_CENTERPOSX - (drawAggPosItem.x*opt))+SUBMAPOSDLG_RECREDSIZE;
+	int bottom = (int)(SUBMAPOSDLG_CENTERPOSY - (drawAggPosItem.y*opt))+SUBMAPOSDLG_RECREDSIZE;
+	dc.Ellipse(left, top, right, bottom);
+
 	dc.SelectBrush(old_brush);
+	dc.SelectPen(old_pen);
 }
 
-void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp)
+void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos)
 {
 	drawPosItem.clear();
 	drawPosItem = pos;
 	typeOption = typeOp;
+	drawAggPosItem = aggPos;
+	drawAreaPosItem = areaPos;
 
 	InvalidateRect(NULL);
 	//InvalidateRect를 강제로 바로 실행 하기 위해존제..

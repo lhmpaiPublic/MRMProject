@@ -521,6 +521,18 @@
 			RelativePath=".\res\ResolutionPosition\mapGrid_5.png"
 			>
 		</File>
+		<File
+			RelativePath=".\res\ResolutionPosition\mapGrid_6.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\ResolutionPosition\mapGrid_7.png"
+			>
+		</File>
+		<File
+			RelativePath=".\res\ResolutionPosition\mapGrid_8.png"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global

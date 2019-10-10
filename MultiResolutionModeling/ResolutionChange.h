@@ -73,6 +73,16 @@ public:
 		DISAGG_SIZE
 	};
 
+	//영역
+	enum AREAPOS
+	{
+		AREAPOS_NUM1 = 0,
+		AREAPOS_NUM2,
+		AREAPOS_NUM3,
+		AREAPOS_NUM4,
+		AREAPOS_SIZE
+	};
+
 	//보병분대 분해 요소 Type 정의
 	enum INFANTRYSQUADDISAGGREGATEDTYPE
 	{
@@ -117,8 +127,8 @@ public:
 
 	void changeDisaggregated();
 
-	vector<CVector2d> changeDisaggregatedPosition(inputPosVal val);
-	vector<CVector2d> changeDisaggregatedPositionInfantrySquad(inputPosVal val);
+	vector<CVector2d> changeDisaggregatedPosition(inputPosVal val, vector<CVector2d>& areaPos);
+	vector<CVector2d> changeDisaggregatedPositionInfantrySquad(inputPosVal val, vector<CVector2d>& areaPos);
 
 	CVector2d frontDirection(DIRECTIONTYPE dir);
 
@@ -127,6 +137,8 @@ public:
 	CVector2d calcPosition(CALCPOSITIONTYPE calcType, CVector2d parent, CVector2d front, CVector2d cross, vector<int> sizeUnit);
 
 	vector<CVector2d> deploymentPosition(DEPLOYMENTTYPE deployment, CVector2d parent, CVector2d front, CVector2d cross, vector<int> sizeUnit);
+
+	vector<CVector2d> areaPosition(CVector2d front, CVector2d cross, vector<int> sizeUnit);
 
 	CVector2d changeAggregatedPosition(vector<CVector2d> posList);
 

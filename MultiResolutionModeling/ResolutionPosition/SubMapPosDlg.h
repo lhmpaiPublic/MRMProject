@@ -4,7 +4,7 @@
 
 #pragma once
 
-#define IMAGE_MAX 5
+#define IMAGE_MAX 8
 class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 {
 	//
@@ -14,6 +14,8 @@ class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 
 	vector<CVector2d> drawPosItem;
 	int typeOption;
+	CVector2d drawAggPosItem;
+	vector<CVector2d> drawAreaPosItem;
 public:
 	enum { IDD = IDD_SUBMAPPOSDLG };
 
@@ -77,5 +79,5 @@ public:
 
 	void drawResolutionPos(CDCHandle dc);
 
-	void drawResolutionPosition(vector<CVector2d> pos, int typeOp);
+	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos);
 };

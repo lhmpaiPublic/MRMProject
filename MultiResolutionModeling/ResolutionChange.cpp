@@ -56,34 +56,105 @@ void CResolutionChange::changeDisaggregated()
 
 	vector<CVector2d> drawPosItem;
 	int typeOp = 0;
-	if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_SQUAD)
+	CVector2d aggPos(0.0f, 0.0f);
+	vector<CVector2d> areaPos;
+	if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY)
 	{
-		typeOp = 1;
+		if(inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_SQUAD)
+		{
+			typeOp = 1;
+		}
+		else if(inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_COMPANY)
+		{
+			typeOp = 2;
+		}
+		else if(inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_BATTALION)
+		{
+			typeOp = 3;
+		}
+		else
+		{
+			typeOp = 0;
+		}
 	}
-	else if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_BATTALION)
+	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARMORED)
 	{
-		typeOp = 2;
-	}
-	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARMORED && inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_BATTALION)
-	{
-		typeOp = 3;
-	}
-	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARMORED && inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_COMPANY)
-	{
-		typeOp = 4;
-	}
-	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARTILLERY && inPosVal.unitSizeVal.mil == CUnitSize::ARTILLERY_BATTALION)
-	{
-		typeOp = 2;
+		if(inPosVal.unitSizeVal.moveType == CUnitSize::DEFENCE)
+		{
+			
+			if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_COMPANY)
+			{
+				typeOp = 2;
+			}
+			else if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_BATTALION)
+			{
+				typeOp = 4;
+			}
+			else
+			{
+				typeOp = 0;
+			}
+		}
+		else
+		{
+			if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_COMPANY)
+			{
+				typeOp = 6;
+			}
+			else if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_BATTALION)
+			{
+				typeOp = 7;
+			}
+			else
+			{
+				typeOp = 5;
+			}
+		}
 	}
 	else
 	{
-		typeOp = 0;
+		if(inPosVal.unitSizeVal.mil == CUnitSize::ARTILLERY_BATTALION)
+		{
+			typeOp = 2;
+		}
+		else
+		{
+			typeOp = 0;
+		}
 	}
+
+	//if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_SQUAD)
+	//{
+	//	typeOp = 1;
+	//}
+	//else if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_COMPANY)
+	//{
+	//	typeOp = 2;
+	//}
+	//else if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_BATTALION)
+	//{
+	//	typeOp = 3;
+	//}
+	//else if(inPosVal.unitSizeVal.combat == CUnitSize::ARMORED && inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_COMPANY)
+	//{
+	//	typeOp = 2;
+	//}
+	//else if(inPosVal.unitSizeVal.combat == CUnitSize::ARMORED && inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_BATTALION)
+	//{
+	//	typeOp = 4;
+	//}
+	//else if(inPosVal.unitSizeVal.combat == CUnitSize::ARTILLERY && inPosVal.unitSizeVal.mil == CUnitSize::ARTILLERY_BATTALION)
+	//{
+	//	typeOp = 2;
+	//}
+	//else
+	//{
+	//	typeOp = 0;
+	//}
 
 	if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_SQUAD)
 	{
-		vector<CVector2d> vecHiData = changeDisaggregatedPositionInfantrySquad(inPosVal);
+		vector<CVector2d> vecHiData = changeDisaggregatedPositionInfantrySquad(inPosVal, areaPos);
 
 		vector<int> logVal;
 		vector<float> logVal_sub;
@@ -118,6 +189,7 @@ void CResolutionChange::changeDisaggregated()
 
 		int subX = (int)centroid.x - (int)inPosVal.parent.x;
 		int subY = (int)centroid.y - (int)inPosVal.parent.y;
+		aggPos = CVector2d((float)subX, (float)subY);
 
 		logVal_sub.push_back((float)subX);
 		logVal_sub.push_back((float)subY);
@@ -141,7 +213,7 @@ void CResolutionChange::changeDisaggregated()
 	}
 	else
 	{
-		vector<CVector2d> vecHiData = changeDisaggregatedPosition(inPosVal);
+		vector<CVector2d> vecHiData = changeDisaggregatedPosition(inPosVal, areaPos);
 		vector<int> logVal;
 		vector<int> logVal_sub;
 		for(int i = 0; i < (int)vecHiData.size(); i++)
@@ -175,6 +247,7 @@ void CResolutionChange::changeDisaggregated()
 
 		int subX = (int)centroid.x - (int)inPosVal.parent.x;
 		int subY = (int)centroid.y - (int)inPosVal.parent.y;
+		aggPos = CVector2d((float)subX, (float)subY);
 
 		logVal_sub.push_back(subX);
 		logVal_sub.push_back(subY);
@@ -197,12 +270,12 @@ void CResolutionChange::changeDisaggregated()
 		CLogDlg::addLogTextStream();
 	}	
 
-	CGAgt::G()->drawResolutionPosition(drawPosItem, typeOp);
+	CGAgt::G()->drawResolutionPosition(drawPosItem, typeOp, aggPos, areaPos);
 
 	CLogDlg::AddLogText("<====================>");
 }
 
-vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val)
+vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val, vector<CVector2d>& areaPos)
 {
 	//지향방향 노말 벡터
 	CVector2d front = frontDirection(val.dir);
@@ -218,15 +291,26 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val
 	//최종 분해 요소 값
 	vector<CVector2d> vecHiData = deploymentPosition(val.dep, val.parent, front, cross, sizeUnit);
 
+	areaPos = areaPosition(front, cross, sizeUnit);
+
 	return vecHiData;
 }
 
-vector<CVector2d> CResolutionChange::changeDisaggregatedPositionInfantrySquad(inputPosVal val)
+vector<CVector2d> CResolutionChange::changeDisaggregatedPositionInfantrySquad(inputPosVal val, vector<CVector2d>& areaPos)
 {
 	//지향방향 노말 벡터
 	CVector2d front = frontDirection(val.dir);
 	//직각 y 방향 벡터
 	CVector2d cross = crossDirection(front);
+
+	//부대 반경
+	vector<int> sizeUnit = unitSizeVal->unitZoneSize(val.unitSizeVal);
+	CLogDlg::initStream();
+	CLogDlg::insertStream("부대반경 :");
+	CLogDlg::insertStreamVec(sizeUnit, '	');
+	CLogDlg::addLogTextStream();
+
+	areaPos = areaPosition(front, cross, sizeUnit);
 
 	vector<CVector2d> result;
 	result.resize(SQUDISAGG_SIZE);
@@ -346,26 +430,26 @@ CVector2d CResolutionChange::frontDirection(DIRECTIONTYPE dir)
 		vecVal = CVector2d(0, 1);
 		break;
 	case NE_DIRECTION:		// 북동
-		vecVal = CVector2d(1, 1);
+		vecVal = CVector2d(-1, 1);
 		break;
 	case E_DIRECTION:		// 동
-		vecVal = CVector2d(1, 0);
+		vecVal = CVector2d(-1, 0);
 		break;
 	case SE_DIRECTION:		// 남동
-		vecVal = CVector2d(1, -1);
+		vecVal = CVector2d(-1, -1);
 		break;
 	case S_DIRECTION:		// 남
 		vecVal = CVector2d(0, -1);
 		break;
 	case SW_DIRECTION:		// 남서
-		vecVal = CVector2d(-1, -1);
+		vecVal = CVector2d(1, -1);
 		break;
 	case W_DIRECTION:		// 서
-		vecVal = CVector2d(-1, 0);
+		vecVal = CVector2d(1, 0);
 		break;
 	case NW_DIRECTION:		// 북서
 	default:
-		vecVal = CVector2d(-1, 1);
+		vecVal = CVector2d(1, 1);
 		break;
 	}
 	vecVal = CVector2d::Normal(vecVal);
@@ -476,70 +560,87 @@ vector<CVector2d> CResolutionChange::deploymentPosition(DEPLOYMENTTYPE deploymen
 	return result;
 }
 
+vector<CVector2d> CResolutionChange::areaPosition(CVector2d front, CVector2d cross, vector<int> sizeUnit)
+{
+	vector<CVector2d> result;
+	result.resize(AREAPOS_SIZE);
+
+	result[AREAPOS_NUM1] = cross*((float)-1*sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)sizeUnit[SIZEVEC_HIGHT]/2);
+	result[AREAPOS_NUM2] = cross*((float)sizeUnit[SIZEVEC_WIDTH]/2) + front*(float)(sizeUnit[SIZEVEC_HIGHT]/2);
+	result[AREAPOS_NUM3] = cross*((float)sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVEC_HIGHT]/2);
+	result[AREAPOS_NUM4] = cross*((float)-1*sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVEC_HIGHT]/2);
+	return result;
+}
+
 CVector2d CResolutionChange::changeAggregatedPosition(vector<CVector2d> posList)
 {
 	CVector2d centroid(0.0f, 0.0f);
-
-	int size = (int)posList.size();
-	if (size >= 3)
+	for (int i = 0; i < (int)posList.size(); ++i)
 	{
-		double factor = 0;
-		double centerX = 0;
-		double centerY = 0;
-		double area = 0;
-
-		for (int firstIndex = 0; firstIndex < size; firstIndex++)
-		{
-			int secondIndex = (firstIndex + 1) % size;
-
-			CVector2d firstPoint = posList[firstIndex];
-			CVector2d secondPoint = posList[secondIndex];
-
-			factor = ((firstPoint.x * secondPoint.y) - (secondPoint.x * firstPoint.y));
-
-			area += factor;
-
-			centerX += (firstPoint.x + secondPoint.x) * factor;
-			centerY += (firstPoint.y + secondPoint.y) * factor;
-		}
-
-		if ((0.0 == area) == false)
-		{
-			area /= 2.0f;
-			area *= 6.0f;
-
-			factor = 1 / area;
-			centerX *= factor;
-			centerY *= factor;
-
-			centroid.x = (float)centerX;
-			centroid.y = (float)centerY;
-		}
-		else
-		{
-			centerX = 0.0;
-			centerY = 0.0;
-
-			for (int i = 0; i < size; ++i)
-			{
-				CVector2d point = posList[i];
-
-				centerX += point.x;
-				centerY += point.y;
-			}
-
-			centroid.x = (float)centerX/size;
-			centroid.y = (float)centerY/size;
-		}
+		centroid = centroid + posList[i];
 	}
-	else if (size > 0)
-	{
-		for (int i = 0; i < size; ++i)
-		{
-			centroid = centroid + posList[i];
-		}
-		centroid = centroid/(float)size;
-	}
+	centroid = centroid/(float)posList.size();
+
+	//int size = (int)posList.size();
+	//if (size >= 3)
+	//{
+	//	double factor = 0;
+	//	double centerX = 0;
+	//	double centerY = 0;
+	//	double area = 0;
+
+	//	for (int firstIndex = 0; firstIndex < size; firstIndex++)
+	//	{
+	//		int secondIndex = (firstIndex + 1) % size;
+
+	//		CVector2d firstPoint = posList[firstIndex];
+	//		CVector2d secondPoint = posList[secondIndex];
+
+	//		factor = ((firstPoint.x * secondPoint.y) - (secondPoint.x * firstPoint.y));
+
+	//		area += factor;
+
+	//		centerX += (firstPoint.x + secondPoint.x) * factor;
+	//		centerY += (firstPoint.y + secondPoint.y) * factor;
+	//	}
+
+	//	if ((0.0 == area) == false)
+	//	{
+	//		area /= 2.0f;
+	//		area *= 6.0f;
+
+	//		factor = 1 / area;
+	//		centerX *= factor;
+	//		centerY *= factor;
+
+	//		centroid.x = (float)centerX;
+	//		centroid.y = (float)centerY;
+	//	}
+	//	else
+	//	{
+	//		centerX = 0.0;
+	//		centerY = 0.0;
+
+	//		for (int i = 0; i < size; ++i)
+	//		{
+	//			CVector2d point = posList[i];
+
+	//			centerX += point.x;
+	//			centerY += point.y;
+	//		}
+
+	//		centroid.x = (float)centerX/size;
+	//		centroid.y = (float)centerY/size;
+	//	}
+	//}
+	//else if (size > 0)
+	//{
+	//	for (int i = 0; i < size; ++i)
+	//	{
+	//		centroid = centroid + posList[i];
+	//	}
+	//	centroid = centroid/(float)size;
+	//}
 
 	return centroid;
 }
@@ -627,7 +728,7 @@ CResolutionChange::DIRECTIONTYPE CResolutionChange::emDirectionType(int selNum)
 CString CResolutionChange::strDeploymentType(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil, CResolutionChange::DEPLOYMENTTYPE em)
 {
 	CString strEm = "UNKNOW";
-	if(CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil)
+	if((CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil) || (CUnitSize::ARTILLERY == combat))
 	{
 		switch (em)
 		{
@@ -666,7 +767,7 @@ vector<CString> CResolutionChange::strDeploymentType(CUnitSize::COMBATANT combat
 {
 	vector<CString> strEm;
 	strEm.clear();
-	if(CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil)
+	if((CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil) || (CUnitSize::ARTILLERY == combat))
 	{
 		strEm.push_back("원형");
 		strEm.push_back("횡대");
@@ -686,7 +787,7 @@ vector<CString> CResolutionChange::strDeploymentType(CUnitSize::COMBATANT combat
 CResolutionChange::DEPLOYMENTTYPE CResolutionChange::emDeploymentType(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil, int selNum)
 {
 	CResolutionChange::DEPLOYMENTTYPE em = DEP_NONE;
-	if(CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil)
+	if((CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil) || (CUnitSize::ARTILLERY == combat))
 	{
 		switch (selNum)
 		{

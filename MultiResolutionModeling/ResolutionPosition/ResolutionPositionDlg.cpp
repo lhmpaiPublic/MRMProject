@@ -208,7 +208,7 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, 
 	return 0;
 }
 
-void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp)
+void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos)
 {
-	subMapPosDlg->drawResolutionPosition(pos, typeOp);
+	subMapPosDlg->drawResolutionPosition(pos, typeOp, aggPos, areaPos);
 }

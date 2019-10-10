@@ -12,8 +12,11 @@
 #define IDB_RP_MAPGRID_2                206
 #define IDB_RP_MAPGRID_3                207
 #define IDB_RP_MAPGRID_4                208
-#define IDB_PNG1                        209
 #define IDB_RP_MAPGRID_5                209
+#define IDB_RP_MAPGRID_6                210
+#define IDB_RP_MAPGRID_7                211
+#define IDB_PNG3                        212
+#define IDB_RP_MAPGRID_8                212
 #define IDC_LOGTEXT                     1000
 #define IDCC_INDEPLOYMENT               1001
 #define IDCE_INPOSX                     1002
@@ -33,7 +36,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        210
+#define _APS_NEXT_RESOURCE_VALUE        213
 #define _APS_NEXT_COMMAND_VALUE         32775
 #define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           101
