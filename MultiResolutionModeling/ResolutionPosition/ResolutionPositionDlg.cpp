@@ -36,6 +36,10 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	pLoop->AddIdleHandler(this);
 
 	UIAddChildWindowContainer(m_hWnd);
+
+	startPoint = CPoint(0, 0);
+	bLClick = false;
+	GetWindowRect(winPos);
 	
 	inePosX.Attach(GetDlgItem(IDCE_INPOSX));
 	inePosX.SetWindowText(CStringW("308320"));
@@ -208,7 +212,33 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, 
 	return 0;
 }
 
-void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos)
+void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos, CString text)
 {
-	subMapPosDlg->drawResolutionPosition(pos, typeOp, aggPos, areaPos);
+	subMapPosDlg->drawResolutionPosition(pos, typeOp, aggPos, areaPos, text);
+}
+
+LRESULT CResolutionPositionDlg::OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
+{
+	GetWindowRect(winPos);
+	SetCapture();
+	bLClick = true;
+	startPoint = CPoint(LOWORD(lParam), HIWORD(lParam));
+	return 0;
+}
+
+LRESULT CResolutionPositionDlg::OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
+{
+	if(bLClick)
+	{
+		GetWindowRect(winPos);
+		SetWindowPos(NULL, winPos.left+(LOWORD(lParam) - startPoint.x), winPos.top+(HIWORD(lParam) - startPoint.y), 0, 0, SWP_NOSIZE|SWP_NOZORDER);
+	}
+	return 0;
+}
+
+LRESULT CResolutionPositionDlg::OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+	bLClick = false;
+	ReleaseCapture();
+	return 0;
 }

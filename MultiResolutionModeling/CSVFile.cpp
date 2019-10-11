@@ -14,7 +14,7 @@ CCSVFile::CCSVFile(string file, LOADTYPE type)
 	//Load 타입에 맞게 스트림 생성
 	switch (type)
 	{
-	case WRITELOAD: outfile.open(file.c_str());
+	case WRITELOAD: outfile.open(file.c_str(), ofstream::app);
 		break;
 	case READLOAD: infile.open(file.c_str());
 		break;
@@ -38,7 +38,7 @@ bool CCSVFile::loadCSVFile(string fileName, LOADTYPE _loadType)
 	//Load 타입에 맞게 스트림 생성
 	switch (_loadType)
 	{
-	case WRITELOAD: outfile.open(fileName.c_str());
+	case WRITELOAD: outfile.open(fileName.c_str(), ofstream::app);
 		b = true;
 		break;
 	case READLOAD: infile.open(fileName.c_str());
@@ -193,4 +193,15 @@ vector<string> CCSVFile::csv_read_row(istream& file, char delimiter)
 
 	}
 	return row;
+}
+
+//쓰기
+void CCSVFile::csv_write_log(CString writeText)
+{
+	CCSVFile csvFile;
+	csvFile.loadCSVFile("logCsv.csv", WRITELOAD);
+
+	csvFile.outStream() << CStringA(writeText).GetBuffer() << endl;
+
+	csvFile.unloadCSVFile();
 }

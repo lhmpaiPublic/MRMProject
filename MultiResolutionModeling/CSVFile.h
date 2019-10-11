@@ -38,7 +38,8 @@ public:
 	//읽기 스트림 객체로 읽어 오기(int 객체 리턴)
 	static vector<int> csv_read_row_int(istream& file, char delimiter);
 
-
+	//쓰기
+	static void csv_write_log(CString writeText);
 private:
 	//읽기 스트림 객체
 	ifstream infile;

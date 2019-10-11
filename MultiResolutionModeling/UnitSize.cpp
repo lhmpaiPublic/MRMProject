@@ -20,7 +20,7 @@ void CUnitSize::loadCSVFile(string fileName)
 	CCSVFile readCSV;
 
 	char delimiter = ',';
-	CLogDlg::AddLogText("<부대반경 표>");
+	CLogDlg::AddLogText("<작전지역 표>");
 	if (readCSV.loadCSVFile(fileName)) {
 		int loop = 0;
 		VECVECINT vecinfantry;

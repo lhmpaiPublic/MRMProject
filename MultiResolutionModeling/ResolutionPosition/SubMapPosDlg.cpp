@@ -23,6 +23,8 @@ void CSubMapPosDlg::init(HWND _hWnd)
 	hWnd = _hWnd;
 	drawPosItem.clear();
 	typeOption = 0;
+
+	bLClick = false;
 }
 UINT CSubMapPosDlg::imgId[IMAGE_MAX]=
 {
@@ -54,7 +56,7 @@ LRESULT CSubMapPosDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
 	CRect parentRect;
 	::GetWindowRect(hWnd, &parentRect);
 	MoveWindow(CRect(SUBMAPOSDLG_POSX, SUBMAPOSDLG_POSY, SUBMAPOSDLG_POSX+imgBackX, SUBMAPOSDLG_POSY+imgBackY));
-	
+
 	return TRUE;
 }
 //--------------------------------------------------------------
@@ -178,43 +180,83 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	if(drawAreaPosItem.size() >= 4)
 	{
 		CPoint pt[5];
-		pt[0] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[0].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[0].y*opt)));
-		pt[1] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[1].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[1].y*opt)));
-		pt[2] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[2].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[2].y*opt)));
-		pt[3] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[3].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[3].y*opt)));
-		pt[4] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[0].x*opt)), (SUBMAPOSDLG_CENTERPOSY + (int)(drawAreaPosItem[0].y*opt)));
+		pt[0] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[0].x*opt)), (SUBMAPOSDLG_CENTERPOSY - (int)(drawAreaPosItem[0].y*opt)));
+		pt[1] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[1].x*opt)), (SUBMAPOSDLG_CENTERPOSY - (int)(drawAreaPosItem[1].y*opt)));
+		pt[2] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[2].x*opt)), (SUBMAPOSDLG_CENTERPOSY - (int)(drawAreaPosItem[2].y*opt)));
+		pt[3] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[3].x*opt)), (SUBMAPOSDLG_CENTERPOSY - (int)(drawAreaPosItem[3].y*opt)));
+		pt[4] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[0].x*opt)), (SUBMAPOSDLG_CENTERPOSY - (int)(drawAreaPosItem[0].y*opt)));
 
 		dc.Polyline(pt, 5);
 	}
 
 	for (int i = 0; i < (int)drawPosItem.size(); i++)
 	{
-		int left = (int)(SUBMAPOSDLG_CENTERPOSX - (drawPosItem[i].x*opt))-SUBMAPOSDLG_RECREDSIZE;
+		int left = (int)(SUBMAPOSDLG_CENTERPOSX + (drawPosItem[i].x*opt))-SUBMAPOSDLG_RECREDSIZE;
 		int top = (int)(SUBMAPOSDLG_CENTERPOSY - (drawPosItem[i].y*opt))-SUBMAPOSDLG_RECREDSIZE;
-		int right = (int)(SUBMAPOSDLG_CENTERPOSX - (drawPosItem[i].x*opt))+SUBMAPOSDLG_RECREDSIZE;
+		int right = (int)(SUBMAPOSDLG_CENTERPOSX + (drawPosItem[i].x*opt))+SUBMAPOSDLG_RECREDSIZE;
 		int bottom = (int)(SUBMAPOSDLG_CENTERPOSY - (drawPosItem[i].y*opt))+SUBMAPOSDLG_RECREDSIZE;
 		dc.Rectangle(left, top, right, bottom);
 	}
 
-	int left = (int)(SUBMAPOSDLG_CENTERPOSX - (drawAggPosItem.x*opt))-SUBMAPOSDLG_RECREDSIZE;
+	int left = (int)(SUBMAPOSDLG_CENTERPOSX + (drawAggPosItem.x*opt))-SUBMAPOSDLG_RECREDSIZE;
 	int top = (int)(SUBMAPOSDLG_CENTERPOSY - (drawAggPosItem.y*opt))-SUBMAPOSDLG_RECREDSIZE;
-	int right = (int)(SUBMAPOSDLG_CENTERPOSX - (drawAggPosItem.x*opt))+SUBMAPOSDLG_RECREDSIZE;
+	int right = (int)(SUBMAPOSDLG_CENTERPOSX + (drawAggPosItem.x*opt))+SUBMAPOSDLG_RECREDSIZE;
 	int bottom = (int)(SUBMAPOSDLG_CENTERPOSY - (drawAggPosItem.y*opt))+SUBMAPOSDLG_RECREDSIZE;
 	dc.Ellipse(left, top, right, bottom);
 
 	dc.SelectBrush(old_brush);
 	dc.SelectPen(old_pen);
+
+	dc.SetBkMode(TRANSPARENT);
+	dc.SetTextColor(RGB(0, 100, 255));
+	LOGFONT lf;
+	memset(&lf, 0, sizeof(LOGFONT));
+	lf.lfHeight = 21;
+	_tcsncpy_s(lf.lfFaceName, LF_FACESIZE, _T("Arial"), 7);
+	CFont font;
+	font.CreateFontIndirect(&lf);;
+	CFont font_old = dc.SelectFont(font);
+	dc.DrawText(drawtextItem.GetBuffer(), drawtextItem.GetLength(), CRect((SUBMAPOSDLG_CENTERPOSX - 30), SUBMAPOSDLG_CENTERPOSY+10, (SUBMAPOSDLG_CENTERPOSX-30) + ((drawtextItem.GetLength()*12)), SUBMAPOSDLG_CENTERPOSY+35), DT_TOP|DT_LEFT);
+
+	dc.SelectFont(font_old);
 }
 
-void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos)
+void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos, CString text)
 {
 	drawPosItem.clear();
 	drawPosItem = pos;
 	typeOption = typeOp;
 	drawAggPosItem = aggPos;
 	drawAreaPosItem = areaPos;
+	drawtextItem = text;
 
 	InvalidateRect(NULL);
 	//InvalidateRect를 강제로 바로 실행 하기 위해존제..
 	UpdateWindow();
+}
+
+LRESULT CSubMapPosDlg::OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
+{
+	GetParent().GetWindowRect(winPos);
+	SetCapture();
+	bLClick = true;
+	startPoint = CPoint(LOWORD(lParam), HIWORD(lParam));
+	return 0;
+}
+
+LRESULT CSubMapPosDlg::OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
+{
+	if(bLClick)
+	{
+		GetParent().GetWindowRect(winPos);
+		GetParent().SetWindowPos(NULL, winPos.left+(LOWORD(lParam) - startPoint.x), winPos.top+(HIWORD(lParam) - startPoint.y), 0, 0, SWP_NOSIZE|SWP_NOZORDER);
+	}
+	return 0;
+}
+
+LRESULT CSubMapPosDlg::OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+	bLClick = false;
+	ReleaseCapture();
+	return 0;
 }

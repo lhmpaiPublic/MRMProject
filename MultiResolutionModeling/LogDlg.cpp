@@ -3,13 +3,16 @@
 /////////////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
 #include "LogDlg.h"
+#include "CSVFile.h"
 
 CLogDlg* CLogDlg::gLogDlg=NULL;
 std::stringstream CLogDlg::mkLog;
+std::stringstream CLogDlg::mkcsvLog;
 bool CLogDlg::bFirst;
 CLogDlg::CLogDlg()
 {
 	mkLog.str("");
+	mkcsvLog.str("");
 	bFirst = true;
 }
 CLogDlg::~CLogDlg()
@@ -86,21 +89,27 @@ void CLogDlg::initStream()
 {
 	mkLog.str("");
 	mkLog.clear();
+	mkcsvLog.str("");
+	mkcsvLog.clear();
 	bFirst = true;
 }
 
 void CLogDlg::insertStream(string str, char delimiter)
 {
 	if(false == bFirst) mkLog  << delimiter;
+	if(false == bFirst) mkcsvLog  << ',';
 	bFirst = false;
-	mkLog  << str.c_str();	
+	mkLog  << str.c_str();
+	mkcsvLog  << str.c_str();	
 }
 
 void CLogDlg::insertStream(int val, char delimiter)
 {
 	if(false == bFirst) mkLog  << delimiter;
+	if(false == bFirst) mkcsvLog  << ',';
 	bFirst = false;
-	mkLog  << val;	
+	mkLog  << val;
+	mkcsvLog  << val;
 }
 
 void CLogDlg::insertStreamVec(vector<int> val, char delimiter)
@@ -108,8 +117,10 @@ void CLogDlg::insertStreamVec(vector<int> val, char delimiter)
 	for (int i = 0; i <(int) val.size(); i++)
 	{
 		if(false == bFirst) mkLog  << delimiter;
+		if(false == bFirst) mkcsvLog  << ',';
 		bFirst = false;
 		mkLog  << val[i];
+		mkcsvLog  << val[i];
 	}
 
 }
@@ -119,8 +130,10 @@ void CLogDlg::insertStreamVec(vector<float> val, char delimiter)
 	for (int i = 0; i <(int) val.size(); i++)
 	{
 		if(false == bFirst) mkLog  << delimiter;
+		if(false == bFirst) mkcsvLog  << ',';
 		bFirst = false;
 		mkLog  << val[i];
+		mkcsvLog  << val[i];
 	}
 
 }
@@ -130,8 +143,10 @@ void CLogDlg::insertStreamVec(vector<string> val, char delimiter)
 	for (int i = 0; i <(int) val.size(); i++)
 	{
 		if(false == bFirst) mkLog  << delimiter;
+		if(false == bFirst) mkcsvLog  << ',';
 		bFirst = false;
 		mkLog  << val[i];
+		mkcsvLog  << val[i];
 	}
 }
 
@@ -140,5 +155,6 @@ void CLogDlg::addLogTextStream()
 	if(gLogDlg)
 	{
 		gLogDlg->setLogText(mkLog.str().c_str());
+		CCSVFile::csv_write_log(mkcsvLog.str().c_str());
 	}
 }

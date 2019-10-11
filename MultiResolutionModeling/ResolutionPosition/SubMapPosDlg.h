@@ -16,6 +16,11 @@ class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 	int typeOption;
 	CVector2d drawAggPosItem;
 	vector<CVector2d> drawAreaPosItem;
+	CString drawtextItem;
+
+	CRect winPos;
+	CPoint startPoint;
+	bool bLClick;
 public:
 	enum { IDD = IDD_SUBMAPPOSDLG };
 
@@ -24,6 +29,9 @@ public:
 		MSG_WM_ERASEBKGND(OnEraseBkgnd)
 		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
 		COMMAND_ID_HANDLER(IDOK, OnCloseCmd)
+		MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown)
+		MESSAGE_HANDLER(WM_MOUSEMOVE, OnLMouseMove)
+		MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp)
 		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
@@ -63,6 +71,12 @@ public:
 	//---------------------------------------------------------------
 	BOOL PreTranslateMessage(MSG* pMsg);
 
+	LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
+
+	LRESULT OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
+
+	LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+
 	//--------------------------------------------------------------
 	//|
 	//|
@@ -79,5 +93,5 @@ public:
 
 	void drawResolutionPos(CDCHandle dc);
 
-	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos);
+	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos, CString text);
 };

@@ -10,6 +10,8 @@ public:
 	static CLogDlg* gLogDlg;
 	static std::stringstream mkLog;
 	static bool bFirst;
+
+	static std::stringstream mkcsvLog;
 	enum { IDD = IDD_LOGPOPUP };
 
 	BEGIN_MSG_MAP(CLogDlg)

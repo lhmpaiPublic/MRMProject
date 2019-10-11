@@ -32,5 +32,5 @@ public:
 
 	CResolutionChange* ResCha();
 
-	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos);
+	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos, CString text);
 };
