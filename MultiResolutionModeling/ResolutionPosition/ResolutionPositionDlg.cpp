@@ -113,11 +113,12 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	incMapImpact.SetCurSel(0);
 
 	incDivisionCount.Attach(GetDlgItem(IDCC_INDIVISIONCOUNT));
-	incDivisionCount.AddString(CStringW("1"));
-	incDivisionCount.AddString(CStringW("2"));
-	incDivisionCount.AddString(CStringW("3"));
-	incDivisionCount.AddString(CStringW("4"));
-	incDivisionCount.SetCurSel(3);
+	vector<CString> divisionCount = strDivisionCount(CUnitSize::INFANTRY, CUnitSize::INFANTRY_SQUAD);
+	for (int i = 0; i < (int)divisionCount.size(); i++)
+	{
+		incDivisionCount.AddString(divisionCount[i]);
+	}
+	incDivisionCount.SetCurSel(divisionCount.size()-1);
 
 	//CSubMapPosDlg
 	subMapPosDlg = new CSubMapPosDlg();
@@ -162,6 +163,9 @@ void CResolutionPositionDlg::CloseDialog(int nVal)
 LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//출력 Position 크기
+	subMapPosDlg->drawResolutionPositionSize(valDivisionCount(incDivisionCount.GetCurSel()));
+
 	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
 	CUnitSize::MILITARYBRANCH mil = CUnitSize::emMilitarybranch(combatType, incUnitScale.GetCurSel());
 	CGAgt::GResCha()->setParentPos(CVector2d((float)GetDlgItemInt(IDCE_INPOSX), (float)GetDlgItemInt(IDCE_INPOSY)));
@@ -209,6 +213,14 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, 
 	}
 	incDeployment.SetCurSel(0);
 
+	incDivisionCount.ResetContent();
+	vector<CString> divisionCount = strDivisionCount(combatType, mil);
+	for (int i = 0; i < (int)divisionCount.size(); i++)
+	{
+		incDivisionCount.AddString(divisionCount[i]);
+	}
+	incDivisionCount.SetCurSel(divisionCount.size()-1);
+
 	return 0;
 }
 
@@ -241,4 +253,40 @@ LRESULT CResolutionPositionDlg::OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LP
 	bLClick = false;
 	ReleaseCapture();
 	return 0;
+}
+
+vector<CString> CResolutionPositionDlg::strDivisionCount(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil)
+{
+	vector<CString> strEm;
+	strEm.clear();
+	if(CUnitSize::INFANTRY == combat && CUnitSize::INFANTRY_SQUAD == mil)
+	{
+		strEm.push_back("1");
+		strEm.push_back("2");
+		strEm.push_back("3");
+		strEm.push_back("4");
+		strEm.push_back("5");
+		strEm.push_back("6");
+		strEm.push_back("7");
+		strEm.push_back("8");
+		strEm.push_back("9");
+		strEm.push_back("10");
+		strEm.push_back("11");
+		strEm.push_back("12");
+	}
+	else
+	{
+		strEm.push_back("1");
+		strEm.push_back("2");
+		strEm.push_back("3");
+		strEm.push_back("4");
+	}	
+	return strEm;
+}
+
+int CResolutionPositionDlg::valDivisionCount(int selNum)
+{
+	int val = 1;
+	val = selNum+1;
+	return val;
 }

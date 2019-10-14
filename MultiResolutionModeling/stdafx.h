@@ -12,6 +12,12 @@
 #define _RICHEDIT_VER	0x0500
 
 #include <atlbase.h>
+
+//CString 클래스 사용
+#include <atlstr.h>
+//#define _WTL_NO_WTYPES
+#include <atltypes.h>
+
 #include <atlapp.h>
 
 extern CAppModule _Module;
@@ -26,8 +32,9 @@ extern CAppModule _Module;
 #include <atlctrls.h>
 #include <atldlgs.h>
 #include <atlcoll.h>
+//COleDateTime 클래스
+#include <ATLComTime.h>
 
-#include <atlstr.h>
 
 #include <string>
 #include <vector>
@@ -40,7 +47,6 @@ using namespace std;
 #include "resource.h"
 #include <stdio.h>
 #include <tchar.h>
-#include <atlcoll.h>
 
 
 //================================

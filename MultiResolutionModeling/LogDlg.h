@@ -6,6 +6,7 @@
 
 class CLogDlg : public CDialogImpl<CLogDlg>
 {
+	static CButton csvLogCheck;
 public:
 	static CLogDlg* gLogDlg;
 	static std::stringstream mkLog;

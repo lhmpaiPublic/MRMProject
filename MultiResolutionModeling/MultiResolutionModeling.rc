@@ -56,6 +56,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "확인",IDOK,649,7,50,14
     EDITTEXT        IDC_LOGTEXT,7,36,692,322,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_VSCROLL | WS_HSCROLL
+    CONTROL         "logCsv.csv파일 출력",IDCCK_LOGCSVFILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,15,85,10
 END
 
 IDD_RESOLUTIONPOSITION DIALOGEX 0, 0, 706, 700
@@ -63,8 +64,8 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "위치변환"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "확인",IDOK,465,7,50,14
-    PUSHBUTTON      "취소",IDCANCEL,465,28,50,14
+    DEFPUSHBUTTON   "확인",IDOK,642,7,50,14
+    PUSHBUTTON      "취소",IDCANCEL,641,24,50,14
     GROUPBOX        "입력",IDC_STATIC,13,14,292,88
     COMBOBOX        IDCC_INDEPLOYMENT,71,45,70,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     LTEXT           "입력좌표 :",IDC_STATIC,21,28,41,10
@@ -81,12 +82,12 @@ BEGIN
     LTEXT           "부대타입",IDC_STATIC,158,66,41,10
     LTEXT           "적아구분",IDC_STATIC,22,83,41,10
     LTEXT           "부대규모",IDC_STATIC,158,81,41,10
-    GROUPBOX        "입력옵션",IDC_STATIC,312,16,87,77
-    LTEXT           "지형영향",IDC_STATIC,318,31,34,8
-    LTEXT           "분할개수",IDC_STATIC,318,59,34,8
-    COMBOBOX        IDCC_INMAPIMPACT,319,42,70,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDCC_INDIVISIONCOUNT,318,71,70,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "변환",IDCB_RESOLUTIONCHANGE,405,22,38,66
+    GROUPBOX        "입력옵션",IDC_STATIC,327,20,87,77
+    LTEXT           "지형영향",IDC_STATIC,333,35,34,8
+    LTEXT           "분할개수",IDC_STATIC,333,63,34,8
+    COMBOBOX        IDCC_INMAPIMPACT,335,46,70,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDCC_INDIVISIONCOUNT,333,76,70,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "변환",IDCB_RESOLUTIONCHANGE,434,24,38,66
 END
 
 IDD_SUBMAPPOSDLG DIALOGEX 0, 0, 316, 219
@@ -152,11 +153,11 @@ END
 // PNG
 //
 
-IDB_RP_MAPGRID_1        PNG                  "res\\ResolutionPosition\\mapGrid_1.png"
-IDB_RP_MAPGRID_2        PNG                  "res\\ResolutionPosition\\mapGrid_2.png"
-IDB_RP_MAPGRID_3        PNG                  "res\\ResolutionPosition\\mapGrid_3.png"
-IDB_RP_MAPGRID_4        PNG                  "res\\ResolutionPosition\\mapGrid_4.png"
-IDB_RP_MAPGRID_5        PNG                  "res\\ResolutionPosition\\mapGrid_5.png"
+IDB_RP_MAPGRID_1        PNG                     "res\\ResolutionPosition\\mapGrid_1.png"
+IDB_RP_MAPGRID_2        PNG                     "res\\ResolutionPosition\\mapGrid_2.png"
+IDB_RP_MAPGRID_3        PNG                     "res\\ResolutionPosition\\mapGrid_3.png"
+IDB_RP_MAPGRID_4        PNG                     "res\\ResolutionPosition\\mapGrid_4.png"
+IDB_RP_MAPGRID_5        PNG                     "res\\ResolutionPosition\\mapGrid_5.png"
 IDB_RP_MAPGRID_6        PNG                     "res\\ResolutionPosition\\mapGrid_6.png"
 IDB_RP_MAPGRID_7        PNG                     "res\\ResolutionPosition\\mapGrid_7.png"
 IDB_RP_MAPGRID_8        PNG                     "res\\ResolutionPosition\\mapGrid_8.png"

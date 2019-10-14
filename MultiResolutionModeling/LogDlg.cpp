@@ -9,6 +9,7 @@ CLogDlg* CLogDlg::gLogDlg=NULL;
 std::stringstream CLogDlg::mkLog;
 std::stringstream CLogDlg::mkcsvLog;
 bool CLogDlg::bFirst;
+CButton CLogDlg::csvLogCheck;
 CLogDlg::CLogDlg()
 {
 	mkLog.str("");
@@ -22,6 +23,7 @@ CLogDlg::~CLogDlg()
 LRESULT CLogDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
 	CenterWindow(GetParent());
+	csvLogCheck.Attach(GetDlgItem(IDCCK_LOGCSVFILE));
 	return TRUE;
 }
 
@@ -155,6 +157,8 @@ void CLogDlg::addLogTextStream()
 	if(gLogDlg)
 	{
 		gLogDlg->setLogText(mkLog.str().c_str());
-		CCSVFile::csv_write_log(mkcsvLog.str().c_str());
+		
+		if(BST_CHECKED == CLogDlg::csvLogCheck.GetCheck())
+			CCSVFile::csv_write_log(mkcsvLog.str().c_str());
 	}
 }

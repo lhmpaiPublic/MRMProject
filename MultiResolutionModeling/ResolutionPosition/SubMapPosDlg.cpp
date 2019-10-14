@@ -22,6 +22,7 @@ void CSubMapPosDlg::init(HWND _hWnd)
 {
 	hWnd = _hWnd;
 	drawPosItem.clear();
+	drawPosItemsize = 1;
 	typeOption = 0;
 
 	bLClick = false;
@@ -189,7 +190,7 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 		dc.Polyline(pt, 5);
 	}
 
-	for (int i = 0; i < (int)drawPosItem.size(); i++)
+	for (int i = 0; i < min((int)drawPosItem.size(), drawPosItemsize); i++)
 	{
 		int left = (int)(SUBMAPOSDLG_CENTERPOSX + (drawPosItem[i].x*opt))-SUBMAPOSDLG_RECREDSIZE;
 		int top = (int)(SUBMAPOSDLG_CENTERPOSY - (drawPosItem[i].y*opt))-SUBMAPOSDLG_RECREDSIZE;
@@ -230,9 +231,19 @@ void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CV
 	drawAreaPosItem = areaPos;
 	drawtextItem = text;
 
+	CLogDlg::initStream();
+	CLogDlg::insertStream("출력개수 :");
+	CLogDlg::insertStream(min((int)drawPosItem.size(), drawPosItemsize), '	');
+	CLogDlg::addLogTextStream();
+
 	InvalidateRect(NULL);
 	//InvalidateRect를 강제로 바로 실행 하기 위해존제..
 	UpdateWindow();
+}
+
+void CSubMapPosDlg::drawResolutionPositionSize(int drawSize)
+{
+	drawPosItemsize = drawSize;
 }
 
 LRESULT CSubMapPosDlg::OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
