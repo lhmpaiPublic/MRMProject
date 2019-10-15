@@ -224,9 +224,9 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, 
 	return 0;
 }
 
-void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos, CString text)
+void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text)
 {
-	subMapPosDlg->drawResolutionPosition(pos, typeOp, aggPos, areaPos, text);
+	subMapPosDlg->drawResolutionPosition(pos, typeOp, areaPos, text);
 }
 
 LRESULT CResolutionPositionDlg::OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
@@ -273,6 +273,15 @@ vector<CString> CResolutionPositionDlg::strDivisionCount(CUnitSize::COMBATANT co
 		strEm.push_back("10");
 		strEm.push_back("11");
 		strEm.push_back("12");
+	}
+	else if(CUnitSize::ARTILLERY == combat && CUnitSize::ARTILLERY_COMPANY == mil)
+	{
+		strEm.push_back("1");
+		strEm.push_back("2");
+		strEm.push_back("3");
+		strEm.push_back("4");
+		strEm.push_back("5");
+		strEm.push_back("6");
 	}
 	else
 	{

@@ -101,6 +101,18 @@ public:
 		SQUDISAGG_SIZE
 	};
 
+	//포대 분해 요소 Type 정의
+	enum ARTILLERYCOMPANYDISAGGREGATEDTYPE
+	{
+		ARCOMDISAGG_NUM01 = 0,
+		ARCOMDISAGG_NUM02,
+		ARCOMDISAGG_NUM03,
+		ARCOMDISAGG_NUM04,
+		ARCOMDISAGG_NUM05,
+		ARCOMDISAGG_NUM06,
+		ARCOMDISAGG_SIZE
+	};
+
 	struct inputPosVal
 	{
 		inputPosVal(){}
@@ -129,6 +141,7 @@ public:
 
 	vector<CVector2d> changeDisaggregatedPosition(inputPosVal val, vector<CVector2d>& areaPos, CString& drawText);
 	vector<CVector2d> changeDisaggregatedPositionInfantrySquad(inputPosVal val, vector<CVector2d>& areaPos, CString& drawText);
+	vector<CVector2d> changeDisaggregatedPositionArtilleryCompany(inputPosVal val, vector<CVector2d>& areaPos, CString& drawText);
 
 	CVector2d frontDirection(DIRECTIONTYPE dir);
 
@@ -141,6 +154,8 @@ public:
 	vector<CVector2d> areaPosition(CVector2d front, CVector2d cross, vector<int> sizeUnit);
 
 	CVector2d changeAggregatedPosition(vector<CVector2d> posList);
+
+	static CVector2d changeAggregatedPosition(vector<CVector2d> posList, int size);
 
 	CVector2d changeAggregatedPositionInfantrySquad(vector<CVector2d> posList);
 };

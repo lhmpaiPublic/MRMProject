@@ -56,7 +56,6 @@ void CResolutionChange::changeDisaggregated()
 
 	vector<CVector2d> drawPosItem;
 	int typeOp = 0;
-	CVector2d aggPos(0.0f, 0.0f);
 	vector<CVector2d> areaPos;
 	CString drawtext;
 	if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY)
@@ -100,15 +99,15 @@ void CResolutionChange::changeDisaggregated()
 		{
 			if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_COMPANY)
 			{
-				typeOp = 6;
+				typeOp = 2;
 			}
 			else if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_BATTALION)
 			{
-				typeOp = 7;
+				typeOp = 4;
 			}
 			else
 			{
-				typeOp = 5;
+				typeOp = 0;
 			}
 		}
 	}
@@ -162,7 +161,64 @@ void CResolutionChange::changeDisaggregated()
 
 		int subX = (int)centroid.x - (int)inPosVal.parent.x;
 		int subY = (int)centroid.y - (int)inPosVal.parent.y;
-		aggPos = CVector2d((float)subX, (float)subY);
+
+		logVal_sub.push_back((float)subX);
+		logVal_sub.push_back((float)subY);
+
+		int Aggdistance = (int)sqrt((pow((float)subX, 2)+pow((float)subY, 2)));
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("Agg 좌표 :");
+		CLogDlg::insertStreamVec(logVal,'	');
+		CLogDlg::addLogTextStream();
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("Agg Sub : ");
+		CLogDlg::insertStreamVec(logVal_sub,'	');
+		CLogDlg::addLogTextStream();
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("Agg 거리 :");
+		CLogDlg::insertStream(Aggdistance,'	');
+		CLogDlg::addLogTextStream();
+	}
+	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARTILLERY && inPosVal.unitSizeVal.mil == CUnitSize::ARTILLERY_COMPANY)
+	{
+		vector<CVector2d> vecHiData = changeDisaggregatedPositionArtilleryCompany(inPosVal, areaPos, drawtext);
+
+		vector<int> logVal;
+		vector<float> logVal_sub;
+		for(int i = 0; i < (int)vecHiData.size(); i++)
+		{
+			logVal.push_back((int)vecHiData[i].x);
+			logVal.push_back((int)vecHiData[i].y);
+
+			logVal_sub.push_back(ceilf((vecHiData[i].x - inPosVal.parent.x)*100)/100);
+			logVal_sub.push_back(ceilf((vecHiData[i].y - inPosVal.parent.y)*100)/100);
+
+			drawPosItem.push_back(CVector2d(ceilf((vecHiData[i].x - inPosVal.parent.x)*100)/100,
+				ceilf((vecHiData[i].y - inPosVal.parent.y)*100)/100));
+		}
+		CLogDlg::initStream();
+		CLogDlg::insertStream("DisAgg 값 :");
+		CLogDlg::insertStreamVec(logVal, '	');
+		CLogDlg::addLogTextStream();
+
+
+		CLogDlg::initStream();
+		CLogDlg::insertStream("DisAgg Sub :");
+		CLogDlg::insertStreamVec(logVal_sub, '	');
+		CLogDlg::addLogTextStream();
+
+		CVector2d centroid = changeAggregatedPositionInfantrySquad(vecHiData);
+
+		logVal.clear();
+		logVal_sub.clear();
+		logVal.push_back((int)centroid.x);
+		logVal.push_back((int)centroid.y);
+
+		int subX = (int)centroid.x - (int)inPosVal.parent.x;
+		int subY = (int)centroid.y - (int)inPosVal.parent.y;
 
 		logVal_sub.push_back((float)subX);
 		logVal_sub.push_back((float)subY);
@@ -220,7 +276,6 @@ void CResolutionChange::changeDisaggregated()
 
 		int subX = (int)centroid.x - (int)inPosVal.parent.x;
 		int subY = (int)centroid.y - (int)inPosVal.parent.y;
-		aggPos = CVector2d((float)subX, (float)subY);
 
 		logVal_sub.push_back(subX);
 		logVal_sub.push_back(subY);
@@ -243,7 +298,7 @@ void CResolutionChange::changeDisaggregated()
 		CLogDlg::addLogTextStream();
 	}	
 
-	CGAgt::G()->drawResolutionPosition(drawPosItem, typeOp, aggPos, areaPos, drawtext);
+	CGAgt::G()->drawResolutionPosition(drawPosItem, typeOp, areaPos, drawtext);
 
 	CLogDlg::AddLogText("<====================>");
 }
@@ -393,6 +448,60 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPositionInfantrySquad(in
 	default:
 		break;
 	}
+	return result;
+}
+
+vector<CVector2d> CResolutionChange::changeDisaggregatedPositionArtilleryCompany(inputPosVal val, vector<CVector2d>& areaPos, CString& drawText)
+{
+	//지향방향 노말 벡터
+	CVector2d front = frontDirection(val.dir);
+	//직각 y 방향 벡터
+	CVector2d cross = crossDirection(front);
+
+	//부대 반경
+	vector<int> sizeUnit = unitSizeVal->unitZoneSize(val.unitSizeVal);
+	CLogDlg::initStream();
+	CLogDlg::insertStream("작전지역 :");
+	CLogDlg::insertStreamVec(sizeUnit, '	');
+	CLogDlg::addLogTextStream();
+	drawText.Format(_T("작전지역 : %d X %d "), sizeUnit[SIZEVEC_WIDTH], sizeUnit[SIZEVEC_HIGHT]);
+
+	areaPos = areaPosition(front, cross, sizeUnit);
+
+	vector<CVector2d> result;
+	result.resize(ARCOMDISAGG_SIZE);
+
+
+	switch (val.dep)
+	{
+	case DEP_CIRCLE:		// 원형
+		result[ARCOMDISAGG_NUM01] = val.parent + cross*(-50) + front*(100);
+		result[ARCOMDISAGG_NUM02] = val.parent + cross*(50) + front*(100);
+		result[ARCOMDISAGG_NUM03] = val.parent + cross*(-50) + front*(-100);
+		result[ARCOMDISAGG_NUM04] = val.parent + cross*(50) + front*(-100);
+		result[ARCOMDISAGG_NUM05] = val.parent + cross*(-100);
+		result[ARCOMDISAGG_NUM06] = val.parent + cross*(100);
+		break;
+	case DEP_LINE:		// 횡대
+		result[ARCOMDISAGG_NUM01] = val.parent + cross*(-25) + front*(50);
+		result[ARCOMDISAGG_NUM02] = val.parent + cross*(-125) + front*(50);
+		result[ARCOMDISAGG_NUM03] = val.parent + cross*(75) + front*(50);
+		result[ARCOMDISAGG_NUM04] = val.parent + cross*(25) + front*(-50);
+		result[ARCOMDISAGG_NUM05] = val.parent + cross*(-75) + front*(-50);
+		result[ARCOMDISAGG_NUM06] = val.parent + cross*(125) + front*(-50);
+		break;
+	case DEP_COLUMN:		// 종대
+		result[ARCOMDISAGG_NUM01] = val.parent + front*(50);
+		result[ARCOMDISAGG_NUM02] = val.parent + front*(-50);
+		result[ARCOMDISAGG_NUM03] = val.parent + front*(150);
+		result[ARCOMDISAGG_NUM04] = val.parent + front*(-150);
+		result[ARCOMDISAGG_NUM05] = val.parent + front*(250);
+		result[ARCOMDISAGG_NUM06] = val.parent + front*(-250);
+		break;
+	default:
+		break;
+	}
+
 	return result;
 }
 
@@ -616,6 +725,19 @@ CVector2d CResolutionChange::changeAggregatedPosition(vector<CVector2d> posList)
 	//	}
 	//	centroid = centroid/(float)size;
 	//}
+
+	return centroid;
+}
+
+CVector2d CResolutionChange::changeAggregatedPosition(vector<CVector2d> posList, int size)
+{
+	CVector2d centroid(0.0f, 0.0f);
+	int chSize = min((int)posList.size(), size);
+	for (int i = 0; i < chSize; ++i)
+	{
+		centroid = centroid + posList[i];
+	}
+	centroid = centroid/(float)chSize;
 
 	return centroid;
 }

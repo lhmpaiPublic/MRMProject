@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "SubMapPosDlg.h"
 #include "../ImageLoadApi/ImageLoadApi.h"
+#include "../ResolutionChange.h"
 #define SUBMAPOSDLG_POSX 50
 #define SUBMAPOSDLG_POSY 160
 
@@ -13,6 +14,9 @@
 
 #define SUBMAPOSDLG_CENTERSIZE 10
 #define SUBMAPOSDLG_RECREDSIZE 5
+
+#define SUBMAPOSDLG_POSTEXTX 450
+#define SUBMAPOSDLG_POSTEXTY 50
 
 CSubMapPosDlg::CSubMapPosDlg()
 {
@@ -217,17 +221,16 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	CFont font;
 	font.CreateFontIndirect(&lf);;
 	CFont font_old = dc.SelectFont(font);
-	dc.DrawText(drawtextItem.GetBuffer(), drawtextItem.GetLength(), CRect((SUBMAPOSDLG_CENTERPOSX - 30), SUBMAPOSDLG_CENTERPOSY+10, (SUBMAPOSDLG_CENTERPOSX-30) + ((drawtextItem.GetLength()*12)), SUBMAPOSDLG_CENTERPOSY+35), DT_TOP|DT_LEFT);
+	dc.DrawText(drawtextItem.GetBuffer(), drawtextItem.GetLength(), CRect((SUBMAPOSDLG_POSTEXTX - 80), SUBMAPOSDLG_POSTEXTY+10, (SUBMAPOSDLG_POSTEXTX-80) + ((drawtextItem.GetLength()*12)), SUBMAPOSDLG_POSTEXTY+35), DT_TOP|DT_LEFT);
 
 	dc.SelectFont(font_old);
 }
 
-void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos, CString text)
+void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text)
 {
 	drawPosItem.clear();
 	drawPosItem = pos;
 	typeOption = typeOp;
-	drawAggPosItem = aggPos;
 	drawAreaPosItem = areaPos;
 	drawtextItem = text;
 
@@ -235,6 +238,8 @@ void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CV
 	CLogDlg::insertStream("출력개수 :");
 	CLogDlg::insertStream(min((int)drawPosItem.size(), drawPosItemsize), '	');
 	CLogDlg::addLogTextStream();
+
+	drawAggPosItem = CResolutionChange::changeAggregatedPosition(pos, drawPosItemsize);
 
 	InvalidateRect(NULL);
 	//InvalidateRect를 강제로 바로 실행 하기 위해존제..

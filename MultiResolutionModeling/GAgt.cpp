@@ -78,7 +78,7 @@ CResolutionChange* CGAgt::ResCha()
 
 
 
-void CGAgt::drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos, CString text)
+void CGAgt::drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text)
 {
-	mResPosDlg->drawResolutionPosition(pos, typeOp, aggPos, areaPos, text);
+	mResPosDlg->drawResolutionPosition(pos, typeOp, areaPos, text);
 }

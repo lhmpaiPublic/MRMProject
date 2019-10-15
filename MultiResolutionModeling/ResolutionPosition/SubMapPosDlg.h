@@ -94,6 +94,6 @@ public:
 
 	void drawResolutionPos(CDCHandle dc);
 
-	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, CVector2d aggPos, vector<CVector2d> areaPos, CString text);
+	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text);
 	void drawResolutionPositionSize(int drawSize);
 };
