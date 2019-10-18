@@ -34,6 +34,8 @@ extern CAppModule _Module;
 #include <atlcoll.h>
 //COleDateTime 클래스
 #include <ATLComTime.h>
+#include <atlcom.h>
+#include <comdef.h>
 
 
 #include <string>
@@ -59,6 +61,8 @@ using namespace std;
 #include "vector3d.h"
 
 #include "ImageLoadApi/ImageLoadApi.h"
+#include "ExcelAuto/XLAutomation.h"
+#include "ExcelAuto/XLEzAutomation.h"
 //================================
 //에이전트 클래스
 #include "GAgt.h"

@@ -126,6 +126,23 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	subMapPosDlg->Create(m_hWnd);
 	subMapPosDlg->ShowWindow(SW_SHOW);
 
+	//CXLEzAutomation xlEz;
+	//xlEz.OpenExcelFile(_T("E:\\_GitProject\\MRMWorkspace\\MRMProject\\MultiResolutionModeling\\sampleExcel.xls"));
+	////xlEz.OpenExcelFile(_T(".\\sampleExcel.xls"));
+	//CString valxl;// = xlEz.GetCellValue(1, 1);
+	////valxl = xlEz.GetCellValue(1, 2);
+	////valxl = xlEz.GetCellValue(1, 3);
+	////valxl = xlEz.GetCellValue(2, 1);
+	//xlEz.selectWorksheets(_T("E:\\_GitProject\\MRMWorkspace\\MRMProject\\MultiResolutionModeling\\sampleExcel.xls"), L"Aircraft");
+	//valxl = xlEz.GetCellValue(1, 1);
+	//valxl = xlEz.GetCellValue(1, 2);
+	//valxl = xlEz.GetCellValue(1, 3);
+	//xlEz.ReleaseExcel();
+
+	////xlEz.OpenExcelFile(_T("E:\\_GitProject\\MRMWorkspace\\MRMProject\\MultiResolutionModeling\\sampleExcel.xls"));
+	////xlEz.ExportCString(_T("Ship"));
+	////valxl = xlEz.GetCellValue(1, 1);
+	////xlEz.CloseExcelFile();
 	return TRUE;
 }
 

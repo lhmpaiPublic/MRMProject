@@ -501,6 +501,34 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="ExcelAuto"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\ExcelAuto\XLAutomation.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ExcelAuto\XLEzAutomation.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\ExcelAuto\XLAutomation.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ExcelAuto\XLEzAutomation.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath=".\res\ResolutionPosition\mapGrid_1.png"
 			>
