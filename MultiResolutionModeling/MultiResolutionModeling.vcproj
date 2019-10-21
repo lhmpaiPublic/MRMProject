@@ -529,6 +529,30 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="ResolutionProperty"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\ResolutionProperty\ResolutionProperty.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ResolutionProperty\ResolutionPropertyDlg.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\ResolutionProperty\ResolutionPropertyDlg.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 		<File
 			RelativePath=".\res\ResolutionPosition\mapGrid_1.png"
 			>

@@ -2,6 +2,7 @@
 
 class CResolutionPositionDlg;
 class CResolutionChange;
+class CResolutionPropertyDlg;
 class CGAgt
 {
 	HWND hParent;
@@ -19,11 +20,13 @@ public:
 private:
 	CResolutionPositionDlg* mResPosDlg;
 	CResolutionChange* mResCha;
+	CResolutionPropertyDlg* mResPptyDlg;
 public:
 	//CSV open Type Á¤ÀÇ
 	enum DLGNAME
 	{
 		RESPOS = 0,
+		RESPPTY,
 	};
 	void ShowDlg(DLGNAME name);
 	void HideDlg(DLGNAME name);
@@ -31,6 +34,8 @@ public:
 	CResolutionPositionDlg* ResPosDlg();
 
 	CResolutionChange* ResCha();
+
+	CResolutionPropertyDlg* ResPptyDlg();
 
 	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text);
 };

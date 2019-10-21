@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "ResolutionPosition/ResolutionPosition.h"
+#include "ResolutionProperty/ResolutionProperty.h"
 
 //초기화
 CGAgt* CGAgt::mG = NULL;
@@ -24,6 +25,7 @@ CGAgt::CGAgt()
 	mG = this;
 	mResPosDlg = NULL;
 	mResCha = NULL;
+	mResPptyDlg = NULL;
 }
 
 CGAgt::~CGAgt()
@@ -37,6 +39,9 @@ void CGAgt::initGAgt(HWND _hParent)
 
 	mResPosDlg = new CResolutionPositionDlg();
 	if(mResPosDlg)	mResPosDlg->Create(hParent);
+
+	mResPptyDlg = new CResolutionPropertyDlg();
+	if(mResPptyDlg)	mResPptyDlg->Create(hParent);
 }
 
 void CGAgt::releaseDlg()
@@ -50,6 +55,8 @@ void CGAgt::ShowDlg(DLGNAME name)
 	{
 	case RESPOS:mResPosDlg->ShowWindow(SW_SHOW);
 		break;
+	case RESPPTY:mResPptyDlg->ShowWindow(SW_SHOW);
+		break;
 	default:
 		break;
 	}
@@ -60,6 +67,8 @@ void CGAgt::HideDlg(DLGNAME name)
 	switch(name)
 	{
 	case RESPOS:mResPosDlg->ShowWindow(SW_HIDE);
+		break;
+	case RESPPTY:mResPptyDlg->ShowWindow(SW_HIDE);
 		break;
 	default:
 		break;
@@ -76,7 +85,10 @@ CResolutionChange* CGAgt::ResCha()
 	return mResCha;
 }
 
-
+CResolutionPropertyDlg* CGAgt::ResPptyDlg()
+{
+	return mResPptyDlg;
+}
 
 void CGAgt::drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text)
 {
