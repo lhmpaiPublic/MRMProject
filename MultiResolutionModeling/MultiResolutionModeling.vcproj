@@ -536,6 +536,14 @@
 				Name="Header Files"
 				>
 				<File
+					RelativePath=".\ResolutionProperty\PropertyKind.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ResolutionProperty\PropertyList.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ResolutionProperty\ResolutionProperty.h"
 					>
 				</File>
@@ -547,6 +555,10 @@
 			<Filter
 				Name="Source Files"
 				>
+				<File
+					RelativePath=".\ResolutionProperty\PropertyList.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\ResolutionProperty\ResolutionPropertyDlg.cpp"
 					>

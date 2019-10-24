@@ -3,7 +3,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ResolutionProperty.h"
+#include "ResolutionPropertyDlg.h"
+#include "PropertyList.h"
 
 
 BOOL CResolutionPropertyDlg::PreTranslateMessage(MSG* pMsg)
@@ -39,6 +40,9 @@ LRESULT CResolutionPropertyDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	startPoint = CPoint(0, 0);
 	bLClick = false;
 	GetWindowRect(winPos);
+
+	CPropertyList test;
+	test.loadCSVFile("infantryPropertyList.csv");
 	
 	return TRUE;
 }
