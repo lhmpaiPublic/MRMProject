@@ -25,9 +25,9 @@ public:
 		COMMAND_ID_HANDLER(IDCANCEL, OnCancel)
 		COMMAND_HANDLER(IDC_LOGWINDOW, BN_CLICKED, OnBnClickedLogwindow)
 		COMMAND_HANDLER(IDC_RESPOSWIN, BN_CLICKED, OnBnClickedResposwin)
-		REFLECT_NOTIFICATIONS()
-		
 		COMMAND_HANDLER(IDC_RESPROPERTYWIN, BN_CLICKED, OnBnClickedRespropertywin)
+		REFLECT_NOTIFICATIONS()	
+		
 	END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):

@@ -97,42 +97,25 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
 END
 
-IDD_RESOLUTIONPROPERTY DIALOGEX 0, 0, 709, 338
+IDD_RESOLUTIONPROPERTY DIALOGEX 0, 0, 725, 383
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "자산변환"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "확인",IDOK,652,7,50,14
-    PUSHBUTTON      "취소",IDCANCEL,652,27,50,14
-    GROUPBOX        "입력",IDC_STATIC,13,14,293,54
+    DEFPUSHBUTTON   "확인",IDOK,668,7,50,14
+    PUSHBUTTON      "취소",IDCANCEL,668,27,50,14
+    GROUPBOX        "입력",IDC_STATIC,13,14,388,29
     COMBOBOX        IDCC_PPTY_INUNITTYPE,63,24,67,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     LTEXT           "부대타입",IDC_STATIC,22,26,41,10
-    COMBOBOX        IDCC_PPTY_PROPERTYDIV,179,23,67,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "자산구분",IDC_STATIC,137,25,41,10
-    COMBOBOX        IDCC_PPTY_PROPERTYNAME,183,44,67,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "자산명",IDC_STATIC,140,47,41,10
-    COMBOBOX        IDCC_PPTY_INUNITSCALE,65,44,65,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "부대규모",IDC_STATIC,21,47,41,10
-    LTEXT           "본부",IDC_STATIC,317,30,27,10
-    COMBOBOX        IDCC_PPTY_SETNUM0,341,28,37,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "  /",IDC_STATIC,385,30,13,10
-    EDITTEXT        IDCE_PPTY_USNUM0,397,28,24,14,ES_AUTOHSCROLL | ES_NUMBER
-    GROUPBOX        "수량(보유량/인가량)",IDC_STATIC,315,18,243,54
-    LTEXT           "부대1",IDC_STATIC,435,29,27,10
-    COMBOBOX        IDCC_PPTY_SETNUM1,459,27,37,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "  /",IDC_STATIC,503,29,13,10
-    EDITTEXT        IDCE_PPTY_USNUM1,515,27,24,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "부대2",IDC_STATIC,317,50,27,10
-    COMBOBOX        IDCC_PPTY_SETNUM2,341,48,37,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "  /",IDC_STATIC,385,50,13,10
-    EDITTEXT        IDCE_PPTY_USNUM2,397,48,24,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "부대3",IDC_STATIC,435,52,27,10
-    COMBOBOX        IDCC_PPTY_SETNUM3,459,50,37,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "  /",IDC_STATIC,503,52,13,10
-    EDITTEXT        IDCE_PPTY_USNUM3,515,50,24,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "설정수량",IDC_STATIC,262,28,36,10
-    COMBOBOX        IDCC_PPTY_SETTINGNUM,262,44,37,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "변환",IDCB_PPTY_RESOLUTIONCHANGE,581,17,38,55
+    COMBOBOX        IDCC_PPTY_PROPERTYDIV,319,24,67,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "자산구분",IDC_STATIC,268,26,41,10
+    COMBOBOX        IDCC_PPTY_INUNITSCALE,181,23,65,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "부대규모",IDC_STATIC,138,26,41,10
+    PUSHBUTTON      "변환",IDCB_PPTY_RESOLUTIONCHANGE,568,20,66,20
+    CONTROL         "ListCtrl",IDCCUST_LOWMODELLIST,"ListCtrl",WS_TABSTOP,15,63,670,138
+    CONTROL         "ListCtrl",IDCCUST_HIMODELLIST,"ListCtrl",WS_TABSTOP,18,248,670,128
+    LTEXT           "<모체부대>",IDC_STATIC,17,48,72,10
+    LTEXT           "<변환 부대 객체>",IDC_STATIC,20,233,72,10
 END
 
 
@@ -187,9 +170,9 @@ BEGIN
     IDD_RESOLUTIONPROPERTY, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 702
+        RIGHTMARGIN, 718
         TOPMARGIN, 7
-        BOTTOMMARGIN, 331
+        BOTTOMMARGIN, 376
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -208,6 +191,22 @@ IDB_RP_MAPGRID_5        PNG                     "res\\ResolutionPosition\\mapGri
 IDB_RP_MAPGRID_6        PNG                     "res\\ResolutionPosition\\mapGrid_6.png"
 IDB_RP_MAPGRID_7        PNG                     "res\\ResolutionPosition\\mapGrid_7.png"
 IDB_RP_MAPGRID_8        PNG                     "res\\ResolutionPosition\\mapGrid_8.png"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LISTITEMS           BITMAP                  "res\\ExampleItems.bmp"
+IDB_EXAMPLE             BITMAP                  "res\\ListItems.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_DIVIDER             CURSOR                  "res\\divider.cur"
+IDC_HYPERLINK           CURSOR                  "res\\hand.cur"
 #endif    // 한국어 resources
 /////////////////////////////////////////////////////////////////////////////
 

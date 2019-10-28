@@ -44,6 +44,15 @@ extern CAppModule _Module;
 #include <fstream>
 #include <sstream>
 #include <istream>
+
+#include <set>
+#include <map>
+#include <algorithm>
+#include <atltheme.h>
+#include <atlctrlx.h>
+#include <vector>
+#include <shlobj.h>
+
 using namespace std;
 
 #include "resource.h"

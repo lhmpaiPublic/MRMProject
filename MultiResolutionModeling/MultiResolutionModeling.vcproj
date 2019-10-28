@@ -305,6 +305,22 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
 			>
 			<File
+				RelativePath=".\res\divider.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ExampleItems.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\hand.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ListItems.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\res\MultiResolutionModeling.ico"
 				>
 			</File>
@@ -563,6 +579,54 @@
 					RelativePath=".\ResolutionProperty\ResolutionPropertyDlg.cpp"
 					>
 				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="SubListControl"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\SubListControl\DragDrop.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubListControl\DropArrows.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubListControl\ListCombo.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubListControl\ListCtrl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubListControl\ListDate.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubListControl\ListEdit.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubListControl\ListTypes.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubListControl\SubListControl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\SubListControl\TitleTip.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
 			</Filter>
 		</Filter>
 		<File

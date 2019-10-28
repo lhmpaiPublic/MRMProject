@@ -11,7 +11,16 @@ class CResolutionPropertyDlg : public CDialogImpl<CResolutionPropertyDlg>, publi
 	CRect winPos;
 	CPoint startPoint;
 	bool bLClick;
+	CListCtrl m_lowModelList;
+	CListCtrl m_hiModelList;
+	CImageList m_ilItemImages;
+	CFont m_fntCustomFont1;
+	CFont m_fntCustomFont2;
 public:
+	CResolutionPropertyDlg();
+
+	~CResolutionPropertyDlg();
+
 	enum { IDD = IDD_RESOLUTIONPROPERTY };
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

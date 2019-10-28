@@ -15,9 +15,12 @@
 #define IDB_RP_MAPGRID_5                209
 #define IDB_RP_MAPGRID_6                210
 #define IDB_RP_MAPGRID_7                211
-#define IDB_PNG3                        212
 #define IDB_RP_MAPGRID_8                212
 #define IDD_RESOLUTIONPROPERTY          213
+#define IDB_LISTITEMS                   214
+#define IDB_EXAMPLE                     215
+#define IDC_DIVIDER                     216
+#define IDC_HYPERLINK                   217
 #define IDC_LOGTEXT                     1000
 #define IDCC_INDEPLOYMENT               1001
 #define IDCE_INPOSX                     1002
@@ -38,7 +41,6 @@
 #define IDCC_PPTY_INUNITSCALE           1010
 #define IDCB_RESOLUTIONCHANGE           1011
 #define IDCC_PPTY_SETNUM0               1011
-#define IDC_CHECK1                      1012
 #define IDCCK_LOGCSVFILE                1012
 #define IDCC_PPTY_SETNUM2               1012
 #define IDCC_PPTY_SETNUM1               1013
@@ -47,6 +49,9 @@
 #define IDCC_PPTY_SETTINGNUM            1016
 #define IDCB_PPTY_RESOLUTIONCHANGE      1017
 #define IDCC_PPTY_INUNITTYPE            1018
+#define IDCCUST_LOWMODELLIST            1019
+#define IDCCUST_LOWMODELLIST2           1020
+#define IDCCUST_HIMODELLIST             1020
 #define IDC_LOGWINDOW                   57665
 #define IDC_RESPOSWIN                   57666
 #define IDC_RESPROPERTYWIN              57667
@@ -55,9 +60,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        214
+#define _APS_NEXT_RESOURCE_VALUE        218
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1019
+#define _APS_NEXT_CONTROL_VALUE         1025
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

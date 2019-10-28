@@ -14,3 +14,5 @@
 #include "SubEdit/SubEdit.h"
 
 #include "SubStatic/SubStatic.h"
+
+#include "SubListControl/SubListControl.h"

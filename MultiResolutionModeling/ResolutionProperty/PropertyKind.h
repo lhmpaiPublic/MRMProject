@@ -6,6 +6,184 @@
 #define MAKEMIL2(a, b)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff)) | ((DWORD)(((BYTE)((DWORD_PTR)(b)) & 0xff) << 8 ))
 #define MAKEMIL1(a)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff))
 
+typedef struct _SProductModelType
+{
+	enum MODELTYPE
+	{
+		MTLOW = 0,				//LOW 모델
+		MTHI = 1,				//HI 모델
+		MT_SIZE
+	};
+	enum PRODUCTTYPE
+	{
+		TY0 = 0,				//병력
+		TY1 = 1,				//전투장비(화기)
+		TY2 = 2,				//전투지원장비
+		TY3 = 3,				//보급품
+		PROD_SIZE
+	};
+	enum COMBATANT
+	{
+		INFANTRY = 0,	//보병
+		ARMORED = 1,	//전차
+		ARTILLERY = 2,	//포병
+		COMBATANT_SIZE = 3,
+	};
+
+	enum COMBATANTCLASS
+	{
+		SQUAD = 0,		//분대
+		PLATOON_CENTER = 1,	//소대본부
+		PLATOON = 2,	//소대
+		COMPANY_CENTER = 3,	//중대본부
+		COMPANY = 4,	//중대
+		BATTALION_CENTER = 5,	//대대본부
+		BATTALION = 6,	//대대
+		COMBATANTCLASS_SIZE = 7 //크기
+	};
+
+	static CString strPRODUCTTYPE(PRODUCTTYPE em)
+	{
+		CString str = _T("");
+		switch(em)
+		{
+		case TY0: str = _T("병력");
+			break;
+		case TY1: str = _T("전투장비(화기)");
+			break;
+		case TY2: str = _T("전투지원장비");
+			break;
+		case TY3: str = _T("보급품");
+			break;
+		default:
+			break;
+		}
+		return str;
+	}
+
+	static PRODUCTTYPE indexPRODUCTTYPE(int idx)
+	{
+		PRODUCTTYPE em = TY0;
+		switch(idx)
+		{
+		case 0: em = TY0;
+			break;
+		case 1: em = TY1;
+			break;
+		case 2: em = TY2;
+			break;
+		case 3: em = TY3;
+			break;
+		default:
+			break;
+		}
+		return em;
+	}
+
+	static CString strCOMBATANT(COMBATANT em)
+	{
+		CString str = _T("");
+		switch(em)
+		{
+		case INFANTRY: str = _T("보병");
+			break;
+		case ARMORED: str = _T("전차");
+			break;
+		case ARTILLERY: str = _T("포병");
+			break;
+		default:
+			break;
+		}
+		return str;
+	}
+
+	static COMBATANT indexCOMBATANT(int idx)
+	{
+		COMBATANT em = INFANTRY;
+		switch(idx)
+		{
+		case 0: em = INFANTRY;
+			break;
+		case 1: em = ARMORED;
+			break;
+		case 2: em = ARTILLERY;
+			break;
+		default:
+			break;
+		}
+		return em;
+	}
+
+}SPrMoTy;
+
+//매핑키, 유일키(LOW, HI 분리)
+typedef CAtlMap<int, vector<int> > ProductKeyMap;
+
+typedef struct _SProductMappKey
+{
+	void setVal(SPrMoTy::MODELTYPE moType, int mappKey, int proKey)
+	{
+		if(SPrMoTy::MTLOW ==  moType)
+		{
+			ProductKeyMap::CPair* pair = lowModel.Lookup(mappKey);
+			if(pair != NULL)
+			{
+				pair->m_value.push_back(proKey);
+			}
+			else
+			{
+				vector<int> val;
+				val.push_back(proKey);
+				lowModel.SetAt(mappKey, val);
+			}
+		}
+		else
+		{
+			ProductKeyMap::CPair* pair = hiModel.Lookup(mappKey);
+			if(pair != NULL)
+			{
+				pair->m_value.push_back(proKey);
+			}
+			else
+			{
+				vector<int> val;
+				val.push_back(proKey);
+				hiModel.SetAt(mappKey, val);
+			}
+		}		
+	}
+
+	vector<int> getMappKey(SPrMoTy::MODELTYPE moType)
+	{
+		vector<int> keyVal;
+		if(SPrMoTy::MTLOW ==  moType)
+		{
+			ProductKeyMap::CPair* pair = NULL;
+			POSITION pos = lowModel.GetStartPosition();
+			while(pos)
+			{
+				pair = lowModel.GetNext(pos);
+				keyVal.push_back(pair->m_key);
+			}
+		}
+		else
+		{
+			ProductKeyMap::CPair* pair = NULL;
+			POSITION pos = hiModel.GetStartPosition();
+			while(pos)
+			{
+				pair = hiModel.GetNext(pos);
+				keyVal.push_back(pair->m_key);
+			}
+		}
+		sort(keyVal.begin(), keyVal.end());
+		return keyVal;
+	}
+private:
+	ProductKeyMap lowModel;
+	ProductKeyMap hiModel;
+}SPrMaKe;
+
 typedef struct _SProductNum
 {
 	int retention; //보유량
@@ -204,27 +382,6 @@ typedef struct _SProductBattalion
 		LV1 = 0,				//대대하위
 		LV_SIZE = 1
 	};
-	enum MODELTYPE
-	{
-		MTLOW = 0,				//LOW 모델
-		MTHI = 1,				//HI 모델
-		MT_SIZE
-	};
-	enum PRODUCTTYPE
-	{
-		TY0 = 0,				//병력
-		TY1 = 1,				//전투장비(화기)
-		TY2 = 2,				//전투지원장비
-		TY3 = 3,				//보급품
-		PROD_SIZE
-	};
-	enum COMBATANT
-	{
-		INFANTRY = 0,	//보병
-		ARMORED = 1,	//전차
-		ARTILLERY = 2,	//포병
-		COMBATANT_SIZE = 3,
-	};
 	_SProductBattalion()
 	{
 		lvSPrBa.resize(LV_SIZE);
@@ -271,61 +428,108 @@ private:
 	vector<SPrClKi> mySPrBa;
 }SPrBa;
 
-typedef CAtlMap<SPrBa::PRODUCTTYPE, SPrBa> SPrBaMap;
+typedef CAtlMap<SPrMoTy::PRODUCTTYPE, SPrBa> SPrBaMap;
 
 
 typedef struct _SProductValue
 {
 	int accreditation;	//인가량
-	int key;	//유일 키값
+	int key;		//유일 키값
+	int mappKey;	//매핑 키
 	CString strName;	//자산이름
+	bool compareMappKey(int mappingNum)
+	{
+		return mappKey == mappingNum;
+	}
+	bool compareKey(int _key)
+	{
+		return key == _key;
+	}
+
+	string strLogVal()
+	{
+		std::stringstream stm;
+		stm << "인가량 : " << accreditation << "	"
+			<< "유일 키값 : " << key << "	"
+			<< "매핑 키 : " << mappKey << "	"
+			<< "자산이름 : " << CStringA(strName) << "	";
+		return stm.str();
+	}
 }SPrVa;
 
 typedef struct _SProductMapping
 {
-	enum COMBATANTCLASS
-	{
-		SQUAD = 0,		//분대
-		PLATOON_CENTER = 1,	//소대본부
-		PLATOON = 2,	//소대
-		COMPANY_CENTER = 3,	//중대본부
-		COMPANY = 4,	//중대
-		BATTALION_CENTER = 5,	//대대본부
-		BATTALION = 6,	//대대
-		COMBATANTCLASS_SIZE = 7 //크기
-	};
-	enum MODELTYPE
-	{
-		MTLOW = 0,				//LOW 모델
-		MTHI = 1,				//HI 모델
-		MT_SIZE
-	};
-	enum PRODUCTTYPE
-	{
-		TY0 = 0,				//병력
-		TY1 = 1,				//전투장비(화기)
-		TY2 = 2,				//전투지원장비
-		TY3 = 3,				//보급품
-		PROD_SIZE
-	};
-
-	void setVal(MODELTYPE modelType, COMBATANTCLASS combatClass, SPrVa val)
+	void setVal(SPrMoTy::MODELTYPE modelType, SPrMoTy::COMBATANTCLASS combatClass, SPrVa val)
 	{
 		prVa[modelType][combatClass].push_back(val);
 	}
 
 	void clearVal()
 	{
-		for (int i = 0; i < (int)MT_SIZE; i++)
+		for (int i = 0; i < (int)SPrMoTy::MT_SIZE; i++)
 		{
-			for (int j = 0; j < (int)COMBATANTCLASS_SIZE; j++)
+			for (int j = 0; j < (int)SPrMoTy::COMBATANTCLASS_SIZE; j++)
 			{
 				prVa[i][j].clear();
 			}
 		}
 	}
-	vector<SPrVa> prVa[MT_SIZE][COMBATANTCLASS_SIZE];
+
+	vector<vector<SPrVa> > getVal(int mappingNum, SPrMoTy::COMBATANTCLASS combatClass)
+	{
+		vector<vector<SPrVa> > valvec2;
+		vector<SPrVa> val;
+		val.clear();
+		for (int i = 0; i < (int)prVa[SPrMoTy::MTLOW][combatClass].size(); i++)
+		{
+			if(prVa[SPrMoTy::MTLOW][combatClass][i].compareMappKey(mappingNum))
+			{
+				val.push_back(prVa[SPrMoTy::MTLOW][combatClass][i]);
+			}
+		}
+		valvec2.push_back(val);
+		val.clear();
+		for (int i = 0; i < (int)prVa[SPrMoTy::MTHI][combatClass].size(); i++)
+		{
+			if(prVa[SPrMoTy::MTHI][combatClass][i].compareMappKey(mappingNum))
+			{
+				val.push_back(prVa[SPrMoTy::MTHI][combatClass][i]);
+			}
+		}
+		valvec2.push_back(val);
+		return valvec2;
+	}
+
+	vector<SPrVa> getVal(int mappingNum, SPrMoTy::COMBATANTCLASS combatClass, SPrMoTy::MODELTYPE modelType)
+	{
+		vector<SPrVa> val;
+		val.clear();
+		for (int i = 0; i < (int)prVa[modelType][combatClass].size(); i++)
+		{
+			if(prVa[modelType][combatClass][i].compareMappKey(mappingNum))
+			{
+				val.push_back(prVa[modelType][combatClass][i]);
+			}
+		}
+		return val;
+	}
+
+	SPrVa getValKey(int key, SPrMoTy::COMBATANTCLASS combatClass, SPrMoTy::MODELTYPE modelType)
+	{
+		SPrVa val;
+		for (int i = 0; i < (int)prVa[modelType][combatClass].size(); i++)
+		{
+			if(prVa[modelType][combatClass][i].compareKey(key))
+			{
+				val = prVa[modelType][combatClass][i];
+				break;
+			}
+		}
+		return val;
+	}
+
+	vector<SPrVa> prVa[SPrMoTy::MT_SIZE][SPrMoTy::COMBATANTCLASS_SIZE];
 }SPrMa;
 
 //int : 매핑키(숫자), SPrMa : 매핑자산(low, hi)
-typedef CAtlMap<SPrMa::PRODUCTTYPE, SPrMa> ProductMappingVal;
+typedef CAtlMap<SPrMoTy::PRODUCTTYPE, SPrMa> ProductMappingVal;
