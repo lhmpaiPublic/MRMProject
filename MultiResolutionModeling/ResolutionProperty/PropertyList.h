@@ -6,7 +6,7 @@ class CPropertyList
 {
 	SPrBaMap propertyMap[SPrMoTy::MT_SIZE][SPrMoTy::COMBATANT_SIZE];
 
-	ProductMappingVal productMappingVal;
+	ProductMappingVal productMappingVal[SPrMoTy::COMBATANT_SIZE];
 
 	SPrMaKe keyList[SPrMoTy::COMBATANT_SIZE][SPrMoTy::PROD_SIZE];
 public:
@@ -15,10 +15,10 @@ public:
 
 	void initPropertyList(CString fileNm);
 
-	void loadCSVFile(string fileName);
+	void loadCSVFile(string fileName, SPrMoTy::COMBATANT combat);
 
-	void initPropertyItem(SPrMoTy::MODELTYPE modelType, CListCtrl* listCtrl);
+	void initPropertyItem(SPrMoTy::MODELTYPE modelType, CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
 
-	void lowPropertyItem(CListCtrl* listCtrl);
-	void hiPropertyItem(CListCtrl* listCtrl);
+	void lowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
+	void hiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
 };

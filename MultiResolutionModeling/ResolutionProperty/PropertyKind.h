@@ -80,6 +80,17 @@ typedef struct _SProductModelType
 		return em;
 	}
 
+	static vector<CString> strPRODUCTTYPE()
+	{
+		vector<CString> strEm;
+		strEm.clear();
+		strEm.push_back(_T("병력"));
+		strEm.push_back(_T("전투장비(화기)"));
+		strEm.push_back(_T("전투지원장비"));
+		strEm.push_back(_T("보급품"));
+		return strEm;
+	}
+
 	static CString strCOMBATANT(COMBATANT em)
 	{
 		CString str = _T("");
@@ -112,6 +123,100 @@ typedef struct _SProductModelType
 			break;
 		}
 		return em;
+	}
+
+
+	static vector<CString> strCOMBATANT()
+	{
+		vector<CString> strEm;
+		strEm.clear();
+		strEm.push_back(_T("보병"));
+		strEm.push_back(_T("전차"));
+		strEm.push_back(_T("포병"));
+		return strEm;
+	}
+
+	static CString strCOMBATANTCLASS(COMBATANTCLASS em)
+	{
+		CString str = _T("");
+		switch(em)
+		{
+		case PLATOON: str = _T("소대");
+			break;
+		case COMPANY: str = _T("중대");
+			break;
+		case BATTALION: str = _T("대대");
+			break;
+		default:
+			break;
+		}
+		return str;
+	}
+
+	static COMBATANTCLASS indexCOMBATANTCLASS(int idx, COMBATANT combat)
+	{
+		COMBATANTCLASS em = PLATOON;
+		if (ARMORED == combat)
+		{
+			switch(idx)
+			{
+			case 0: em = COMPANY;
+				break;
+			case 1: em = BATTALION;
+				break;
+			default:
+				break;
+			}
+		}
+		else if (ARTILLERY == combat)
+		{
+			switch(idx)
+			{
+			case 0: em = BATTALION;
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			switch(idx)
+			{
+			case 0: em = PLATOON;
+				break;
+			case 1: em = COMPANY;
+				break;
+			case 2: em = BATTALION;
+				break;
+			default:
+				break;
+			}
+		}
+
+		return em;
+	}
+
+
+	static vector<CString> strCOMBATANTCLASS(COMBATANT combat)
+	{
+		vector<CString> strEm;
+		strEm.clear();
+		if (ARMORED == combat)
+		{
+			strEm.push_back(_T("중대"));
+			strEm.push_back(_T("대대"));
+		}
+		else if (ARTILLERY == combat)
+		{
+			strEm.push_back(_T("대대"));
+		}
+		else
+		{
+			strEm.push_back(_T("소대"));
+			strEm.push_back(_T("중대"));
+			strEm.push_back(_T("대대"));
+		}
+		return strEm;
 	}
 
 }SPrMoTy;

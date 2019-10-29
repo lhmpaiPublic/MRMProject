@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "ResolutionPosition/ResolutionPosition.h"
 #include "ResolutionProperty/ResolutionProperty.h"
+#include "ResolutionProperty/PropertyList.h"
 
 //초기화
 CGAgt* CGAgt::mG = NULL;
@@ -26,10 +27,22 @@ CGAgt::CGAgt()
 	mResPosDlg = NULL;
 	mResCha = NULL;
 	mResPptyDlg = NULL;
+	mPropList = NULL;
 }
 
 CGAgt::~CGAgt()
 {
+	delete mResPosDlg;
+	mResPosDlg = NULL;
+
+	delete mResCha;
+	mResCha = NULL;
+
+	delete mResPptyDlg;
+	mResPptyDlg = NULL;
+
+	delete mPropList;
+	mPropList = NULL;
 }
 
 void CGAgt::initGAgt(HWND _hParent)
@@ -39,6 +52,12 @@ void CGAgt::initGAgt(HWND _hParent)
 
 	mResPosDlg = new CResolutionPositionDlg();
 	if(mResPosDlg)	mResPosDlg->Create(hParent);
+
+
+	mPropList = new CPropertyList();
+	mPropList->loadCSVFile("infantryPropertyList.csv", SPrMoTy::INFANTRY);
+	mPropList->loadCSVFile("armoredPropertyList.csv", SPrMoTy::ARMORED);
+	mPropList->loadCSVFile("artilleryPropertyList.csv", SPrMoTy::ARTILLERY);
 
 	mResPptyDlg = new CResolutionPropertyDlg();
 	if(mResPptyDlg)	mResPptyDlg->Create(hParent);
@@ -83,6 +102,11 @@ CResolutionPositionDlg* CGAgt::ResPosDlg()
 CResolutionChange* CGAgt::ResCha()
 {
 	return mResCha;
+}
+
+CPropertyList* CGAgt::PropLi()
+{
+	return mPropList;
 }
 
 CResolutionPropertyDlg* CGAgt::ResPptyDlg()

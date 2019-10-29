@@ -16,6 +16,11 @@ class CResolutionPropertyDlg : public CDialogImpl<CResolutionPropertyDlg>, publi
 	CImageList m_ilItemImages;
 	CFont m_fntCustomFont1;
 	CFont m_fntCustomFont2;
+
+	CComboBox inUnitType;
+	CComboBox inUnitScale;
+	CComboBox propertyDiv;
+
 public:
 	CResolutionPropertyDlg();
 
@@ -38,8 +43,11 @@ public:
 		MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown)
 		MESSAGE_HANDLER(WM_MOUSEMOVE, OnLMouseMove)
 		MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp)
+		COMMAND_HANDLER(IDCC_PPTY_INUNITTYPE, CBN_SELCHANGE, OnCbnSelchangePptyInunittype)
+		COMMAND_HANDLER(IDCC_PPTY_INUNITSCALE, CBN_SELCHANGE, OnCbnSelchangePptyInunitscale)
+		COMMAND_HANDLER(IDCC_PPTY_PROPERTYDIV, CBN_SELCHANGE, OnCbnSelchangePptyPropertydiv)
+
 		REFLECT_NOTIFICATIONS()		
-		
 	END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -59,4 +67,7 @@ public:
 	LRESULT OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 
 	LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+	LRESULT OnCbnSelchangePptyInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnCbnSelchangePptyPropertydiv(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };
