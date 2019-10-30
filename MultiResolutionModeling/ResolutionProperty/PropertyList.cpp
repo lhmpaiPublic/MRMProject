@@ -8,7 +8,8 @@
 
 CPropertyList::CPropertyList()
 {
-
+	itemKey[SPrMoTy::MTLOW].RemoveAll();
+	itemKey[SPrMoTy::MTHI].RemoveAll();
 }
 CPropertyList::~CPropertyList()
 {
@@ -61,34 +62,6 @@ void CPropertyList::loadCSVFile(string fileName, SPrMoTy::COMBATANT combat)
 					spba[dis].setVal(inputVal);
 				}
 
-				//inputVal.retention = strtoul(row[4].c_str(), NULL, 10);
-				//inputVal.accreditation = strtoul(row[4].c_str(), NULL, 10);
-				//spba[dis].setVal(inputVal);
-
-				//inputVal.retention = strtoul(row[5].c_str(), NULL, 10);
-				//inputVal.accreditation = strtoul(row[5].c_str(), NULL, 10);
-				//spbatop[dis].setVal(inputVal);
-
-				//inputVal.retention = strtoul(row[6].c_str(), NULL, 10);
-				//inputVal.accreditation = strtoul(row[6].c_str(), NULL, 10);
-				//spco[dis].setVal(inputVal);
-
-				//inputVal.retention = strtoul(row[7].c_str(), NULL, 10);
-				//inputVal.accreditation = strtoul(row[7].c_str(), NULL, 10);
-				//spcotop[dis].setVal(inputVal);
-
-				//inputVal.retention = strtoul(row[8].c_str(), NULL, 10);
-				//inputVal.accreditation = strtoul(row[8].c_str(), NULL, 10);
-				//sppl[dis].setVal(inputVal);
-
-				//inputVal.retention = strtoul(row[9].c_str(), NULL, 10);
-				//inputVal.accreditation = strtoul(row[9].c_str(), NULL, 10);
-				//sppltop[dis].setVal(inputVal);
-
-				//inputVal.retention = strtoul(row[10].c_str(), NULL, 10);
-				//inputVal.accreditation = strtoul(row[10].c_str(), NULL, 10);
-				//spsq[dis].setVal(inputVal);
-
 				SPrVa prVa;
 				prVa.key = strtoul(row[1].c_str(), NULL, 10);
 				prVa.mappKey = strtoul(row[2].c_str(), NULL, 10);
@@ -100,26 +73,6 @@ void CPropertyList::loadCSVFile(string fileName, SPrMoTy::COMBATANT combat)
 					prMa[dis].setVal(modelTypePrMa, SPrMoTy::COMBATANTCLASS(SPrMoTy::BATTALION-cbc), prVa);
 				}
 				
-				//prVa.accreditation = strtoul(row[4].c_str(), NULL, 10);
-				//prMa[dis].setVal(modelTypePrMa, SPrMoTy::BATTALION, prVa);
-
-				//prVa.accreditation = strtoul(row[5].c_str(), NULL, 10);
-				//prMa[dis].setVal(modelTypePrMa, SPrMoTy::BATTALION_CENTER, prVa);
-
-				//prVa.accreditation = strtoul(row[6].c_str(), NULL, 10);
-				//prMa[dis].setVal(modelTypePrMa, SPrMoTy::COMPANY, prVa);
-
-				//prVa.accreditation = strtoul(row[7].c_str(), NULL, 10);
-				//prMa[dis].setVal(modelTypePrMa, SPrMoTy::COMPANY_CENTER, prVa);
-
-				//prVa.accreditation = strtoul(row[8].c_str(), NULL, 10);
-				//prMa[dis].setVal(modelTypePrMa, SPrMoTy::PLATOON, prVa);
-
-				//prVa.accreditation = strtoul(row[9].c_str(), NULL, 10);
-				//prMa[dis].setVal(modelTypePrMa, SPrMoTy::PLATOON_CENTER, prVa);
-
-				//prVa.accreditation = strtoul(row[10].c_str(), NULL, 10);
-				//prMa[dis].setVal(modelTypePrMa, SPrMoTy::SQUAD, prVa);
 			
 			}
 			else if(row[0][0] == '#' && bNotValue == false)
@@ -242,17 +195,8 @@ void CPropertyList::initPropertyItem(SPrMoTy::MODELTYPE modelType, CListCtrl* li
 
 void CPropertyList::lowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass)
 {
-	CLogDlg::AddLogText("<Key 값>");
 	vector<int> lowKey = keyList[combat][propType].getMappKey(SPrMoTy::MTLOW);
-	CLogDlg::initStream();
-	CLogDlg::insertStream("보병 병력 low 값 :");
-	CLogDlg::insertStreamVec(lowKey, '	');
-	CLogDlg::addLogTextStream();
 	vector<int> hiKey = keyList[combat][propType].getMappKey(SPrMoTy::MTHI);
-	CLogDlg::initStream();
-	CLogDlg::insertStream("보병 병력 hi 값 :");
-	CLogDlg::insertStreamVec(hiKey, '	');
-	CLogDlg::addLogTextStream();
 
 	int nUser = listCtrl->AddItem(_T("자산명"));
 	listCtrl->SetItemColours( nUser, 0, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
@@ -268,23 +212,22 @@ void CPropertyList::lowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT comb
 	listCtrl->SetItemColours( nUser, 5, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
 	listCtrl->SetItemText( nUser, 6, _T("인가량"));
 	listCtrl->SetItemColours( nUser, 6, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, 7, _T("보유량"));
+	listCtrl->SetItemColours( nUser, 7, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, 8, _T("인가량"));
+	listCtrl->SetItemColours( nUser, 8, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, 9, _T("보유량"));
+	listCtrl->SetItemColours( nUser, 9, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, 10, _T("인가량"));
+	listCtrl->SetItemColours( nUser, 10, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
 
 	SPrMa prVal;
 	productMappingVal[combat].Lookup(propType, prVal);
 	for (int i = 0; i < (int)lowKey.size(); i++)
 	{
-		CLogDlg::initStream();
-		CLogDlg::insertStream("map key :");
-		CLogDlg::insertStream(lowKey[i], '	');
-		CLogDlg::addLogTextStream();
-
 		vector<SPrVa> val = prVal.getVal(lowKey[i], cbtClass, SPrMoTy::MTLOW);
 		for (int iv = 0; iv < (int)val.size(); iv++)
 		{
-			CLogDlg::initStream();
-			CLogDlg::insertStream("low val :");
-			CLogDlg::insertStream(val[iv].strLogVal(), '	');
-			CLogDlg::addLogTextStream();
 			int nUser = listCtrl->AddItem(val[iv].strName);
 			listCtrl->SetItemColours( nUser, 0, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
 			listCtrl->SetItemFormat( nUser, 1, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
@@ -306,6 +249,10 @@ void CPropertyList::lowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT comb
 			strStream << keyval.accreditation;
 			listCtrl->SetItemText( nUser, 5, strStream.str().c_str());
 			listCtrl->SetItemText( nUser, 6, strStream.str().c_str());
+			listCtrl->SetItemText( nUser, 7, strStream.str().c_str());
+			listCtrl->SetItemText( nUser, 8, strStream.str().c_str());
+			listCtrl->SetItemText( nUser, 9, strStream.str().c_str());
+			listCtrl->SetItemText( nUser, 10, strStream.str().c_str());
 		}
 
 	}
@@ -326,32 +273,43 @@ void CPropertyList::hiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT comba
 	listCtrl->SetItemColours( nUser, 3, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
 	listCtrl->SetItemText( nUser, 4, _T("보유량"));
 	listCtrl->SetItemColours( nUser, 4, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
-	listCtrl->SetItemText( nUser, 5, _T("보유량"));
+	listCtrl->SetItemText( nUser, 5, _T("인가량"));
 	listCtrl->SetItemColours( nUser, 5, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
 	listCtrl->SetItemText( nUser, 6, _T("보유량"));
 	listCtrl->SetItemColours( nUser, 6, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
-	listCtrl->SetItemText( nUser, 7, _T("보유량"));
+	listCtrl->SetItemText( nUser, 7, _T("인가량"));
 	listCtrl->SetItemColours( nUser, 7, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, 8, _T("보유량"));
+	listCtrl->SetItemColours( nUser, 8, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, 9, _T("인가량"));
+	listCtrl->SetItemColours( nUser, 9, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, 10, _T("보유량"));
+	listCtrl->SetItemColours( nUser, 10, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, 11, _T("인가량"));
+	listCtrl->SetItemColours( nUser, 11, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+
+	itemKey[SPrMoTy::MTLOW].RemoveAll();
+	itemKey[SPrMoTy::MTHI].RemoveAll();
 
 	SPrMa prVal;
 	productMappingVal[combat].Lookup(propType, prVal);
 	for (int i = 0; i < (int)lowKey.size(); i++)
 	{
-		CLogDlg::initStream();
-		CLogDlg::insertStream("map key :");
-		CLogDlg::insertStream(lowKey[i], '	');
-		CLogDlg::addLogTextStream();
-
 		vector<SPrVa> lowVal = prVal.getVal(lowKey[i], cbtClass, SPrMoTy::MTLOW);
-		vector<SPrVa> hiVal = prVal.getVal(lowKey[i], cbtClass, SPrMoTy::MTHI);
+		for (int k = 0; k < (int)lowVal.size(); k++)
+		{
+			itemKey[SPrMoTy::MTLOW].SetAt(lowVal[k].strName, lowVal[k].key);
+		}
+		vector<SPrVa> hiVal = prVal.getVal(hiKey[i], cbtClass, SPrMoTy::MTHI);
+		for (int k = 0; k < (int)hiVal.size(); k++)
+		{
+			itemKey[SPrMoTy::MTHI].SetAt(hiVal[k].strName, hiVal[k].key);
+		}
+		
 		if(lowVal.size() <= hiVal.size())
 		{
 			for (int iv = 0; iv < (int)hiVal.size(); iv++)
 			{
-				CLogDlg::initStream();
-				CLogDlg::insertStream("hi val :");
-				CLogDlg::insertStream(hiVal[iv].strLogVal(), '	');
-				CLogDlg::addLogTextStream();
 				int nUser = listCtrl->AddItem(iv == 0 ? lowVal[0].strName : " ");
 				listCtrl->SetItemColours( nUser, 0, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
 				listCtrl->SetItemText( nUser, 1, hiVal[iv].strName);
@@ -363,6 +321,22 @@ void CPropertyList::hiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT comba
 				strStream.str(L"");
 				strStream << hiVal[iv].accreditation;
 				listCtrl->SetItemText( nUser, 3, strStream.str().c_str());
+
+				SPrVa keyval = prVal.getValKey(hiVal[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-1), SPrMoTy::MTHI);
+				strStream.str(L"");
+				strStream << keyval.accreditation;
+				listCtrl->SetItemText( nUser, 4, strStream.str().c_str());
+				listCtrl->SetItemText( nUser, 5, strStream.str().c_str());
+
+				keyval = prVal.getValKey(hiVal[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-2), SPrMoTy::MTHI);
+				strStream.str(L"");
+				strStream << keyval.accreditation;
+				listCtrl->SetItemText( nUser, 6, strStream.str().c_str());
+				listCtrl->SetItemText( nUser, 7, strStream.str().c_str());
+				listCtrl->SetItemText( nUser, 8, strStream.str().c_str());
+				listCtrl->SetItemText( nUser, 9, strStream.str().c_str());
+				listCtrl->SetItemText( nUser, 10, strStream.str().c_str());
+				listCtrl->SetItemText( nUser, 11, strStream.str().c_str());
 			}
 		}
 		else
@@ -382,6 +356,22 @@ void CPropertyList::hiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT comba
 					strStream.str(L"");
 					strStream << hiVal[0].accreditation;
 					listCtrl->SetItemText( nUser, 3, strStream.str().c_str());
+
+					SPrVa keyval = prVal.getValKey(hiVal[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-1), SPrMoTy::MTHI);
+					strStream.str(L"");
+					strStream << keyval.accreditation;
+					listCtrl->SetItemText( nUser, 4, strStream.str().c_str());
+					listCtrl->SetItemText( nUser, 5, strStream.str().c_str());
+
+					keyval = prVal.getValKey(hiVal[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-2), SPrMoTy::MTHI);
+					strStream.str(L"");
+					strStream << keyval.accreditation;
+					listCtrl->SetItemText( nUser, 6, strStream.str().c_str());
+					listCtrl->SetItemText( nUser, 7, strStream.str().c_str());
+					listCtrl->SetItemText( nUser, 8, strStream.str().c_str());
+					listCtrl->SetItemText( nUser, 9, strStream.str().c_str());
+					listCtrl->SetItemText( nUser, 10, strStream.str().c_str());
+					listCtrl->SetItemText( nUser, 11, strStream.str().c_str());
 				}				
 			}
 		}		

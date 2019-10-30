@@ -9,6 +9,8 @@ class CPropertyList
 	ProductMappingVal productMappingVal[SPrMoTy::COMBATANT_SIZE];
 
 	SPrMaKe keyList[SPrMoTy::COMBATANT_SIZE][SPrMoTy::PROD_SIZE];
+
+	PropNameKeyVal itemKey[SPrMoTy::MT_SIZE];
 public:
 	CPropertyList();
 	~CPropertyList();

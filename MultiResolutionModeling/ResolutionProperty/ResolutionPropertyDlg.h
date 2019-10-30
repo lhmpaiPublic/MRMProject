@@ -21,6 +21,7 @@ class CResolutionPropertyDlg : public CDialogImpl<CResolutionPropertyDlg>, publi
 	CComboBox inUnitScale;
 	CComboBox propertyDiv;
 
+	int numSelect;
 public:
 	CResolutionPropertyDlg();
 
@@ -47,7 +48,16 @@ public:
 		COMMAND_HANDLER(IDCC_PPTY_INUNITSCALE, CBN_SELCHANGE, OnCbnSelchangePptyInunitscale)
 		COMMAND_HANDLER(IDCC_PPTY_PROPERTYDIV, CBN_SELCHANGE, OnCbnSelchangePptyPropertydiv)
 
+		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELLIST, LCN_SELECTED, OnLowModelListSelected)
+		NOTIFY_HANDLER_EX(IDCCUST_LOWMODELLIST, LCN_LEFTCLICK, OnLowModelListSelectedLeft)
+		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELLIST, LCN_RIGHTCLICK, OnLowModelListSelectedRight)
+		NOTIFY_HANDLER_EX(IDCCUST_LOWMODELLIST, LCN_MODIFIED, OnLowModelListModify)
+		//NOTIFY_HANDLER_EX(IDCCUST_HIMODELLIST, LCN_SELECTED, OnHiModelListSelected)
+		NOTIFY_HANDLER_EX(IDCCUST_HIMODELLIST, LCN_LEFTCLICK, OnHiModelListSelectedLeft)
+
+		COMMAND_HANDLER(IDCB_PPTY_RESOLUTIONCHANGE, BN_CLICKED, OnBnClickedPptyResolutionchange)
 		REFLECT_NOTIFICATIONS()		
+		
 	END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -70,4 +80,13 @@ public:
 	LRESULT OnCbnSelchangePptyInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnCbnSelchangePptyPropertydiv(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+	LRESULT OnLowModelListSelected( LPNMHDR lpNMHDR );
+	LRESULT OnLowModelListSelectedLeft( LPNMHDR lpNMHDR );
+	LRESULT OnLowModelListSelectedRight( LPNMHDR lpNMHDR );
+	LRESULT OnLowModelListModify( LPNMHDR lpNMHDR );
+
+	LRESULT OnHiModelListSelected( LPNMHDR lpNMHDR );
+	LRESULT OnHiModelListSelectedLeft( LPNMHDR lpNMHDR );
+	LRESULT OnBnClickedPptyResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };

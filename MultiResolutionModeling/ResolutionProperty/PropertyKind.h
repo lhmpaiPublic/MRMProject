@@ -638,3 +638,6 @@ typedef struct _SProductMapping
 
 //int : 매핑키(숫자), SPrMa : 매핑자산(low, hi)
 typedef CAtlMap<SPrMoTy::PRODUCTTYPE, SPrMa> ProductMappingVal;
+
+//장비이름으로 고유키값 찾기
+typedef CAtlMap<CAtlString, int, CStringElementTraits<CString> > PropNameKeyVal;
