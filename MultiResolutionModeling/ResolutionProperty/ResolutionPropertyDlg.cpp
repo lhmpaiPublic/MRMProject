@@ -476,14 +476,14 @@ LRESULT CResolutionPropertyDlg::OnBnClickedPptyResolutionchange(WORD /*wNotifyCo
 	osItemText << _T( "Low Item Count: " ) << m_lowModelList.GetItemCount();
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
-	vector<CString> itemName;
-	for (int i = 1; i < (int)m_lowModelList.GetItemCount(); i++)
-	{
-		itemName.push_back(m_lowModelList.GetItemText(i, 0));
-	}
-
 	osItemText << _T( "Hi Item Count: " ) << m_hiModelList.GetItemCount();
 	CLogDlg::AddLogText(osItemText.str().c_str());
+
+	SPrMoTy::COMBATANT combatType = SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel());
+	CGAgt::G()->PropLi()->resolutionChangeProperty(&m_lowModelList, &m_hiModelList,
+		combatType,
+		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
+		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
 	
 	return 0;
 }

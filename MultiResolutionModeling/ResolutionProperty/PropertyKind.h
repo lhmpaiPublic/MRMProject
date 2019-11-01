@@ -6,6 +6,139 @@
 #define MAKEMIL2(a, b)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff)) | ((DWORD)(((BYTE)((DWORD_PTR)(b)) & 0xff) << 8 ))
 #define MAKEMIL1(a)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff))
 
+
+typedef struct _SVecStringInt
+{
+	_SVecStringInt()
+	{
+		clearVal();
+	}
+	void clearVal()
+	{
+		size = 0;
+		iValue.clear();
+		sValue.clear();
+	}
+
+	bool deleteVal(DWORD idx)
+	{
+		bool b = false;
+		if(sValue.size() > idx && iValue.size() > idx)
+		{
+			b = true;
+			sValue.erase(sValue.begin()+idx);
+			iValue.erase(iValue.begin()+idx);
+		}
+		return b;
+	}
+
+	void setVal(CString _sVal, int _iVal)
+	{
+		sValue.push_back(_sVal);
+		iValue.push_back(_iVal);
+		size = (int) sValue.size();
+	}
+
+	bool modifyVal(DWORD idx, CString _sVal, int _iVal)
+	{
+		bool b = false;
+		if(sValue.size() > idx && iValue.size() > idx)
+		{
+			b = true;
+			sValue[idx] = _sVal;
+			iValue[idx] = _iVal;
+		}
+		return b;
+	}
+
+	CString getSVal(DWORD idx)
+	{
+		CString rVal = _T("");
+		if(sValue.size() > idx)
+		{
+			rVal = sValue[idx];
+		}
+		return rVal;
+	}
+
+	vector<CString> getSVal()
+	{
+		return sValue;
+	}
+
+	int getIVal(DWORD idx)
+	{
+		int rVal = -1;
+		if(sValue.size() > idx)
+		{
+			rVal = iValue[idx];
+		}
+		return rVal;
+	}
+
+	vector<int> getIVal()
+	{
+		return iValue;
+	}
+
+	bool getIVal(DWORD idx, CString& sVal, int& iVal)
+	{
+		bool b = false;
+		if(sValue.size() > idx && iValue.size() > idx)
+		{
+			b = true;
+			sVal = sValue[idx];
+			iVal = iValue[idx];
+		}
+		return b;
+	}
+
+	int getSize()
+	{
+		return size;
+	}
+private:
+	int size;
+	vector<int> iValue;
+	vector<CString> sValue;
+}SVeStIn;
+
+typedef struct _SProductColumnName
+{
+	enum LOWCOLUMNNAME
+	{
+		LMN_00 = 0,				//자산 이름
+		LMN_01 = 1,				//모체 설정량
+		LMN_02 = 2,				//모체 인가량
+		LMN_03 = 3,			//본부개체 보유량
+		LMN_04 = 4,			//본부개체 인가량
+		LMN_05 = 5,				//1개체 보유량
+		LMN_06 = 6,				//1개체 인가량
+		LMN_07 = 7,				//2개체 보유량
+		LMN_08 = 8,				//2개체 인가량
+		LMN_09 = 9,				//3개체 보유량
+		LMN_10 = 10,				//3개체 인가량
+		LMN_SIZE = 11
+	};
+
+	enum HICOLUMNNAME
+	{
+		HMN_00 = 0,				//모체 자산 이름
+		HMN_01 = 1,					//자산 이름
+		HMN_02 = 2,					//변환개체 보유량
+		HMN_03 = 3,					//변환개체 인가량
+		HMN_04 = 4,				//본부개체 보유량
+		HMN_05 = 5,				//본부개체 인가량
+		HMN_06 = 6,					//1개체 보유량
+		HMN_07 = 7,					//1개체 인가량
+		HMN_08 = 8,					//2개체 보유량
+		HMN_09 = 9,					//2개체 인가량
+		HMN_10 = 10,					//3개체 보유량
+		HMN_11 = 11,					//3개체 인가량
+		HMN_SIZE = 12
+	};
+}SPrCoNa;
+
 typedef struct _SProductModelType
 {
 	enum MODELTYPE
@@ -228,65 +361,34 @@ typedef struct _SProductMappKey
 {
 	void setVal(SPrMoTy::MODELTYPE moType, int mappKey, int proKey)
 	{
-		if(SPrMoTy::MTLOW ==  moType)
+		ProductKeyMap::CPair* pair = PrMaKeVal[moType].Lookup(mappKey);
+		if(pair != NULL)
 		{
-			ProductKeyMap::CPair* pair = lowModel.Lookup(mappKey);
-			if(pair != NULL)
-			{
-				pair->m_value.push_back(proKey);
-			}
-			else
-			{
-				vector<int> val;
-				val.push_back(proKey);
-				lowModel.SetAt(mappKey, val);
-			}
+			pair->m_value.push_back(proKey);
 		}
 		else
 		{
-			ProductKeyMap::CPair* pair = hiModel.Lookup(mappKey);
-			if(pair != NULL)
-			{
-				pair->m_value.push_back(proKey);
-			}
-			else
-			{
-				vector<int> val;
-				val.push_back(proKey);
-				hiModel.SetAt(mappKey, val);
-			}
-		}		
+			vector<int> val;
+			val.push_back(proKey);
+			PrMaKeVal[moType].SetAt(mappKey, val);
+		}
 	}
 
 	vector<int> getMappKey(SPrMoTy::MODELTYPE moType)
 	{
 		vector<int> keyVal;
-		if(SPrMoTy::MTLOW ==  moType)
+		ProductKeyMap::CPair* pair = NULL;
+		POSITION pos = PrMaKeVal[moType].GetStartPosition();
+		while(pos)
 		{
-			ProductKeyMap::CPair* pair = NULL;
-			POSITION pos = lowModel.GetStartPosition();
-			while(pos)
-			{
-				pair = lowModel.GetNext(pos);
-				keyVal.push_back(pair->m_key);
-			}
-		}
-		else
-		{
-			ProductKeyMap::CPair* pair = NULL;
-			POSITION pos = hiModel.GetStartPosition();
-			while(pos)
-			{
-				pair = hiModel.GetNext(pos);
-				keyVal.push_back(pair->m_key);
-			}
+			pair = PrMaKeVal[moType].GetNext(pos);
+			keyVal.push_back(pair->m_key);
 		}
 		sort(keyVal.begin(), keyVal.end());
 		return keyVal;
 	}
 private:
-	ProductKeyMap lowModel;
-	ProductKeyMap hiModel;
+	ProductKeyMap PrMaKeVal[SPrMoTy::MT_SIZE];
 }SPrMaKe;
 
 typedef struct _SProductNum
@@ -562,6 +664,36 @@ typedef struct _SProductValue
 	}
 }SPrVa;
 
+typedef struct _SProductKeyMappString
+{
+	void setVal(CString propName)
+	{
+		keyStr.push_back(propName);
+	}
+
+	vector<CString> getVal()
+	{
+		return keyStr;
+	}
+
+	vector<CString> keyStr;
+}SPrKeMaSt;
+
+typedef struct _SProductKeyMappListIndex
+{
+	void setVal(int idx)
+	{
+		keyIndex.push_back(idx);
+	}
+
+	vector<int> getVal()
+	{
+		return keyIndex;
+	}
+
+	vector<int> keyIndex;
+}SPrKeMaLiIn;
+
 typedef struct _SProductMapping
 {
 	void setVal(SPrMoTy::MODELTYPE modelType, SPrMoTy::COMBATANTCLASS combatClass, SPrVa val)
@@ -639,5 +771,37 @@ typedef struct _SProductMapping
 //int : 매핑키(숫자), SPrMa : 매핑자산(low, hi)
 typedef CAtlMap<SPrMoTy::PRODUCTTYPE, SPrMa> ProductMappingVal;
 
+typedef struct _SProductKey
+{
+	void setVal(int _mappKey, int _primKey, int _colNum)
+	{
+		mappKey = _mappKey;
+		primkey = _primKey;
+		colNum = _colNum;
+	}
+
+	int getMappKey()
+	{
+		return mappKey;
+	}
+
+	int getPrimKey()
+	{
+		return primkey;
+	}
+
+	int getColNum()
+	{
+		return colNum;
+	}
+private:
+	int mappKey;
+	int primkey;
+	int colNum;
+}SPrKe;
 //장비이름으로 고유키값 찾기
-typedef CAtlMap<CAtlString, int, CStringElementTraits<CString> > PropNameKeyVal;
+typedef CAtlMap<CAtlString, SPrKe, CStringElementTraits<CString> > PropNameKeyVal;
+
+typedef CAtlMap<int, SPrKeMaSt> PropKeyMappString;
+
+typedef CAtlMap<int, SPrKeMaLiIn> PropKeyMappListIndex;

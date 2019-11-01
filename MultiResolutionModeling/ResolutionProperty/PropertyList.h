@@ -11,6 +11,18 @@ class CPropertyList
 	SPrMaKe keyList[SPrMoTy::COMBATANT_SIZE][SPrMoTy::PROD_SIZE];
 
 	PropNameKeyVal itemKey[SPrMoTy::MT_SIZE];
+
+	PropKeyMappString itemMappStr[SPrMoTy::MT_SIZE];
+
+	void setPropKeyMappString(int mappKey, SPrMoTy::MODELTYPE modelType, CString propName);
+
+	bool getPropKeyMappString(int mappKey, SPrMoTy::MODELTYPE modelType, vector<CString>& strProp);
+
+	PropKeyMappListIndex itemListIndex[SPrMoTy::MT_SIZE];
+
+	void setPropKeyMappListIndex(int mappKey, SPrMoTy::MODELTYPE modelType, int idx);
+
+	bool getPropKeyMappListIndex(int mappKey, SPrMoTy::MODELTYPE modelType, vector<int>& idxVal);
 public:
 	CPropertyList();
 	~CPropertyList();
@@ -23,4 +35,6 @@ public:
 
 	void lowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
 	void hiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
+
+	void resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* listCtrlHi, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
 };

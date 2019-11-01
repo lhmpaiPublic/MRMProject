@@ -3195,6 +3195,8 @@ public:
 		
 		CRect rcSubItem( rcItem );
 		rcSubItem.right = rcSubItem.left;
+		rcSubItem.top +=1;
+		rcSubItem.bottom -=1;
 		
 		for ( int nSubItem = 0, nColumnCount = GetColumnCount(); nSubItem < nColumnCount; rcSubItem.left = rcSubItem.right + 1, nSubItem++ )
 		{
@@ -3651,6 +3653,7 @@ public:
 		if ( nSubItem < 0 || nSubItem >= (int)m_aItems[ nItem ].m_aSubItems.GetSize() )
 			return FALSE;
 		m_aItems[ nItem ].m_aSubItems[ nSubItem ].m_strText = lpszText;
+		InvalidateItem(nItem);
 		return TRUE;
 	}
 	
