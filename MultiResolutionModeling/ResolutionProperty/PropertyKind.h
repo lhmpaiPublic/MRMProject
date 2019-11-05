@@ -6,6 +6,15 @@
 #define MAKEMIL2(a, b)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff)) | ((DWORD)(((BYTE)((DWORD_PTR)(b)) & 0xff) << 8 ))
 #define MAKEMIL1(a)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff))
 
+typedef struct _SVecCompIdxVal
+{
+	static bool compare(_SVecCompIdxVal val1, _SVecCompIdxVal val2)
+	{
+		return val1.val > val2.val;
+	}
+	int idx;
+	float val;
+}SVeCoIdVa;
 
 typedef struct _SVecStringInt
 {
@@ -683,15 +692,15 @@ typedef struct _SProductKeyMappListIndex
 {
 	void setVal(int idx)
 	{
-		keyIndex.push_back(idx);
+		MakLidx.push_back(idx);
 	}
 
 	vector<int> getVal()
 	{
-		return keyIndex;
+		return MakLidx;
 	}
-
-	vector<int> keyIndex;
+private:
+	vector<int> MakLidx;
 }SPrKeMaLiIn;
 
 typedef struct _SProductMapping

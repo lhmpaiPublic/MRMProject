@@ -263,7 +263,7 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode
 
 		m_hiModelList.SetColumn(2, _T("소대"));
 		m_hiModelList.SetColumn(4, _T("본부소대"));
-		m_hiModelList.SetColumn(6, _T("분대대1"));
+		m_hiModelList.SetColumn(6, _T("분대1"));
 		m_hiModelList.SetColumn(8, _T("분대2"));
 		m_hiModelList.SetColumn(10, _T("분대3"));
 	}
@@ -317,7 +317,7 @@ LRESULT CResolutionPropertyDlg::OnLowModelListSelected( LPNMHDR lpNMHDR )
 #endif
 
 	osItemText << _T( "Selected item Num: " ) << pListNotify->m_nItem << _T( " " )
-		<< osItemText << _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+		<< _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
 
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
@@ -339,7 +339,7 @@ LRESULT CResolutionPropertyDlg::OnLowModelListSelectedLeft( LPNMHDR lpNMHDR )
 #endif
 
 	osItemText << _T( "Left item Num: " ) << pListNotify->m_nItem << _T( " " )
-		<< osItemText << _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+		<< _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
 
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
@@ -368,7 +368,7 @@ LRESULT CResolutionPropertyDlg::OnLowModelListSelectedRight( LPNMHDR lpNMHDR )
 #endif
 
 	osItemText << _T( "Right item Num: " ) << pListNotify->m_nItem << _T( " " )
-		<< osItemText << _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+		<< _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
 
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
@@ -390,7 +390,7 @@ LRESULT CResolutionPropertyDlg::OnLowModelListModify( LPNMHDR lpNMHDR )
 #endif
 
 	osItemText << _T( "Modify item Num: " ) << pListNotify->m_nItem << _T( " " )
-		<< osItemText << _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+		<< _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
 
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
@@ -430,7 +430,7 @@ LRESULT CResolutionPropertyDlg::OnHiModelListSelected( LPNMHDR lpNMHDR )
 #endif
 
 	osItemText << _T( "item Num: " ) << pListNotify->m_nItem << _T( " " )
-		<< osItemText << _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+		<< _T( " Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
 
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
@@ -453,7 +453,7 @@ LRESULT CResolutionPropertyDlg::OnHiModelListSelectedLeft( LPNMHDR lpNMHDR )
 #endif
 
 	osItemText << _T( "Lef item Num: " ) << pListNotify->m_nItem << _T( " " )
-		<< osItemText << _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+		<< _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
 
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
@@ -473,9 +473,11 @@ LRESULT CResolutionPropertyDlg::OnBnClickedPptyResolutionchange(WORD /*wNotifyCo
 	ostringstream osItemText;
 #endif
 
+	osItemText.str(_T(""));
 	osItemText << _T( "Low Item Count: " ) << m_lowModelList.GetItemCount();
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
+	osItemText.str(_T(""));
 	osItemText << _T( "Hi Item Count: " ) << m_hiModelList.GetItemCount();
 	CLogDlg::AddLogText(osItemText.str().c_str());
 

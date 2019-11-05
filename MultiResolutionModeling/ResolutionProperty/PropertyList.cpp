@@ -5,6 +5,13 @@
 #include "PropertyList.h"
 #include "../CSVFile.h"
 
+#define MAXHINUM	4
+
+static vector<SPrCoNa::HICOLUMNNAME> setHiRetenListNum;
+static vector<SPrCoNa::HICOLUMNNAME> setHiAccListNum;
+
+static vector<SPrCoNa::LOWCOLUMNNAME> setLowRetenListNum;
+static vector<SPrCoNa::LOWCOLUMNNAME> setLowAccListNum;
 
 CPropertyList::CPropertyList()
 {
@@ -14,6 +21,28 @@ CPropertyList::CPropertyList()
 	itemMappStr[SPrMoTy::MTHI].RemoveAll();
 	itemListIndex[SPrMoTy::MTLOW].RemoveAll();
 	itemListIndex[SPrMoTy::MTHI].RemoveAll();
+
+	srand((DWORD)time(NULL));
+
+	setHiRetenListNum.push_back(SPrCoNa::HMN_04);
+	setHiRetenListNum.push_back(SPrCoNa::HMN_06);
+	setHiRetenListNum.push_back(SPrCoNa::HMN_08);
+	setHiRetenListNum.push_back(SPrCoNa::HMN_10);
+
+	setHiAccListNum.push_back(SPrCoNa::HMN_05);
+	setHiAccListNum.push_back(SPrCoNa::HMN_07);
+	setHiAccListNum.push_back(SPrCoNa::HMN_09);
+	setHiAccListNum.push_back(SPrCoNa::HMN_11);
+
+	setLowRetenListNum.push_back(SPrCoNa::LMN_03);
+	setLowRetenListNum.push_back(SPrCoNa::LMN_05);
+	setLowRetenListNum.push_back(SPrCoNa::LMN_07);
+	setLowRetenListNum.push_back(SPrCoNa::LMN_09);
+
+	setLowAccListNum.push_back(SPrCoNa::LMN_04);
+	setLowAccListNum.push_back(SPrCoNa::LMN_06);
+	setLowAccListNum.push_back(SPrCoNa::LMN_08);
+	setLowAccListNum.push_back(SPrCoNa::LMN_10);
 }
 CPropertyList::~CPropertyList()
 {
@@ -490,110 +519,349 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 	ostringstream osItemText;
 #endif
 
-	SVeStIn listItem;
+	//Low Item String 이름, List index 값
+	SVeStIn LowListItem;
+	vector<SPrKe> vecPrKeVal;
+	vector<int> mappKeyBackup;
 	for (int i = 1; i < (int)listCtrlLow->GetItemCount(); i++)
 	{
-		listItem.setVal(listCtrlLow->GetItemText(i, SPrCoNa::LMN_00),
+		LowListItem.setVal(listCtrlLow->GetItemText(i, SPrCoNa::LMN_00),
 		strtoul(CStringA(listCtrlLow->GetItemText(i, SPrCoNa::LMN_01)).GetBuffer(), NULL, 10));
-	}
-	CLogDlg::AddLogText(listItem.getIVal(), '	');
-	CLogDlg::AddLogText(listItem.getSVal(), '	');
-
-	PropNameKeyVal::CPair* pair;
-	POSITION pos = itemKey[SPrMoTy::MTLOW].GetStartPosition();
-	while(pos)
-	{
-		pair = NULL;
-		osItemText.str(_T(""));
-		pair = itemKey[SPrMoTy::MTLOW].GetNext(pos);
-		CString str = pair->m_key;
-		osItemText << _T("LOW ITEM : ") << str.GetBuffer() << _T("	colNum : ") << pair->m_value.getColNum() <<  _T("	mappKey : ") << pair->m_value.getMappKey() <<  _T("	primkey : ") << pair->m_value.getPrimKey() ;
-		CLogDlg::AddLogText(osItemText.str().c_str());
-
-		vector<CString> strProp;
-		if(getPropKeyMappString(pair->m_value.getMappKey(), SPrMoTy::MTLOW, strProp))
-		{
-			CLogDlg::AddLogText(_T("LOW Prop Name : "));
-			CLogDlg::AddLogText(strProp);
-		}
-
-		vector<int> idxList;
-		if(getPropKeyMappListIndex(pair->m_value.getMappKey(), SPrMoTy::MTLOW, idxList))
-		{
-			CLogDlg::AddLogText(_T("LOW List Index : "));
-			CLogDlg::AddLogText(idxList);
-		}
-	}
-
-	pos = itemKey[SPrMoTy::MTHI].GetStartPosition();
-	while(pos)
-	{
-		pair = NULL;
-		osItemText.str(_T(""));
-		pair = itemKey[SPrMoTy::MTHI].GetNext(pos);
-		CString str = pair->m_key;
-		osItemText << _T("HI ITEM : ") << str.GetBuffer() << _T("	colNum : ") << pair->m_value.getColNum() <<  _T("	mappKey : ") << pair->m_value.getMappKey() <<  _T("	primkey : ") << pair->m_value.getPrimKey() ;
-		CLogDlg::AddLogText(osItemText.str().c_str());
-
-		vector<CString> strProp;
-		if(getPropKeyMappString(pair->m_value.getMappKey(), SPrMoTy::MTHI, strProp))
-		{
-			CLogDlg::AddLogText(_T("HI Prop Name : "));
-			CLogDlg::AddLogText(strProp);
-
-		}
-
-		vector<int> idxList;
-		if(getPropKeyMappListIndex(pair->m_value.getMappKey(), SPrMoTy::MTHI, idxList))
-		{
-			CLogDlg::AddLogText(_T("HI List index : "));
-			CLogDlg::AddLogText(idxList);
-
-		}
-	}
-	
-	for (int idxList = 0; idxList < listItem.getSize(); idxList++)
-	{
 		SPrKe val;
-		if(itemKey[SPrMoTy::MTLOW].Lookup(listItem.getSVal(idxList), val))
+		if(itemKey[SPrMoTy::MTLOW].Lookup(listCtrlLow->GetItemText(i, SPrCoNa::LMN_00), val))
 		{
-			vector<int> idxListHiVec;
-			vector<int> idxListLowVec;
-			getPropKeyMappListIndex(val.getMappKey(), SPrMoTy::MTLOW, idxListLowVec);
-			if(getPropKeyMappListIndex(val.getMappKey(), SPrMoTy::MTHI, idxListHiVec))
+			if(mappKeyBackup.end() == find(mappKeyBackup.begin(), mappKeyBackup.end(), val.getMappKey()))
 			{
+				vecPrKeVal.push_back(val);
+				mappKeyBackup.push_back(val.getMappKey());
+			}			
+		}
+	}
 
-				for (int idxHiVec = 0; idxHiVec < (int)idxListHiVec.size(); idxHiVec++)
+	//PropNameKeyVal::CPair* pair;
+	//POSITION pos = itemKey[SPrMoTy::MTLOW].GetStartPosition();
+	//while(pos)
+	//{
+	//	pair = NULL;
+	//	osItemText.str(_T(""));
+	//	pair = itemKey[SPrMoTy::MTLOW].GetNext(pos);
+	//	CString str = pair->m_key;
+	//	osItemText << _T("LOW ITEM : ") << str.GetBuffer() << _T("	colNum : ") << pair->m_value.getColNum() <<  _T("	mappKey : ") << pair->m_value.getMappKey() <<  _T("	primkey : ") << pair->m_value.getPrimKey() ;
+	//	CLogDlg::AddLogText(osItemText.str().c_str());
+
+	//	vector<CString> strProp;
+	//	if(getPropKeyMappString(pair->m_value.getMappKey(), SPrMoTy::MTLOW, strProp))
+	//	{
+	//		CLogDlg::AddLogText(_T("LOW Prop Name : "));
+	//		CLogDlg::AddLogText(strProp);
+	//	}
+
+	//	vector<int> idxList;
+	//	if(getPropKeyMappListIndex(pair->m_value.getMappKey(), SPrMoTy::MTLOW, idxList))
+	//	{
+	//		CLogDlg::AddLogText(_T("LOW List Index : "));
+	//		CLogDlg::AddLogText(idxList);
+	//	}
+	//}
+
+	//pos = itemKey[SPrMoTy::MTHI].GetStartPosition();
+	//while(pos)
+	//{
+	//	pair = NULL;
+	//	osItemText.str(_T(""));
+	//	pair = itemKey[SPrMoTy::MTHI].GetNext(pos);
+	//	CString str = pair->m_key;
+	//	osItemText << _T("HI ITEM : ") << str.GetBuffer() << _T("	colNum : ") << pair->m_value.getColNum() <<  _T("	mappKey : ") << pair->m_value.getMappKey() <<  _T("	primkey : ") << pair->m_value.getPrimKey() ;
+	//	CLogDlg::AddLogText(osItemText.str().c_str());
+
+	//	vector<CString> strProp;
+	//	if(getPropKeyMappString(pair->m_value.getMappKey(), SPrMoTy::MTHI, strProp))
+	//	{
+	//		CLogDlg::AddLogText(_T("HI Prop Name : "));
+	//		CLogDlg::AddLogText(strProp);
+
+	//	}
+
+	//	vector<int> idxList;
+	//	if(getPropKeyMappListIndex(pair->m_value.getMappKey(), SPrMoTy::MTHI, idxList))
+	//	{
+	//		CLogDlg::AddLogText(_T("HI List index : "));
+	//		CLogDlg::AddLogText(idxList);
+
+	//	}
+	//}
+	//LOW -> HI 계산 세팅
+	for (int mIdx = 0; mIdx < (int)mappKeyBackup.size(); mIdx++)
+	{
+		vector<int> idxListHiVec;
+		vector<int> idxListLowVec;
+		//Low Hi Mapping List가 존재할 경우
+		if(getPropKeyMappListIndex(mappKeyBackup[mIdx], SPrMoTy::MTLOW, idxListLowVec) && 
+			getPropKeyMappListIndex(mappKeyBackup[mIdx], SPrMoTy::MTHI, idxListHiVec))
+		{
+			//Low 매핑 키가 같은 아이템에 대하여 함산 개수 계산
+			int itemNum = 0;
+			for (int idxLowVec = 0; idxLowVec < (int)idxListLowVec.size(); idxLowVec++)
+			{
+				itemNum += strtoul(CStringA(listCtrlLow->GetItemText(idxListLowVec[idxLowVec], SPrCoNa::LMN_01)).GetBuffer(), NULL, 10);
+			}
+			//설정 값이 0이면 모든 보유량 0 세팅
+			if(0 == itemNum)
+			{
+				osItemText.str(_T(""));
+				osItemText << itemNum;
+				for (int idx = 0; idx < (int)idxListHiVec.size(); idx++)
 				{
-					strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHiVec], SPrCoNa::HMN_03)).GetBuffer(), NULL, 10);
+					listCtrlHi->SetItemText(idxListHiVec[idx] , SPrCoNa::HMN_02, osItemText.str().c_str());
+					listCtrlHi->SetItemText(idxListHiVec[idx] , SPrCoNa::HMN_04, osItemText.str().c_str());
+					listCtrlHi->SetItemText(idxListHiVec[idx] , SPrCoNa::HMN_06, osItemText.str().c_str());
+					listCtrlHi->SetItemText(idxListHiVec[idx] , SPrCoNa::HMN_08, osItemText.str().c_str());
+					listCtrlHi->SetItemText(idxListHiVec[idx] , SPrCoNa::HMN_10, osItemText.str().c_str());
+				}
+			}
+			//먼저 Hi 의 상의 부대 개수 세팅
+			else // if(0 != itemNum)
+			{
+				//Low 설정 값을 Hi 보유량으로 세팅하기 위한 계산 작업
+				vector<int> accTotalvec;
+				int accTotal = 0;
+				accTotalvec.resize(idxListHiVec.size());
+				//Hi의 인가량을 가저와서 저장한다.
+				for (int idx = 0; idx < (int)idxListHiVec.size(); idx++)
+				{
+					accTotalvec[idx] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idx], SPrCoNa::HMN_03)).GetBuffer(), NULL, 10);
+					accTotal += accTotalvec[idx];
 				}
 
-				if(idxListHiVec.size() <= idxListLowVec.size())
+				vector<float> accRatio;
+				accRatio.resize(idxListHiVec.size());
+				vector<int> retVal;
+				retVal.resize(idxListHiVec.size());
+				int retToTalVal = 0;
+				//인가량을 이용하여 세팅 계산 비를 계산한다.
+				for (int idx = 0; idx < (int)idxListHiVec.size(); idx++)
 				{
-					int itemNum = 0;
-					for (int idxLowVec = 0; idxLowVec < (int)idxListLowVec.size(); idxLowVec++)
+					accRatio[idx] = (accTotal-itemNum) * ((float)accTotalvec[idx]/(float)accTotal);
+					retVal[idx] = (int)accRatio[idx];
+					retToTalVal += retVal[idx];
+				}
+				//계산 비에 의해서 정수 개수 외 나머지 몇개 인가를 계산
+				int retRest = (accTotal-itemNum) - retToTalVal;
+				//나머지 세팅 개수가 존재하면 진입한다.
+				if(retRest > 0)
+				{
+					vector<SVeCoIdVa> retRestVal;
+					retRestVal.resize(idxListHiVec.size());
+					//비율과 인텍스를 매핑하여 저장
+					for (int idx = 0; idx < (int)retRestVal.size(); idx++)
 					{
-						itemNum += strtoul(CStringA(listCtrlLow->GetItemText(idxListLowVec[idxLowVec], SPrCoNa::LMN_01)).GetBuffer(), NULL, 10);
+						retRestVal[idx].idx = idx;
+						retRestVal[idx].val = (accRatio[idx] - retVal[idx]);
 					}
+					//랜덤으로 임의 순서 세팅
+					vector<SVeCoIdVa> listIndexSelect = randomVec(retRestVal);
+					//임의 순서에서 내림 차순 정령
+					sort(listIndexSelect.begin(), listIndexSelect.end(), SVeCoIdVa::compare);
+
+					int maxretValRest = 0;
+					//나머지 개수 만큼 개수를 증가 시킨다.
+					while(retRest > 0 && maxretValRest < (int)listIndexSelect.size())
+					{
+						retVal[listIndexSelect[maxretValRest].idx]++;
+						retRest--;
+						maxretValRest++;
+					}
+
+				}
+				//Low 설정 값 -> Hi 보유량 최종 세팅
+				for (int idx = 0; idx < (int)accTotalvec.size(); idx++)
+				{
 					osItemText.str(_T(""));
-					osItemText << itemNum;
-					listCtrlHi->SetItemText(idxListHiVec[0] , SPrCoNa::HMN_02, osItemText.str().c_str());
-					if(0 == itemNum)
+					osItemText << accTotalvec[idx] - retVal[idx];
+					listCtrlHi->SetItemText(idxListHiVec[idx], SPrCoNa::HMN_02, osItemText.str().c_str());
+				}
+
+				//Hi의 각 하위 4개 개체로 분할 세팅 계산.
+				for (int idxHi = 0; idxHi < (int)idxListHiVec.size(); idxHi++)
+				{
+					int hItemNum = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], SPrCoNa::HMN_02)).GetBuffer(), NULL, 10);
+					int accTotal = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], SPrCoNa::HMN_03)).GetBuffer(), NULL, 10);
+					if(accTotal == 0)
+						continue;
+					vector<int> accVec;
+					accVec.resize(4);
+					//세팅이 필요한 인가량을 가져온다.
+					accVec[0] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[0])).GetBuffer(), NULL, 10);
+					accVec[1] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[1])).GetBuffer(), NULL, 10);
+					accVec[2] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[2])).GetBuffer(), NULL, 10);
+					accVec[3] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[3])).GetBuffer(), NULL, 10);
+
+					vector<float>  accRatio;
+					accRatio.resize(4);
+					for (int idx = 0; idx < (int)accVec.size(); idx++)
 					{
-						for (int idx = 0; idx < (int)idxListHiVec.size(); idx++)
+						accRatio[idx] = (accTotal-hItemNum) * ((float)accVec[idx]/(float)accTotal);
+					}
+
+					vector<int> retVal;
+					retVal.resize(4);
+					retVal[0] = (int)accRatio[0];
+					retVal[1] = (int)accRatio[1];
+					retVal[2] = (int)accRatio[2];
+					retVal[3] = (int)accRatio[3];
+					int retToTalVal = retVal[0] + retVal[1] + retVal[2] + retVal[3];
+					int retRest = (accTotal-hItemNum) - retToTalVal;
+
+					if(retRest > 0)
+					{
+						vector<SVeCoIdVa> retRestVal;
+						retRestVal.resize(4);
+						for (int idx = 0; idx < (int)retRestVal.size(); idx++)
 						{
-							listCtrlHi->SetItemText(idxListHiVec[0] , SPrCoNa::HMN_04, osItemText.str().c_str());
-							listCtrlHi->SetItemText(idxListHiVec[0] , SPrCoNa::HMN_06, osItemText.str().c_str());
-							listCtrlHi->SetItemText(idxListHiVec[0] , SPrCoNa::HMN_08, osItemText.str().c_str());
-							listCtrlHi->SetItemText(idxListHiVec[0] , SPrCoNa::HMN_10, osItemText.str().c_str());
+							retRestVal[idx].idx = idx;
+							retRestVal[idx].val = (accRatio[idx] - retVal[idx]);
 						}
+						vector<SVeCoIdVa> listIndexSelect = randomVec(retRestVal);
+						sort(listIndexSelect.begin(), listIndexSelect.end(), SVeCoIdVa::compare);
+
+						int maxretValRest = 0;
+						while(retRest > 0 && maxretValRest < (int)listIndexSelect.size())
+						{
+							retVal[listIndexSelect[maxretValRest].idx]++;
+							retRest--;
+							maxretValRest++;
+						}
+
+					}						
+
+					for (int idx = 0; idx < (int)accVec.size(); idx++)
+					{
+						osItemText.str(_T(""));
+						osItemText << accVec[idx] - retVal[idx];
+						listCtrlHi->SetItemText(idxListHiVec[idxHi] , setHiRetenListNum[idx], osItemText.str().c_str());
 					}
 				}
-				else
+			}
+
+		}
+		//Low Hi Mapping List가 없을 경우
+		else
+		{
+			MessageBox(NULL, _T("Low - Hi Mapping List가 없다"), _T("매핑오류"), MB_OK);
+		}
+	}
+
+	//HI -> LOW 계산 세팅
+	for (int mIdx = 0; mIdx < (int)mappKeyBackup.size(); mIdx++)
+	{
+		vector<int> idxListHiVec;
+		vector<int> idxListLowVec;
+		//Low Hi Mapping List가 존재할 경우
+		if(getPropKeyMappListIndex(mappKeyBackup[mIdx], SPrMoTy::MTLOW, idxListLowVec) && 
+			getPropKeyMappListIndex(mappKeyBackup[mIdx], SPrMoTy::MTHI, idxListHiVec))
+		{
+			vector<int> retenHiVec(4,0);
+			vector<int> accHiTotal(4,0);
+			//Hi의 각 하위 인가량 보유량 합산 개수
+			for (int idxHi = 0; idxHi < (int)idxListHiVec.size(); idxHi++)
+			{
+				//보유량 합산
+				retenHiVec[0] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[0])).GetBuffer(), NULL, 10);
+				retenHiVec[1] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[1])).GetBuffer(), NULL, 10);
+				retenHiVec[2] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[2])).GetBuffer(), NULL, 10);
+				retenHiVec[3] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[3])).GetBuffer(), NULL, 10);
+
+				//인가량 합산
+				accHiTotal[0] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[0])).GetBuffer(), NULL, 10);
+				accHiTotal[1] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[1])).GetBuffer(), NULL, 10);
+				accHiTotal[2] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[2])).GetBuffer(), NULL, 10);
+				accHiTotal[3] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[3])).GetBuffer(), NULL, 10);
+			}
+			for (int idxRtn = 0; idxRtn < (int)retenHiVec.size(); idxRtn++)
+			{
+				if(0 == retenHiVec[idxRtn])
 				{
-					
+					//Hi 값 -> LOW 보유량 최종 세팅
+					for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
+					{
+						osItemText.str(_T(""));
+						osItemText << retenHiVec[idxRtn];
+						listCtrlLow->SetItemText(idxListLowVec[idxLow], setLowRetenListNum[idxRtn], osItemText.str().c_str());
+					}
+				}
+				else // if(0 != retenHiVec[idxRtn])
+				{
+					vector<float> accRatio;
+					accRatio.resize(idxListLowVec.size());
+					vector<int> retVal;
+					retVal.resize(idxListLowVec.size());
+					int retToTalVal = 0;
+					vector<int> accValTotal;
+					accValTotal.resize(idxListLowVec.size());
+					for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
+					{
+						//본부부 인가량
+						accValTotal[idxLow] = strtoul(CStringA(listCtrlLow->GetItemText(idxListLowVec[idxLow], setLowAccListNum[idxRtn])).GetBuffer(), NULL, 10);
+						accRatio[idxLow] = (accHiTotal[idxRtn]-retenHiVec[idxRtn]) * ((float)accValTotal[idxLow]/(float)accHiTotal[idxRtn]);
+						retVal[idxLow] = (int)accRatio[idxLow];
+						retToTalVal += retVal[idxLow];
+					}
+					//계산 비에 의해서 정수 개수 외 나머지 몇개 인가를 계산
+					int retRest = (accHiTotal[idxRtn]-retenHiVec[idxRtn]) - retToTalVal;
+
+					//나머지 세팅 개수가 존재하면 진입한다.
+					if(retRest > 0)
+					{
+						vector<SVeCoIdVa> retRestVal;
+						retRestVal.resize(idxListLowVec.size());
+						//비율과 인텍스를 매핑하여 저장
+						for (int idx = 0; idx < (int)retRestVal.size(); idx++)
+						{
+							retRestVal[idx].idx = idx;
+							retRestVal[idx].val = (accRatio[idx] - retVal[idx]);
+						}
+						//랜덤으로 임의 순서 세팅
+						vector<SVeCoIdVa> listIndexSelect = randomVec(retRestVal);
+						//임의 순서에서 내림 차순 정령
+						sort(listIndexSelect.begin(), listIndexSelect.end(), SVeCoIdVa::compare);
+
+						int maxretValRest = 0;
+						//나머지 개수 만큼 개수를 증가 시킨다.
+						while(retRest > 0 && maxretValRest < (int)listIndexSelect.size())
+						{
+							retVal[listIndexSelect[maxretValRest].idx]++;
+							retRest--;
+							maxretValRest++;
+						}
+
+					}
+					//Hi 값 -> LOW 보유량 최종 세팅
+					for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
+					{
+						osItemText.str(_T(""));
+						osItemText << accValTotal[idxLow] - retVal[idxLow];
+						listCtrlLow->SetItemText(idxListLowVec[idxLow], setLowRetenListNum[idxRtn], osItemText.str().c_str());
+					}
 				}
 			}
 		}
+		//Low Hi Mapping List가 없을 경우
+		else
+		{
+			MessageBox(NULL, _T("Low - Hi Mapping List가 없다"), _T("매핑오류"), MB_OK);
+		}
 	}
+}
+
+vector<SVeCoIdVa> CPropertyList::randomVec(vector<SVeCoIdVa> val)
+{
+	vector<SVeCoIdVa> rVal;
+
+	while(val.size())
+	{
+		int num = rand() % val.size();
+		rVal.push_back(val[num]);
+		val.erase(val.begin()+num);
+	}
+	return rVal;
 }

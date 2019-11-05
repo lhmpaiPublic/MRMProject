@@ -39,12 +39,10 @@ public:
 	void CLogDlg::setLogText(CString text);
 
 	static void AddLogText(CString text);
-
 	static void AddLogText(vector<int> text, char delimiter = ' ');
-
 	static void AddLogText(vector<string> text, char delimiter = ' ');
-
 	static void AddLogText(vector<CString> text, char delimiter = ' ');
+	static void AddLogText(vector<float> text, char delimiter = ' ');
 
 	static void initStream();
 	static void insertStream(string str, char delimiter = ' ');

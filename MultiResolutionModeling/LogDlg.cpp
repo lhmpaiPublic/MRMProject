@@ -71,6 +71,22 @@ void CLogDlg::AddLogText(vector<int> text, char delimiter)
 	}
 }
 
+void CLogDlg::AddLogText(vector<float> text, char delimiter)
+{
+	if(gLogDlg)
+	{
+		std::stringstream coutLog;
+		bool _bFirst = true;
+		for (int i = 0; i <(int) text.size(); i++)
+		{
+			if(false == _bFirst) coutLog  << delimiter;
+			_bFirst = false;
+			coutLog  << text[i];
+		}
+		gLogDlg->setLogText(coutLog.str().c_str());
+	}
+}
+
 void CLogDlg::AddLogText(vector<string> text, char delimiter)
 {
 	if(gLogDlg)

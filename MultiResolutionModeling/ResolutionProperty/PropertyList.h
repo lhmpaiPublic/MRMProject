@@ -23,6 +23,8 @@ class CPropertyList
 	void setPropKeyMappListIndex(int mappKey, SPrMoTy::MODELTYPE modelType, int idx);
 
 	bool getPropKeyMappListIndex(int mappKey, SPrMoTy::MODELTYPE modelType, vector<int>& idxVal);
+
+	vector<SVeCoIdVa> randomVec(vector<SVeCoIdVa> val);
 public:
 	CPropertyList();
 	~CPropertyList();
