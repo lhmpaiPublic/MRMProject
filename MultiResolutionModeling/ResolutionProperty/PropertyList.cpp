@@ -624,15 +624,16 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 			{
 				//Low 설정 값을 Hi 보유량으로 세팅하기 위한 계산 작업
 				vector<int> accTotalvec;
-				int accTotal = 0;
+				int accHiTotal = 0;
 				accTotalvec.resize(idxListHiVec.size());
 				//Hi의 인가량을 가저와서 저장한다.
 				for (int idx = 0; idx < (int)idxListHiVec.size(); idx++)
 				{
 					accTotalvec[idx] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idx], SPrCoNa::HMN_03)).GetBuffer(), NULL, 10);
-					accTotal += accTotalvec[idx];
+					accHiTotal += accTotalvec[idx];
 				}
-
+				if(accHiTotal == 0)
+					continue;
 				vector<float> accRatio;
 				accRatio.resize(idxListHiVec.size());
 				vector<int> retVal;
@@ -641,12 +642,12 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 				//인가량을 이용하여 세팅 계산 비를 계산한다.
 				for (int idx = 0; idx < (int)idxListHiVec.size(); idx++)
 				{
-					accRatio[idx] = (accTotal-itemNum) * ((float)accTotalvec[idx]/(float)accTotal);
+					accRatio[idx] = (accHiTotal-itemNum) * ((float)accTotalvec[idx]/(float)accHiTotal);
 					retVal[idx] = (int)accRatio[idx];
 					retToTalVal += retVal[idx];
 				}
 				//계산 비에 의해서 정수 개수 외 나머지 몇개 인가를 계산
-				int retRest = (accTotal-itemNum) - retToTalVal;
+				int retRest = (accHiTotal-itemNum) - retToTalVal;
 				//나머지 세팅 개수가 존재하면 진입한다.
 				if(retRest > 0)
 				{
@@ -779,6 +780,8 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 			}
 			for (int idxRtn = 0; idxRtn < (int)retenHiVec.size(); idxRtn++)
 			{
+				if(0 == accHiTotal[idxRtn])
+					continue;
 				if(0 == retenHiVec[idxRtn])
 				{
 					//Hi 값 -> LOW 보유량 최종 세팅
