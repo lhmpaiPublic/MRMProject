@@ -46,6 +46,7 @@ public:
 
 	static void initStream();
 	static void insertStream(string str, char delimiter = ' ');
+	static void insertStream(wstring str, char delimiter = ' ');
 	static void insertStream(int val, char delimiter = ' ');
 	static void insertStreamVec(vector<int> val, char delimiter = ' ');
 	static void insertStreamVec(vector<float> val, char delimiter = ' ');

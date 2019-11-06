@@ -321,6 +321,38 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\ResolutionPosition\mapGrid_1.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ResolutionPosition\mapGrid_2.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ResolutionPosition\mapGrid_3.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ResolutionPosition\mapGrid_4.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ResolutionPosition\mapGrid_5.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ResolutionPosition\mapGrid_6.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ResolutionPosition\mapGrid_7.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ResolutionPosition\mapGrid_8.png"
+				>
+			</File>
+			<File
 				RelativePath=".\res\MultiResolutionModeling.ico"
 				>
 			</File>
@@ -629,38 +661,6 @@
 				>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\res\ResolutionPosition\mapGrid_1.png"
-			>
-		</File>
-		<File
-			RelativePath=".\res\ResolutionPosition\mapGrid_2.png"
-			>
-		</File>
-		<File
-			RelativePath=".\res\ResolutionPosition\mapGrid_3.png"
-			>
-		</File>
-		<File
-			RelativePath=".\res\ResolutionPosition\mapGrid_4.png"
-			>
-		</File>
-		<File
-			RelativePath=".\res\ResolutionPosition\mapGrid_5.png"
-			>
-		</File>
-		<File
-			RelativePath=".\res\ResolutionPosition\mapGrid_6.png"
-			>
-		</File>
-		<File
-			RelativePath=".\res\ResolutionPosition\mapGrid_7.png"
-			>
-		</File>
-		<File
-			RelativePath=".\res\ResolutionPosition\mapGrid_8.png"
-			>
-		</File>
 	</Files>
 	<Globals>
 		<Global

@@ -137,6 +137,15 @@ void CLogDlg::insertStream(string str, char delimiter)
 	mkcsvLog  << str.c_str();	
 }
 
+void CLogDlg::insertStream(wstring str, char delimiter)
+{
+	if(false == bFirst) mkLog  << delimiter;
+	if(false == bFirst) mkcsvLog  << ',';
+	bFirst = false;
+	mkLog  << CStringA(str.c_str()).GetBuffer();
+	mkcsvLog  << CStringA(str.c_str()).GetBuffer();
+}
+
 void CLogDlg::insertStream(int val, char delimiter)
 {
 	if(false == bFirst) mkLog  << delimiter;

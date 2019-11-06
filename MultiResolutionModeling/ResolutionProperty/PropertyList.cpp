@@ -854,6 +854,63 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 			MessageBox(NULL, _T("Low - Hi Mapping List가 없다"), _T("매핑오류"), MB_OK);
 		}
 	}
+
+	CLogDlg::AddLogText(_T("======================================================================================="));
+	CLogDlg::initStream();
+	for (int columnCount = 0; columnCount < (int)listCtrlLow->GetColumnCount(); columnCount++)
+	{
+		CListColumn listColumn;
+		listCtrlLow->GetColumn(columnCount, listColumn);
+		if(0 == listColumn.m_strText.GetLength())
+			CLogDlg::insertStream(_T("	"), '	');
+		else
+			CLogDlg::insertStream(listColumn.m_strText.GetBuffer(), '	');
+	}
+	CLogDlg::addLogTextStream();
+
+	CString strTap = _T("	");
+	for (int itemCount = 0; itemCount < (int)listCtrlLow->GetItemCount(); itemCount++)
+	{
+		CLogDlg::initStream();
+		for (int columnCount = 0; columnCount < (int)listCtrlLow->GetColumnCount(); columnCount++)
+		{
+			 CString str = CString(listCtrlLow->GetItemText(itemCount, columnCount));
+			 if(0 == str.GetLength())
+				CLogDlg::insertStream(_T("	"), '	');
+			 else
+				CLogDlg::insertStream(str.GetBuffer(), '	');
+
+		}
+		CLogDlg::addLogTextStream();
+	}
+
+	CLogDlg::AddLogText(_T("======================================================================================="));
+	CLogDlg::initStream();
+	for (int columnCount = 0; columnCount < (int)listCtrlHi->GetColumnCount(); columnCount++)
+	{
+		CListColumn listColumn;
+		listCtrlHi->GetColumn(columnCount, listColumn);
+		if(0 == listColumn.m_strText.GetLength())
+			CLogDlg::insertStream(_T("	"), '	');
+		else
+			CLogDlg::insertStream(listColumn.m_strText.GetBuffer(), '	');
+	}
+	CLogDlg::addLogTextStream();
+
+	for (int itemCount = 0; itemCount < (int)listCtrlHi->GetItemCount(); itemCount++)
+	{
+		CLogDlg::initStream();
+		for (int columnCount = 0; columnCount < (int)listCtrlHi->GetColumnCount(); columnCount++)
+		{
+			CString str = CString(listCtrlHi->GetItemText(itemCount, columnCount));
+			if(0 == str.GetLength())
+				CLogDlg::insertStream(_T("	"), '	');
+			else
+				CLogDlg::insertStream(str.GetBuffer(), '	');
+
+		}
+		CLogDlg::addLogTextStream();
+	}
 }
 
 vector<SVeCoIdVa> CPropertyList::randomVec(vector<SVeCoIdVa> val)
