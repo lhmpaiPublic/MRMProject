@@ -13,6 +13,7 @@ class CResolutionPropertyDlg : public CDialogImpl<CResolutionPropertyDlg>, publi
 	bool bLClick;
 	CListCtrl m_lowModelList;
 	CListCtrl m_hiModelList;
+	CListCtrl m_hiModelRatio;
 	CImageList m_ilItemImages;
 	CFont m_fntCustomFont1;
 	CFont m_fntCustomFont2;
@@ -22,6 +23,8 @@ class CResolutionPropertyDlg : public CDialogImpl<CResolutionPropertyDlg>, publi
 	CComboBox propertyDiv;
 
 	int numSelect;
+	bool bEditHiRatio;
+	int hiRatioSelectNum;
 public:
 	CResolutionPropertyDlg();
 
@@ -54,6 +57,10 @@ public:
 		NOTIFY_HANDLER_EX(IDCCUST_LOWMODELLIST, LCN_MODIFIED, OnLowModelListModify)
 		//NOTIFY_HANDLER_EX(IDCCUST_HIMODELLIST, LCN_SELECTED, OnHiModelListSelected)
 		NOTIFY_HANDLER_EX(IDCCUST_HIMODELLIST, LCN_LEFTCLICK, OnHiModelListSelectedLeft)
+		//NOTIFY_HANDLER_EX(IDCCUST_HIMODELRATIO, LCN_SELECTED, OnHiModelRatioSelected)
+		NOTIFY_HANDLER_EX(IDCCUST_HIMODELRATIO, LCN_LEFTCLICK, OnHiModelRatioSelectedLeft)
+		//NOTIFY_HANDLER_EX(IDCCUST_HIMODELRATIO, LCN_RIGHTCLICK, OnHiModelRatioSelectedRight)
+		NOTIFY_HANDLER_EX(IDCCUST_HIMODELRATIO, LCN_MODIFIED, OnHiModelRatioModify)
 
 		COMMAND_HANDLER(IDCB_PPTY_RESOLUTIONCHANGE, BN_CLICKED, OnBnClickedPptyResolutionchange)
 		REFLECT_NOTIFICATIONS()		
@@ -88,5 +95,11 @@ public:
 
 	LRESULT OnHiModelListSelected( LPNMHDR lpNMHDR );
 	LRESULT OnHiModelListSelectedLeft( LPNMHDR lpNMHDR );
+
+	LRESULT OnHiModelRatioSelected( LPNMHDR lpNMHDR );
+	LRESULT OnHiModelRatioSelectedLeft( LPNMHDR lpNMHDR );
+	LRESULT OnHiModelRatioSelectedRight( LPNMHDR lpNMHDR );
+	LRESULT OnHiModelRatioModify( LPNMHDR lpNMHDR );
+
 	LRESULT OnBnClickedPptyResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };

@@ -7,11 +7,14 @@
 
 #define MAXHINUM	4
 
-static vector<SPrCoNa::HICOLUMNNAME> setHiRetenListNum;
-static vector<SPrCoNa::HICOLUMNNAME> setHiAccListNum;
+vector<SPrCoNa::HICOLUMNNAME> CPropertyList::setHiRetenListNum;
+vector<SPrCoNa::HICOLUMNNAME> CPropertyList::setHiAccListNum;
 
-static vector<SPrCoNa::LOWCOLUMNNAME> setLowRetenListNum;
-static vector<SPrCoNa::LOWCOLUMNNAME> setLowAccListNum;
+vector<SPrCoNa::LOWCOLUMNNAME> CPropertyList::setLowRetenListNum;
+vector<SPrCoNa::LOWCOLUMNNAME> CPropertyList::setLowAccListNum;
+
+vector<SPrCoNa::HIRATIOCOLUMNNAME> CPropertyList::setHiRetenRitioNum;
+vector<SPrCoNa::HIRATIOCOLUMNNAME> CPropertyList::setHiLimtRitioNum;
 
 CPropertyList::CPropertyList()
 {
@@ -43,6 +46,16 @@ CPropertyList::CPropertyList()
 	setLowAccListNum.push_back(SPrCoNa::LMN_06);
 	setLowAccListNum.push_back(SPrCoNa::LMN_08);
 	setLowAccListNum.push_back(SPrCoNa::LMN_10);
+
+	setHiRetenRitioNum.push_back(SPrCoNa::HRMN_04);
+	setHiRetenRitioNum.push_back(SPrCoNa::HRMN_06);
+	setHiRetenRitioNum.push_back(SPrCoNa::HRMN_08);
+	setHiRetenRitioNum.push_back(SPrCoNa::HRMN_10);
+
+	setHiLimtRitioNum.push_back(SPrCoNa::HRMN_05);
+	setHiLimtRitioNum.push_back(SPrCoNa::HRMN_07);
+	setHiLimtRitioNum.push_back(SPrCoNa::HRMN_09);
+	setHiLimtRitioNum.push_back(SPrCoNa::HRMN_11);
 }
 CPropertyList::~CPropertyList()
 {
@@ -511,7 +524,141 @@ void CPropertyList::hiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT comba
 	}
 }
 
-void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* listCtrlHi, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass)
+void CPropertyList::hiPropertyRatio(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass)
+{
+	vector<int> lowKey = keyList[combat][propType].getMappKey(SPrMoTy::MTLOW);
+	vector<int> hiKey = keyList[combat][propType].getMappKey(SPrMoTy::MTHI);
+
+	int nUser = listCtrl->AddItem(_T("모체자산명"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_00, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_01, _T("변환자산명"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_01, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_02, _T("설정량"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_02, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_03, _T("한계치"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_03, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_04, _T("설정량"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_04, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_05, _T("한계치"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_05, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_06, _T("설정량"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_06, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_07, _T("한계치"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_07, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_08, _T("설정량"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_08, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_09, _T("한계치"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_09, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_10, _T("설정량"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_10, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::HRMN_11, _T("한계치"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_11, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+
+	SPrMa prVal;
+	productMappingVal[combat].Lookup(propType, prVal);
+	for (int i = 0; i < (int)lowKey.size(); i++)
+	{
+		vector<SPrVa> lowVal = prVal.getVal(lowKey[i], cbtClass, SPrMoTy::MTLOW);
+		vector<SPrVa> hiVal = prVal.getVal(hiKey[i], cbtClass, SPrMoTy::MTHI);
+
+		if(lowVal.size() <= hiVal.size())
+		{
+			for (int iv = 0; iv < (int)hiVal.size(); iv++)
+			{
+				int nUser = listCtrl->AddItem(iv == 0 ? lowVal[0].strName : " ");
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_00, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_01, hiVal[iv].strName);
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_01, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+				std::wstringstream strStream;
+				strStream.str(L"");
+				strStream << hiVal[iv].accreditation;
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_02, strStream.str().c_str());
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_02, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+				strStream.str(L"");
+				strStream << hiVal[iv].accreditation;
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_03, strStream.str().c_str());
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_03, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+
+				SPrVa keyval = prVal.getValKey(hiVal[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-1), SPrMoTy::MTHI);
+				strStream.str(L"");
+				strStream << keyval.accreditation;
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_04, strStream.str().c_str());
+				listCtrl->SetItemFormat( nUser, SPrCoNa::HRMN_04, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_04, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_05, strStream.str().c_str());
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_05, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+
+				keyval = prVal.getValKey(hiVal[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-2), SPrMoTy::MTHI);
+				strStream.str(L"");
+				strStream << keyval.accreditation;
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_06, strStream.str().c_str());
+				listCtrl->SetItemFormat( nUser, SPrCoNa::HRMN_06, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_06, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_07, strStream.str().c_str());
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_07, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_08, strStream.str().c_str());
+				listCtrl->SetItemFormat( nUser, SPrCoNa::HRMN_08, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_08, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_09, strStream.str().c_str());
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_09, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_10, strStream.str().c_str());
+				listCtrl->SetItemFormat( nUser, SPrCoNa::HRMN_10, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_10, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
+				listCtrl->SetItemText( nUser, SPrCoNa::HRMN_11, strStream.str().c_str());
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_11, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+			}
+		}
+		else
+		{
+			for (int iv = 0; iv < (int)lowVal.size(); iv++)
+			{
+				int nUser = listCtrl->AddItem(lowVal[iv].strName);
+				listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_00, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+
+				if(iv == 0)
+				{
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_01, hiVal[iv].strName);
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_01, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					std::wstringstream strStream;
+					strStream.str(L"");
+					strStream << hiVal[iv].accreditation;
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_02, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_02, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					strStream.str(L"");
+					strStream << hiVal[iv].accreditation;
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_03, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_03, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+
+					SPrVa keyval = prVal.getValKey(hiVal[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-1), SPrMoTy::MTHI);
+					strStream.str(L"");
+					strStream << keyval.accreditation;
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_04, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_04, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_05, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_05, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+
+					keyval = prVal.getValKey(hiVal[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-2), SPrMoTy::MTHI);
+					strStream.str(L"");
+					strStream << keyval.accreditation;
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_06, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_06, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_07, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_07, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_08, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_08, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_09, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_09, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_10, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_10, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_11, strStream.str().c_str());
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_11, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+				}				
+			}
+		}		
+	}
+}
+
+void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* listCtrlHiRatio, CListCtrl* listCtrlHi, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass)
 {
 #ifdef _UNICODE
 	wostringstream osItemText;
@@ -617,6 +764,12 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 					listCtrlHi->SetItemText(idxListHiVec[idx] , SPrCoNa::HMN_06, osItemText.str().c_str());
 					listCtrlHi->SetItemText(idxListHiVec[idx] , SPrCoNa::HMN_08, osItemText.str().c_str());
 					listCtrlHi->SetItemText(idxListHiVec[idx] , SPrCoNa::HMN_10, osItemText.str().c_str());
+
+					listCtrlHiRatio->SetItemText(idxListHiVec[idx] , SPrCoNa::HRMN_02, osItemText.str().c_str());
+					listCtrlHiRatio->SetItemText(idxListHiVec[idx] , SPrCoNa::HRMN_04, osItemText.str().c_str());
+					listCtrlHiRatio->SetItemText(idxListHiVec[idx] , SPrCoNa::HRMN_06, osItemText.str().c_str());
+					listCtrlHiRatio->SetItemText(idxListHiVec[idx] , SPrCoNa::HRMN_08, osItemText.str().c_str());
+					listCtrlHiRatio->SetItemText(idxListHiVec[idx] , SPrCoNa::HRMN_10, osItemText.str().c_str());
 				}
 			}
 			//먼저 Hi 의 상의 부대 개수 세팅
@@ -629,7 +782,7 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 				//Hi의 인가량을 가저와서 저장한다.
 				for (int idx = 0; idx < (int)idxListHiVec.size(); idx++)
 				{
-					accTotalvec[idx] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idx], SPrCoNa::HMN_03)).GetBuffer(), NULL, 10);
+					accTotalvec[idx] = strtoul(CStringA(listCtrlHiRatio->GetItemText(idxListHiVec[idx], SPrCoNa::HMN_02)).GetBuffer(), NULL, 10);
 					accHiTotal += accTotalvec[idx];
 				}
 				if(accHiTotal == 0)
@@ -686,16 +839,16 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 				for (int idxHi = 0; idxHi < (int)idxListHiVec.size(); idxHi++)
 				{
 					int hItemNum = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], SPrCoNa::HMN_02)).GetBuffer(), NULL, 10);
-					int accTotal = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], SPrCoNa::HMN_03)).GetBuffer(), NULL, 10);
+					int accTotal = strtoul(CStringA(listCtrlHiRatio->GetItemText(idxListHiVec[idxHi], SPrCoNa::HRMN_02)).GetBuffer(), NULL, 10);
 					if(accTotal == 0)
 						continue;
 					vector<int> accVec;
 					accVec.resize(4);
 					//세팅이 필요한 인가량을 가져온다.
-					accVec[0] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[0])).GetBuffer(), NULL, 10);
-					accVec[1] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[1])).GetBuffer(), NULL, 10);
-					accVec[2] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[2])).GetBuffer(), NULL, 10);
-					accVec[3] = strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[3])).GetBuffer(), NULL, 10);
+					accVec[0] = strtoul(CStringA(listCtrlHiRatio->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[0])).GetBuffer(), NULL, 10);
+					accVec[1] = strtoul(CStringA(listCtrlHiRatio->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[1])).GetBuffer(), NULL, 10);
+					accVec[2] = strtoul(CStringA(listCtrlHiRatio->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[2])).GetBuffer(), NULL, 10);
+					accVec[3] = strtoul(CStringA(listCtrlHiRatio->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[3])).GetBuffer(), NULL, 10);
 
 					vector<float>  accRatio;
 					accRatio.resize(4);

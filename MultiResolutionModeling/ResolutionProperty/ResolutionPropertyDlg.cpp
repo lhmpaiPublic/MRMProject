@@ -11,6 +11,10 @@ CResolutionPropertyDlg::CResolutionPropertyDlg()
 {
 	m_lowModelList.RegisterClass();
 	m_hiModelList.RegisterClass();
+	m_hiModelRatio.RegisterClass();
+
+	bEditHiRatio = false;
+	hiRatioSelectNum = -1;
 }
 
 CResolutionPropertyDlg::~CResolutionPropertyDlg()
@@ -78,6 +82,7 @@ LRESULT CResolutionPropertyDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 
 	m_lowModelList.SubclassWindow(GetDlgItem(IDCCUST_LOWMODELLIST));
 	m_hiModelList.SubclassWindow(GetDlgItem(IDCCUST_HIMODELLIST));
+	m_hiModelRatio.SubclassWindow(GetDlgItem(IDCCUST_HIMODELRATIO));
 
 	if ( !m_ilItemImages.CreateFromImage(IDB_EXAMPLE, 16, 0, RGB( 255, 0, 255 ), IMAGE_BITMAP, LR_CREATEDIBSECTION ) )
 		return FALSE;
@@ -101,6 +106,9 @@ LRESULT CResolutionPropertyDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 
 	m_hiModelList.SetImageList( m_ilItemImages );
 	m_hiModelList.SetFocusSubItem( TRUE );
+
+	m_hiModelRatio.SetImageList( m_ilItemImages );
+	m_hiModelRatio.SetFocusSubItem( TRUE );
 
 	m_lowModelList.AddColumn( _T( "부대타입" ), 250, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_LEFT  );
 	m_lowModelList.AddColumn( _T( "소대" ), 75, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT   );
@@ -133,6 +141,24 @@ LRESULT CResolutionPropertyDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	m_hiModelList.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
 	m_hiModelList.ShowHeaderSort(FALSE);	
 	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTHI, &m_hiModelList, 
+		SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel()),
+		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
+		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), SPrMoTy::INFANTRY));
+
+	m_hiModelRatio.AddColumn( _T( "부대타입" ), 220, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_LEFT  );
+	m_hiModelRatio.AddColumn( _T( " " ), 220, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_LEFT  );
+	m_hiModelRatio.AddColumn( _T( "소대" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.AddColumn( _T( "본부소대" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.AddColumn( _T( "분대1" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.AddColumn( _T( "분대2" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.AddColumn( _T( "분대3" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
+	m_hiModelRatio.ShowHeaderSort(FALSE);	
+	CGAgt::G()->PropLi()->hiPropertyRatio(&m_hiModelRatio, 
 		SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel()),
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), SPrMoTy::INFANTRY));
@@ -222,6 +248,7 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode
 
 	m_lowModelList.DeleteAllItems();
 	m_hiModelList.DeleteAllItems();
+	m_hiModelRatio.DeleteAllItems();
 	SPrMoTy::COMBATANT combatType = SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel());
 	SPrMoTy::COMBATANTCLASS combatClass = SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType);
 
@@ -238,6 +265,12 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode
 		m_hiModelList.SetColumn(6, _T("중대1"));
 		m_hiModelList.SetColumn(8, _T("중대2"));
 		m_hiModelList.SetColumn(10, _T("중대3"));
+
+		m_hiModelRatio.SetColumn(2, _T("대대"));
+		m_hiModelRatio.SetColumn(4, _T("본부대대"));
+		m_hiModelRatio.SetColumn(6, _T("중대1"));
+		m_hiModelRatio.SetColumn(8, _T("중대2"));
+		m_hiModelRatio.SetColumn(10, _T("중대3"));
 	}
 	else if(SPrMoTy::COMPANY == combatClass)
 	{
@@ -252,6 +285,12 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode
 		m_hiModelList.SetColumn(6, _T("소대1"));
 		m_hiModelList.SetColumn(8, _T("소대2"));
 		m_hiModelList.SetColumn(10, _T("소대3"));
+
+		m_hiModelRatio.SetColumn(2, _T("중대"));
+		m_hiModelRatio.SetColumn(4, _T("본부중대"));
+		m_hiModelRatio.SetColumn(6, _T("소대1"));
+		m_hiModelRatio.SetColumn(8, _T("소대2"));
+		m_hiModelRatio.SetColumn(10, _T("소대3"));
 	}
 	else
 	{
@@ -266,6 +305,12 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode
 		m_hiModelList.SetColumn(6, _T("분대1"));
 		m_hiModelList.SetColumn(8, _T("분대2"));
 		m_hiModelList.SetColumn(10, _T("분대3"));
+
+		m_hiModelRatio.SetColumn(2, _T("소대"));
+		m_hiModelRatio.SetColumn(4, _T("본부소대"));
+		m_hiModelRatio.SetColumn(6, _T("분대1"));
+		m_hiModelRatio.SetColumn(8, _T("분대2"));
+		m_hiModelRatio.SetColumn(10, _T("분대3"));
 	}
 
 	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTLOW, &m_lowModelList, 
@@ -274,6 +319,11 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
 
 	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTHI, &m_hiModelList, 
+		combatType,
+		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
+		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
+
+	CGAgt::G()->PropLi()->hiPropertyRatio(&m_hiModelRatio, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
@@ -289,6 +339,7 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyPropertydiv(WORD /*wNotifyCode
 
 	m_lowModelList.DeleteAllItems();
 	m_hiModelList.DeleteAllItems();
+	m_hiModelRatio.DeleteAllItems();
 	SPrMoTy::COMBATANT combatType = SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel());
 	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTLOW, &m_lowModelList, 
 		combatType,
@@ -296,6 +347,11 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyPropertydiv(WORD /*wNotifyCode
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
 
 	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTHI, &m_hiModelList, 
+		combatType,
+		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
+		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
+
+	CGAgt::G()->PropLi()->hiPropertyRatio(&m_hiModelRatio, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
@@ -413,7 +469,7 @@ LRESULT CResolutionPropertyDlg::OnLowModelListModify( LPNMHDR lpNMHDR )
 		osItemText.str(_T(""));
 		osItemText << numSelect;
 		m_lowModelList.SetItemText(pListNotify->m_nItem, pListNotify->m_nSubItem, osItemText.str().c_str());
-		MessageBox(_T("인가량보다 크다"), _T("입력오류"), MB_OK);
+		MessageBox(_T("한계치보다 크다"), _T("입력오류"), MB_OK);
 	}
 	return 0;
 }
@@ -463,6 +519,136 @@ LRESULT CResolutionPropertyDlg::OnHiModelListSelectedLeft( LPNMHDR lpNMHDR )
 
 	return 0;
 }
+
+LRESULT CResolutionPropertyDlg::OnHiModelRatioSelected( LPNMHDR lpNMHDR )
+{
+	CListNotify *pListNotify = reinterpret_cast<CListNotify *>( lpNMHDR );
+
+
+#ifdef _UNICODE
+	wostringstream osItemText;
+#else
+	ostringstream osItemText;
+#endif
+
+	osItemText << _T( "Selected item Num: " ) << pListNotify->m_nItem << _T( " " )
+		<< _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+
+	CLogDlg::AddLogText(osItemText.str().c_str());
+
+	CSubItem listSubItem;
+	m_hiModelRatio.GetSubItem(pListNotify->m_nItem, pListNotify->m_nSubItem, listSubItem);
+	CLogDlg::AddLogText(listSubItem.m_strText);
+	return 0;
+}
+
+LRESULT CResolutionPropertyDlg::OnHiModelRatioSelectedLeft( LPNMHDR lpNMHDR )
+{
+	CListNotify *pListNotify = reinterpret_cast<CListNotify *>( lpNMHDR );
+
+
+#ifdef _UNICODE
+	wostringstream osItemText;
+#else
+	ostringstream osItemText;
+#endif
+
+	osItemText << _T( "Left item Num: " ) << pListNotify->m_nItem << _T( " " )
+		<< _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+
+	CLogDlg::AddLogText(osItemText.str().c_str());
+
+	CSubItem listSubItem;
+	m_hiModelRatio.GetSubItem(pListNotify->m_nItem, pListNotify->m_nSubItem, listSubItem);
+	CLogDlg::AddLogText(listSubItem.m_strText);
+
+	if(ITEM_FORMAT_EDIT == listSubItem.m_nFormat)
+	{
+		numSelect = strtoul(CStringA(listSubItem.m_strText).GetBuffer(), NULL, 10);
+		CLogDlg::AddLogText("ITEM_FORMAT_EDIT");
+		bEditHiRatio = true;
+		hiRatioSelectNum = pListNotify->m_nItem;
+	}
+
+	return 0;
+}
+
+LRESULT CResolutionPropertyDlg::OnHiModelRatioSelectedRight( LPNMHDR lpNMHDR )
+{
+	CListNotify *pListNotify = reinterpret_cast<CListNotify *>( lpNMHDR );
+
+
+#ifdef _UNICODE
+	wostringstream osItemText;
+#else
+	ostringstream osItemText;
+#endif
+
+	osItemText << _T( "Right item Num: " ) << pListNotify->m_nItem << _T( " " )
+		<< _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+
+	CLogDlg::AddLogText(osItemText.str().c_str());
+
+	CSubItem listSubItem;
+	m_hiModelRatio.GetSubItem(pListNotify->m_nItem, pListNotify->m_nSubItem, listSubItem);
+	CLogDlg::AddLogText(listSubItem.m_strText);
+	return 0;
+}
+
+LRESULT CResolutionPropertyDlg::OnHiModelRatioModify( LPNMHDR lpNMHDR )
+{
+	CListNotify *pListNotify = reinterpret_cast<CListNotify *>( lpNMHDR );
+
+#ifdef _UNICODE
+	wostringstream osItemText;
+#else
+	ostringstream osItemText;
+#endif
+
+	osItemText << _T( "Modify item Num: " ) << pListNotify->m_nItem << _T( " " )
+		<< _T( "Sub item Num: " ) << pListNotify->m_nSubItem << _T( " " );
+
+	CLogDlg::AddLogText(osItemText.str().c_str());
+
+	CSubItem listSubItem;
+	m_hiModelRatio.GetSubItem(pListNotify->m_nItem, pListNotify->m_nSubItem, listSubItem);
+	CLogDlg::AddLogText(listSubItem.m_strText);
+	int numVerify = strtoul(CStringA(listSubItem.m_strText).GetBuffer(), NULL, 10);
+	m_hiModelRatio.GetSubItem(pListNotify->m_nItem, pListNotify->m_nSubItem+1, listSubItem);
+	int numVerifyComp = strtoul(CStringA(listSubItem.m_strText).GetBuffer(), NULL, 10);
+
+	if (numVerify < 0)
+	{
+		osItemText.str(_T(""));
+		osItemText << numSelect;
+		m_hiModelRatio.SetItemText(pListNotify->m_nItem, pListNotify->m_nSubItem, osItemText.str().c_str());
+		MessageBox(_T("0 보다 작다"), _T("입력오류"), MB_OK);
+	}
+	else if (numVerify > numVerifyComp)
+	{
+		osItemText.str(_T(""));
+		osItemText << numSelect;
+		m_hiModelRatio.SetItemText(pListNotify->m_nItem, pListNotify->m_nSubItem, osItemText.str().c_str());
+		MessageBox(_T("인가량보다 크다"), _T("입력오류"), MB_OK);
+	}
+
+	if((bEditHiRatio == true) && (hiRatioSelectNum == pListNotify->m_nItem))
+	{
+		bEditHiRatio = false;
+		hiRatioSelectNum = -1;
+		int total = 0;
+		for (int idx = 0; idx < (int)STPL_HIRR.size(); idx++)
+		{
+			total += strtoul(CStringA(m_hiModelRatio.GetItemText(pListNotify->m_nItem, STPL_HIRR[idx])).GetBuffer(), NULL, 10);
+		}	
+		osItemText.str(_T(""));
+		osItemText << total;
+		m_hiModelRatio.SetItemText(pListNotify->m_nItem, SPrCoNa::HRMN_02, osItemText.str().c_str());
+
+	}
+	return 0;
+}
+
 LRESULT CResolutionPropertyDlg::OnBnClickedPptyResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -482,7 +668,7 @@ LRESULT CResolutionPropertyDlg::OnBnClickedPptyResolutionchange(WORD /*wNotifyCo
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
 	SPrMoTy::COMBATANT combatType = SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel());
-	CGAgt::G()->PropLi()->resolutionChangeProperty(&m_lowModelList, &m_hiModelList,
+	CGAgt::G()->PropLi()->resolutionChangeProperty(&m_lowModelList, &m_hiModelRatio, &m_hiModelList,
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));

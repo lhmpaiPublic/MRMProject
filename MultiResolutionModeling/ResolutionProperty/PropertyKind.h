@@ -146,6 +146,23 @@ typedef struct _SProductColumnName
 		HMN_11 = 11,					//3개체 인가량
 		HMN_SIZE = 12
 	};
+
+	enum HIRATIOCOLUMNNAME
+	{
+		HRMN_00 = 0,				//모체 자산 이름
+		HRMN_01 = 1,					//자산 이름
+		HRMN_02 = 2,					//변환개체 설정량
+		HRMN_03 = 3,					//변환개체 한계치
+		HRMN_04 = 4,				//본부개체 설정량
+		HRMN_05 = 5,				//본부개체 한계치
+		HRMN_06 = 6,					//1개체 설정량
+		HRMN_07 = 7,					//1개체 한계치
+		HRMN_08 = 8,					//2개체 설정량
+		HRMN_09 = 9,					//2개체 한계치
+		HRMN_10 = 10,					//3개체 설정량
+		HRMN_11 = 11,					//3개체 한계치
+		HRMN_SIZE = 12
+	};
 }SPrCoNa;
 
 typedef struct _SProductModelType

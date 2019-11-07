@@ -25,6 +25,16 @@ class CPropertyList
 	bool getPropKeyMappListIndex(int mappKey, SPrMoTy::MODELTYPE modelType, vector<int>& idxVal);
 
 	vector<SVeCoIdVa> randomVec(vector<SVeCoIdVa> val);
+
+public:
+	static vector<SPrCoNa::HICOLUMNNAME> setHiRetenListNum;
+	static vector<SPrCoNa::HICOLUMNNAME> setHiAccListNum;
+
+	static vector<SPrCoNa::LOWCOLUMNNAME> setLowRetenListNum;
+	static vector<SPrCoNa::LOWCOLUMNNAME> setLowAccListNum;
+
+	static vector<SPrCoNa::HIRATIOCOLUMNNAME> setHiRetenRitioNum;
+	static vector<SPrCoNa::HIRATIOCOLUMNNAME> setHiLimtRitioNum;
 public:
 	CPropertyList();
 	~CPropertyList();
@@ -37,6 +47,14 @@ public:
 
 	void lowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
 	void hiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
+	void hiPropertyRatio(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
 
-	void resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* listCtrlHi, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
+	void resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* listCtrlHiRatio, CListCtrl* listCtrlHi, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
 };
+
+#define STPL_LOWR CPropertyList::setLowRetenListNum
+#define STPL_LOWA CPropertyList::setLowAccListNum
+#define STPL_HIR CPropertyList::setHiRetenListNum
+#define STPL_HIA CPropertyList::setHiAccListNum
+#define STPL_HIRR CPropertyList::setHiRetenRitioNum
+#define STPL_HIRL CPropertyList::setHiLimtRitioNum
