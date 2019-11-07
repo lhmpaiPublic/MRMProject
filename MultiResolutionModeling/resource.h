@@ -54,6 +54,8 @@
 #define IDCCUST_HIMODELLIST             1020
 #define IDCCUST_LOWMODELLIST3           1021
 #define IDCCUST_HIMODELRATIO            1021
+#define IDCCUST_LOWMODELRATIO           1022
+#define IDCCUST_LOWMODELLIST4           1022
 #define IDC_LOGWINDOW                   57665
 #define IDC_RESPOSWIN                   57666
 #define IDC_RESPROPERTYWIN              57667

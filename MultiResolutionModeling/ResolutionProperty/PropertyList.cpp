@@ -16,6 +16,9 @@ vector<SPrCoNa::LOWCOLUMNNAME> CPropertyList::setLowAccListNum;
 vector<SPrCoNa::HIRATIOCOLUMNNAME> CPropertyList::setHiRetenRitioNum;
 vector<SPrCoNa::HIRATIOCOLUMNNAME> CPropertyList::setHiLimtRitioNum;
 
+vector<SPrCoNa::LOWRATIOCOLUMNNAME> CPropertyList::setLowRetenRitioNum;
+vector<SPrCoNa::LOWRATIOCOLUMNNAME> CPropertyList::setLowLimtRitioNum;
+
 CPropertyList::CPropertyList()
 {
 	itemKey[SPrMoTy::MTLOW].RemoveAll();
@@ -56,6 +59,16 @@ CPropertyList::CPropertyList()
 	setHiLimtRitioNum.push_back(SPrCoNa::HRMN_07);
 	setHiLimtRitioNum.push_back(SPrCoNa::HRMN_09);
 	setHiLimtRitioNum.push_back(SPrCoNa::HRMN_11);
+
+	setLowRetenRitioNum.push_back(SPrCoNa::LRMN_01);
+	setLowRetenRitioNum.push_back(SPrCoNa::LRMN_03);
+	setLowRetenRitioNum.push_back(SPrCoNa::LRMN_05);
+	setLowRetenRitioNum.push_back(SPrCoNa::LRMN_07);
+
+	setLowLimtRitioNum.push_back(SPrCoNa::LRMN_02);
+	setLowLimtRitioNum.push_back(SPrCoNa::LRMN_04);
+	setLowLimtRitioNum.push_back(SPrCoNa::LRMN_06);
+	setLowLimtRitioNum.push_back(SPrCoNa::LRMN_08);
 }
 CPropertyList::~CPropertyList()
 {
@@ -375,6 +388,73 @@ void CPropertyList::lowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT comb
 	}
 }
 
+void CPropertyList::lowPropertyIRatio(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass)
+{
+	vector<int> lowKey = keyList[combat][propType].getMappKey(SPrMoTy::MTLOW);
+	vector<int> hiKey = keyList[combat][propType].getMappKey(SPrMoTy::MTHI);
+
+	int nUser = listCtrl->AddItem(_T("자산명"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_00, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::LRMN_01, _T("설정량"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_01, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::LRMN_02, _T("한계치"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_02, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::LRMN_03, _T("설정량"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_03, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::LRMN_04, _T("한계치"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_04, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::LRMN_05, _T("설정량"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_05, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::LRMN_06, _T("한계치"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_06, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::LRMN_07, _T("설정량"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_07, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+	listCtrl->SetItemText( nUser, SPrCoNa::LRMN_08, _T("한계치"));
+	listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_08, RGB( 128, 128, 64 ), RGB( 0, 255, 0 ) );
+
+	SPrMa prVal;
+	productMappingVal[combat].Lookup(propType, prVal);
+	for (int i = 0; i < (int)lowKey.size(); i++)
+	{
+		vector<SPrVa> val = prVal.getVal(lowKey[i], cbtClass, SPrMoTy::MTLOW);
+		for (int iv = 0; iv < (int)val.size(); iv++)
+		{
+			int nUser = listCtrl->AddItem(val[iv].strName);
+			listCtrl->SetItemColours( nUser, SPrCoNa::LMN_00, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+
+			std::wstringstream strStream;
+			SPrVa keyval = prVal.getValKey(val[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-1), SPrMoTy::MTLOW);
+			strStream.str(L"");
+			strStream << keyval.accreditation;
+			listCtrl->SetItemText( nUser, SPrCoNa::LRMN_01, strStream.str().c_str());
+			listCtrl->SetItemFormat( nUser, SPrCoNa::LRMN_01, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+			listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_01, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
+			listCtrl->SetItemText( nUser, SPrCoNa::LRMN_02, strStream.str().c_str());
+			listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_02, RGB( 192, 192, 192  ), RGB( 0, 0, 0 ) );
+
+			keyval = prVal.getValKey(val[iv].key, SPrMoTy::COMBATANTCLASS(cbtClass-2), SPrMoTy::MTLOW);
+			strStream.str(L"");
+			strStream << keyval.accreditation;
+			listCtrl->SetItemText( nUser, SPrCoNa::LRMN_03, strStream.str().c_str());
+			listCtrl->SetItemFormat( nUser, SPrCoNa::LRMN_03, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+			listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_03, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
+			listCtrl->SetItemText( nUser, SPrCoNa::LRMN_04, strStream.str().c_str());
+			listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_04, RGB( 192, 192, 192  ), RGB( 0, 0, 0 ) );
+			listCtrl->SetItemText( nUser, SPrCoNa::LRMN_05, strStream.str().c_str());
+			listCtrl->SetItemFormat( nUser, SPrCoNa::LRMN_05, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+			listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_05, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
+			listCtrl->SetItemText( nUser, SPrCoNa::LRMN_06, strStream.str().c_str());
+			listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_06, RGB( 192, 192, 192  ), RGB( 0, 0, 0 ) );
+			listCtrl->SetItemText( nUser, SPrCoNa::LRMN_07, strStream.str().c_str());
+			listCtrl->SetItemFormat( nUser, SPrCoNa::LRMN_07, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+			listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_07, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
+			listCtrl->SetItemText( nUser, SPrCoNa::LRMN_08, strStream.str().c_str());
+			listCtrl->SetItemColours( nUser, SPrCoNa::LRMN_08, RGB( 192, 192, 192  ), RGB( 0, 0, 0 ) );
+		}
+
+	}
+}
+
 void CPropertyList::hiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass)
 {
 	vector<int> lowKey = keyList[combat][propType].getMappKey(SPrMoTy::MTLOW);
@@ -633,7 +713,8 @@ void CPropertyList::hiPropertyRatio(CListCtrl* listCtrl, SPrMoTy::COMBATANT comb
 					strStream.str(L"");
 					strStream << keyval.accreditation;
 					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_04, strStream.str().c_str());
-					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_04, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemFormat( nUser, SPrCoNa::HRMN_04, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_04, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
 					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_05, strStream.str().c_str());
 					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_05, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
 
@@ -641,15 +722,18 @@ void CPropertyList::hiPropertyRatio(CListCtrl* listCtrl, SPrMoTy::COMBATANT comb
 					strStream.str(L"");
 					strStream << keyval.accreditation;
 					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_06, strStream.str().c_str());
-					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_06, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemFormat( nUser, SPrCoNa::HRMN_06, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_06, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
 					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_07, strStream.str().c_str());
 					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_07, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
 					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_08, strStream.str().c_str());
-					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_08, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemFormat( nUser, SPrCoNa::HRMN_08, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_08, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
 					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_09, strStream.str().c_str());
 					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_09, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
 					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_10, strStream.str().c_str());
-					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_10, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
+					listCtrl->SetItemFormat( nUser, SPrCoNa::HRMN_10, ITEM_FORMAT_EDIT, ITEM_FLAGS_RIGHT);
+					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_10, RGB( 153, 217, 234 ), RGB( 0, 0, 0 ) );
 					listCtrl->SetItemText( nUser, SPrCoNa::HRMN_11, strStream.str().c_str());
 					listCtrl->SetItemColours( nUser, SPrCoNa::HRMN_11, RGB( 192, 192, 192 ), RGB( 0, 0, 0 ) );
 				}				
@@ -658,7 +742,7 @@ void CPropertyList::hiPropertyRatio(CListCtrl* listCtrl, SPrMoTy::COMBATANT comb
 	}
 }
 
-void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* listCtrlHiRatio, CListCtrl* listCtrlHi, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass)
+void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLowRatio, CListCtrl* listCtrlLow, CListCtrl* listCtrlHiRatio, CListCtrl* listCtrlHi, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass)
 {
 #ifdef _UNICODE
 	wostringstream osItemText;
@@ -795,12 +879,12 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 				//인가량을 이용하여 세팅 계산 비를 계산한다.
 				for (int idx = 0; idx < (int)idxListHiVec.size(); idx++)
 				{
-					accRatio[idx] = (accHiTotal-itemNum) * ((float)accTotalvec[idx]/(float)accHiTotal);
+					accRatio[idx] = itemNum * ((float)accTotalvec[idx]/(float)accHiTotal);
 					retVal[idx] = (int)accRatio[idx];
 					retToTalVal += retVal[idx];
 				}
 				//계산 비에 의해서 정수 개수 외 나머지 몇개 인가를 계산
-				int retRest = (accHiTotal-itemNum) - retToTalVal;
+				int retRest = itemNum - retToTalVal;
 				//나머지 세팅 개수가 존재하면 진입한다.
 				if(retRest > 0)
 				{
@@ -831,7 +915,7 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 				for (int idx = 0; idx < (int)accTotalvec.size(); idx++)
 				{
 					osItemText.str(_T(""));
-					osItemText << accTotalvec[idx] - retVal[idx];
+					osItemText << retVal[idx];
 					listCtrlHi->SetItemText(idxListHiVec[idx], SPrCoNa::HMN_02, osItemText.str().c_str());
 				}
 
@@ -854,7 +938,7 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 					accRatio.resize(4);
 					for (int idx = 0; idx < (int)accVec.size(); idx++)
 					{
-						accRatio[idx] = (accTotal-hItemNum) * ((float)accVec[idx]/(float)accTotal);
+						accRatio[idx] = hItemNum * ((float)accVec[idx]/(float)accTotal);
 					}
 
 					vector<int> retVal;
@@ -891,7 +975,7 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 					for (int idx = 0; idx < (int)accVec.size(); idx++)
 					{
 						osItemText.str(_T(""));
-						osItemText << accVec[idx] - retVal[idx];
+						osItemText << retVal[idx];
 						listCtrlHi->SetItemText(idxListHiVec[idxHi] , setHiRetenListNum[idx], osItemText.str().c_str());
 					}
 				}
@@ -915,8 +999,9 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 			getPropKeyMappListIndex(mappKeyBackup[mIdx], SPrMoTy::MTHI, idxListHiVec))
 		{
 			vector<int> retenHiVec(4,0);
-			vector<int> accHiTotal(4,0);
-			//Hi의 각 하위 인가량 보유량 합산 개수
+			vector<int> accLowTotal(4,0);
+			vector<int> accLowRatioTotal(4,0);
+			//Hi의 각 하위 보유량 합산 개수
 			for (int idxHi = 0; idxHi < (int)idxListHiVec.size(); idxHi++)
 			{
 				//보유량 합산
@@ -924,17 +1009,29 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 				retenHiVec[1] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[1])).GetBuffer(), NULL, 10);
 				retenHiVec[2] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[2])).GetBuffer(), NULL, 10);
 				retenHiVec[3] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[3])).GetBuffer(), NULL, 10);
-
-				//인가량 합산
-				accHiTotal[0] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[0])).GetBuffer(), NULL, 10);
-				accHiTotal[1] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[1])).GetBuffer(), NULL, 10);
-				accHiTotal[2] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[2])).GetBuffer(), NULL, 10);
-				accHiTotal[3] += strtoul(CStringA(listCtrlHi->GetItemText(idxListHiVec[idxHi], setHiAccListNum[3])).GetBuffer(), NULL, 10);
 			}
+
+			//Low의 각 하위  설정량 합산 개수
+			for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
+			{
+				//설정량 합산
+				accLowRatioTotal[0] += strtoul(CStringA(listCtrlLowRatio->GetItemText(idxListLowVec[idxLow], setLowRetenRitioNum[0])).GetBuffer(), NULL, 10);
+				accLowRatioTotal[1] += strtoul(CStringA(listCtrlLowRatio->GetItemText(idxListLowVec[idxLow], setLowRetenRitioNum[1])).GetBuffer(), NULL, 10);
+				accLowRatioTotal[2] += strtoul(CStringA(listCtrlLowRatio->GetItemText(idxListLowVec[idxLow], setLowRetenRitioNum[2])).GetBuffer(), NULL, 10);
+				accLowRatioTotal[3] += strtoul(CStringA(listCtrlLowRatio->GetItemText(idxListLowVec[idxLow], setLowRetenRitioNum[3])).GetBuffer(), NULL, 10);
+
+				//Low 인가량 합산
+				accLowTotal[0] += strtoul(CStringA(listCtrlLow->GetItemText(idxListLowVec[idxLow], setLowAccListNum[0])).GetBuffer(), NULL, 10);
+				accLowTotal[1] += strtoul(CStringA(listCtrlLow->GetItemText(idxListLowVec[idxLow], setLowAccListNum[1])).GetBuffer(), NULL, 10);
+				accLowTotal[2] += strtoul(CStringA(listCtrlLow->GetItemText(idxListLowVec[idxLow], setLowAccListNum[2])).GetBuffer(), NULL, 10);
+				accLowTotal[3] += strtoul(CStringA(listCtrlLow->GetItemText(idxListLowVec[idxLow], setLowAccListNum[3])).GetBuffer(), NULL, 10);
+			}
+
 			for (int idxRtn = 0; idxRtn < (int)retenHiVec.size(); idxRtn++)
 			{
-				if(0 == accHiTotal[idxRtn])
+				if(0 == accLowRatioTotal[idxRtn])
 					continue;
+				//보유량 합산이 0이면 0 세팅
 				if(0 == retenHiVec[idxRtn])
 				{
 					//Hi 값 -> LOW 보유량 최종 세팅
@@ -956,14 +1053,17 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 					accValTotal.resize(idxListLowVec.size());
 					for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
 					{
-						//본부부 인가량
+						//LOW 인가량 저장
 						accValTotal[idxLow] = strtoul(CStringA(listCtrlLow->GetItemText(idxListLowVec[idxLow], setLowAccListNum[idxRtn])).GetBuffer(), NULL, 10);
-						accRatio[idxLow] = (accHiTotal[idxRtn]-retenHiVec[idxRtn]) * ((float)accValTotal[idxLow]/(float)accHiTotal[idxRtn]);
+						//LOW 비율
+						int lowRatioVal = strtoul(CStringA(listCtrlLowRatio->GetItemText(idxListLowVec[idxLow], setLowRetenRitioNum[idxRtn])).GetBuffer(), NULL, 10);
+
+						accRatio[idxLow] = retenHiVec[idxRtn] * ((float)lowRatioVal/(float)accLowRatioTotal[idxRtn]);
 						retVal[idxLow] = (int)accRatio[idxLow];
 						retToTalVal += retVal[idxLow];
 					}
 					//계산 비에 의해서 정수 개수 외 나머지 몇개 인가를 계산
-					int retRest = (accHiTotal[idxRtn]-retenHiVec[idxRtn]) - retToTalVal;
+					int retRest = retenHiVec[idxRtn] - retToTalVal;
 
 					//나머지 세팅 개수가 존재하면 진입한다.
 					if(retRest > 0)
@@ -995,7 +1095,7 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLow, CListCtrl* 
 					for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
 					{
 						osItemText.str(_T(""));
-						osItemText << accValTotal[idxLow] - retVal[idxLow];
+						osItemText << retVal[idxLow];
 						listCtrlLow->SetItemText(idxListLowVec[idxLow], setLowRetenListNum[idxRtn], osItemText.str().c_str());
 					}
 				}

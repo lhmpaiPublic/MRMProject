@@ -130,6 +130,20 @@ typedef struct _SProductColumnName
 		LMN_SIZE = 11
 	};
 
+	enum LOWRATIOCOLUMNNAME
+	{
+		LRMN_00 = 0,				//자산 이름
+		LRMN_01 = 1,			//본부개체 보유량
+		LRMN_02 = 2,			//본부개체 인가량
+		LRMN_03 = 3,				//1개체 보유량
+		LRMN_04 = 4,				//1개체 인가량
+		LRMN_05 = 5,				//2개체 보유량
+		LRMN_06 = 6,				//2개체 인가량
+		LRMN_07 = 7,				//3개체 보유량
+		LRMN_08 = 8,				//3개체 인가량
+		LRMN_SIZE = 9
+	};
+
 	enum HICOLUMNNAME
 	{
 		HMN_00 = 0,				//모체 자산 이름
