@@ -66,8 +66,7 @@ using namespace std;
 #include "subControl.h"
 
 //================================
-#include "vector2d.h"
-#include "vector3d.h"
+#include "CommonResolution/CommonResolution.h"
 
 #include "ImageLoadApi/ImageLoadApi.h"
 #include "ExcelAuto/XLAutomation.h"
@@ -77,8 +76,6 @@ using namespace std;
 #include "GAgt.h"
 //로그 출력 클래스
 #include "LogDlg.h"
-//변환 공통 클래스
-#include "ResolutionChange.h"
 
 
 #if defined _M_IX86

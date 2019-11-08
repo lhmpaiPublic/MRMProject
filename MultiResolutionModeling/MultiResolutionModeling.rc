@@ -288,8 +288,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 1,1,1,1
+ PRODUCTVERSION 1,1,1,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -297,20 +297,21 @@ VS_VERSION_INFO VERSIONINFO
  FILEFLAGS 0x0L
 #endif
  FILEOS 0x4L
- FILETYPE 0x2L
+ FILETYPE 0x1L
  FILESUBTYPE 0x0L
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "040904b0"
         BEGIN
+            VALUE "CompanyName", "ARES"
             VALUE "FileDescription", "MultiResolutionModeling Module"
-            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "FileVersion", "1, 1, 1, 1"
             VALUE "InternalName", "MultiResolutionModeling"
             VALUE "LegalCopyright", "Copyright 2019"
             VALUE "OriginalFilename", "MultiResolutionModeling.exe"
             VALUE "ProductName", "MultiResolutionModeling Module"
-            VALUE "ProductVersion", "1, 0, 0, 1"
+            VALUE "ProductVersion", "1, 1, 1, 1"
         END
     END
     BLOCK "VarFileInfo"

@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "MainDlg.h"
 #include "aboutdlg.h"
-#include "CSVFile.h"
 
 
 BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)

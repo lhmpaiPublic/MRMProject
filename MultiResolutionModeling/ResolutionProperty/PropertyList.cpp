@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "PropertyList.h"
-#include "../CSVFile.h"
 
 #define MAXHINUM	4
 

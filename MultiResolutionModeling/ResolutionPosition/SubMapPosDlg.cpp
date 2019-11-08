@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "SubMapPosDlg.h"
 #include "../ImageLoadApi/ImageLoadApi.h"
-#include "../ResolutionChange.h"
 #define SUBMAPOSDLG_POSX 50
 #define SUBMAPOSDLG_POSY 160
 

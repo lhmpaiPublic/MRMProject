@@ -191,10 +191,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CSVFile.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\GAgt.cpp"
 				>
 			</File>
@@ -208,10 +204,6 @@
 			</File>
 			<File
 				RelativePath=".\MultiResolutionModeling.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ResolutionChange.cpp"
 				>
 			</File>
 			<File
@@ -234,18 +226,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\UnitSize.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\vector2d.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\vector3d.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -253,10 +233,6 @@
 			>
 			<File
 				RelativePath=".\AboutDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\CSVFile.h"
 				>
 			</File>
 			<File
@@ -272,10 +248,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ResolutionChange.h"
-				>
-			</File>
-			<File
 				RelativePath=".\resource.h"
 				>
 			</File>
@@ -285,18 +257,6 @@
 			</File>
 			<File
 				RelativePath=".\subControl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\UnitSize.h"
-				>
-			</File>
-			<File
-				RelativePath=".\vector2d.h"
-				>
-			</File>
-			<File
-				RelativePath=".\vector3d.h"
 				>
 			</File>
 		</Filter>
@@ -659,6 +619,62 @@
 			<Filter
 				Name="Source Files"
 				>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="CommonResolution"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\CommonResolution\CommonResolution.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\CSVFile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\ResolutionChange.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\UnitSize.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\vector2d.h"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\vector3d.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\CommonResolution\CSVFile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\ResolutionChange.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\UnitSize.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\vector2d.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\vector3d.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>

@@ -3,7 +3,6 @@
 /////////////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
 #include "LogDlg.h"
-#include "CSVFile.h"
 
 CLogDlg* CLogDlg::gLogDlg=NULL;
 std::stringstream CLogDlg::mkLog;
