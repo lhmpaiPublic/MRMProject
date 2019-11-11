@@ -106,10 +106,13 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	CGAgt::GResCha()->setMilitarybranch(CUnitSize::emMilitarybranch(combatType, incUnitScale.GetCurSel()));
 
 	incMapImpact.Attach(GetDlgItem(IDCC_INMAPIMPACT));
-	incMapImpact.AddString(CStringW("개체1"));
-	incMapImpact.AddString(CStringW("개체2"));
-	incMapImpact.AddString(CStringW("개체3"));
-	incMapImpact.AddString(CStringW("개체4"));
+	incMapImpact.AddString(CStringW("수면"));
+	incMapImpact.AddString(CStringW("해수면"));
+	incMapImpact.AddString(CStringW("산악"));
+	incMapImpact.AddString(CStringW("소택지"));
+	incMapImpact.AddString(CStringW("산림"));
+	incMapImpact.AddString(CStringW("늪지"));
+	incMapImpact.AddString(CStringW("경작지"));
 	incMapImpact.SetCurSel(0);
 
 	incDivisionCount.Attach(GetDlgItem(IDCC_INDIVISIONCOUNT));
@@ -194,6 +197,13 @@ LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/
 	CGAgt::GResCha()->setMilitarybranch(mil);
 
 	CGAgt::GResCha()->changeDisaggregated();
+	return 0;
+}
+
+LRESULT CResolutionPositionDlg::OnBnClickedResolutionclear(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	subMapPosDlg->clearResolution();
 	return 0;
 }
 
@@ -316,3 +326,4 @@ int CResolutionPositionDlg::valDivisionCount(int selNum)
 	val = selNum+1;
 	return val;
 }
+

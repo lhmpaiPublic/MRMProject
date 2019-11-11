@@ -22,6 +22,11 @@ class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 	CRect winPos;
 	CPoint startPoint;
 	bool bLClick;
+
+
+	CSize winSz;
+	vector<CRect> mapLattice;
+	vector<CRect> mapLatticeSelect;
 public:
 	enum { IDD = IDD_SUBMAPPOSDLG };
 
@@ -33,6 +38,7 @@ public:
 		MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown)
 		MESSAGE_HANDLER(WM_MOUSEMOVE, OnLMouseMove)
 		MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp)
+		MESSAGE_HANDLER(WM_LBUTTONDBLCLK, OnLButtonDblClk)
 		REFLECT_NOTIFICATIONS()
 	END_MSG_MAP()
 
@@ -50,6 +56,8 @@ public:
 	void init(HWND _hWnd);
 	//Dlg 종료 함수
 	void DlgClose();
+	//위치 변환 지우기
+	void clearResolution();
 	//Dlg 초기화 
 	//======================================================//
 	//			초기화
@@ -78,6 +86,8 @@ public:
 
 	LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
+	LRESULT OnLButtonDblClk(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
+
 	//--------------------------------------------------------------
 	//|
 	//|
@@ -96,4 +106,10 @@ public:
 
 	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text);
 	void drawResolutionPositionSize(int drawSize);
+
+	void makeMapLattice();
+	//void drawMapLattice(CDCHandle dc);
+	bool addMapLatticeSelect(CPoint point);
+	CRect findMapLattice(CPoint point);
+	void drawMapLatticeSelect(CDCHandle dc);
 };

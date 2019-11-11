@@ -43,6 +43,8 @@
 #define IDCC_PPTY_SETNUM0               1011
 #define IDCCK_LOGCSVFILE                1012
 #define IDCC_PPTY_SETNUM2               1012
+#define IDCB_RESOLUTIONCHANGE2          1012
+#define IDCB_RESOLUTIONCLEAR            1012
 #define IDCC_PPTY_SETNUM1               1013
 #define IDCC_PPTY_SETNUM3               1014
 #define IDCE_PPTY_USNUM0                1015

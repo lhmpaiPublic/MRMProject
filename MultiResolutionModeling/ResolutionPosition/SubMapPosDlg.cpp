@@ -27,6 +27,8 @@ void CSubMapPosDlg::init(HWND _hWnd)
 	drawPosItem.clear();
 	drawPosItemsize = 1;
 	typeOption = 0;
+	mapLattice.clear();
+	mapLatticeSelect.clear();
 
 	bLClick = false;
 }
@@ -42,6 +44,19 @@ UINT CSubMapPosDlg::imgId[IMAGE_MAX]=
 	IDB_RP_MAPGRID_8
 };
 
+void CSubMapPosDlg::clearResolution()
+{
+	drawPosItem.clear();
+	drawPosItemsize = 1;
+	typeOption = 0;
+
+	mapLatticeSelect.clear();
+
+	InvalidateRect(NULL);
+	//InvalidateRect를 강제로 바로 실행 하기 위해존제..
+	UpdateWindow();
+}
+
 LRESULT CSubMapPosDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
 	// register object for message filtering and idle updates
@@ -54,13 +69,14 @@ LRESULT CSubMapPosDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
 	CBitmap backimage = pBitmap.GetWinBitmap();
 	BITMAP bitmap;
 	::GetObject(backimage, sizeof(BITMAP), &bitmap); 
-	int imgBackX = bitmap.bmWidth;
-	int imgBackY = bitmap.bmHeight;
+	winSz.cx = bitmap.bmWidth;
+	winSz.cy = bitmap.bmHeight;
 
 	CRect parentRect;
 	::GetWindowRect(hWnd, &parentRect);
-	MoveWindow(CRect(SUBMAPOSDLG_POSX, SUBMAPOSDLG_POSY, SUBMAPOSDLG_POSX+imgBackX, SUBMAPOSDLG_POSY+imgBackY));
+	MoveWindow(CRect(SUBMAPOSDLG_POSX, SUBMAPOSDLG_POSY, SUBMAPOSDLG_POSX+winSz.cx, SUBMAPOSDLG_POSY+winSz.cy));
 
+	makeMapLattice();
 	return TRUE;
 }
 //--------------------------------------------------------------
@@ -127,6 +143,10 @@ BOOL CSubMapPosDlg::OnEraseBkgnd(CDCHandle dc)
 	pMemDC -> SelectBitmap(pOldBitmap);
 	delete pMemDC;
 
+	//drawMapLattice(dc);
+
+	drawMapLatticeSelect(dc);
+
 	CBrush blue;
 	blue.CreateSolidBrush(RGB(0, 100, 255));
 	CBrush old_brush = dc.SelectBrush(blue);
@@ -150,6 +170,7 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	penRed.CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
 	CPen old_pen = dc.SelectPen(penRed);
 
+	//부대 규모에 따라서 격자의 크기 옵션 적용
 	float opt = 1.0f;
 	if(typeOption == 1)
 	{
@@ -180,7 +201,7 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 		opt = 0.088f;
 	}
 
-
+	//영역 사각형 그리기
 	if(drawAreaPosItem.size() >= 4)
 	{
 		CPoint pt[5];
@@ -193,6 +214,7 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 		dc.Polyline(pt, 5);
 	}
 
+	//분할 부대 위치 그리기
 	for (int i = 0; i < min((int)drawPosItem.size(), drawPosItemsize); i++)
 	{
 		int left = (int)(SUBMAPOSDLG_CENTERPOSX + (drawPosItem[i].x*opt))-SUBMAPOSDLG_RECREDSIZE;
@@ -202,6 +224,7 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 		dc.Rectangle(left, top, right, bottom);
 	}
 
+	//다시 합쳐진 부대 그리기
 	int left = (int)(SUBMAPOSDLG_CENTERPOSX + (drawAggPosItem.x*opt))-SUBMAPOSDLG_RECREDSIZE;
 	int top = (int)(SUBMAPOSDLG_CENTERPOSY - (drawAggPosItem.y*opt))-SUBMAPOSDLG_RECREDSIZE;
 	int right = (int)(SUBMAPOSDLG_CENTERPOSX + (drawAggPosItem.x*opt))+SUBMAPOSDLG_RECREDSIZE;
@@ -211,6 +234,7 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	dc.SelectBrush(old_brush);
 	dc.SelectPen(old_pen);
 
+	//영역 크기 텍스트 쓰기
 	dc.SetBkMode(TRANSPARENT);
 	dc.SetTextColor(RGB(0, 100, 255));
 	LOGFONT lf;
@@ -259,6 +283,17 @@ LRESULT CSubMapPosDlg::OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lP
 	return 0;
 }
 
+LRESULT CSubMapPosDlg::OnLButtonDblClk(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
+{
+	if(addMapLatticeSelect(CPoint(LOWORD(lParam), HIWORD(lParam))))
+	{
+		InvalidateRect(NULL);
+		//InvalidateRect를 강제로 바로 실행 하기 위해존제..
+		UpdateWindow();
+	}
+	return 0;
+}
+
 LRESULT CSubMapPosDlg::OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
 {
 	if(bLClick)
@@ -274,4 +309,96 @@ LRESULT CSubMapPosDlg::OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 	bLClick = false;
 	ReleaseCapture();
 	return 0;
+}
+
+void CSubMapPosDlg::makeMapLattice()
+{
+	for (int x = 0; x < (winSz.cx-50); x+=50)
+	{
+		for (int y = 0; y < (winSz.cy-50); y+=50)
+		{
+			CRect rc;
+			rc.left = x;
+			rc.right = x+50;
+			rc.top = y;
+			rc.bottom = y+50;
+			mapLattice.push_back(rc);
+		}
+	}
+}
+
+//void CSubMapPosDlg::drawMapLattice(CDCHandle dc)
+//{
+//	CBrush brCr1;
+//	brCr1.CreateSolidBrush(RGB(192, 0, 0));
+//	CBrush old_brush = dc.SelectBrush(brCr1);
+//
+//	for (int lattice = 0; lattice < (int)mapLattice.size(); lattice+=3)
+//	{
+//		dc.Rectangle(mapLattice[lattice].left, mapLattice[lattice].top, mapLattice[lattice].right, mapLattice[lattice].bottom);
+//	}
+//
+//	dc.SelectBrush(old_brush);
+//
+//	CBrush brCr2;
+//	brCr2.CreateSolidBrush(RGB(192, 192, 0));
+//	old_brush = dc.SelectBrush(brCr2);
+//
+//	for (int lattice = 1; lattice < (int)mapLattice.size(); lattice+=3)
+//	{
+//		dc.Rectangle(mapLattice[lattice].left, mapLattice[lattice].top, mapLattice[lattice].right, mapLattice[lattice].bottom);
+//	}
+//
+//	dc.SelectBrush(old_brush);
+//
+//	CBrush brCr3;
+//	brCr3.CreateSolidBrush(RGB(192, 192, 192));
+//	old_brush = dc.SelectBrush(brCr3);
+//
+//	for (int lattice = 2; lattice < (int)mapLattice.size(); lattice+=3)
+//	{
+//		dc.Rectangle(mapLattice[lattice].left, mapLattice[lattice].top, mapLattice[lattice].right, mapLattice[lattice].bottom);
+//	}
+//
+//	dc.SelectBrush(old_brush);
+//}
+
+bool CSubMapPosDlg::addMapLatticeSelect(CPoint point)
+{
+	bool b = false;
+	CRect val = findMapLattice(point);
+	if(mapLatticeSelect.end() == find(mapLatticeSelect.begin(), mapLatticeSelect.end(), val))
+	{
+		mapLatticeSelect.push_back(val);
+		b = true;
+	}
+	return b;
+}
+
+CRect CSubMapPosDlg::findMapLattice(CPoint point)
+{
+	CRect result(0, 0, 0, 0);
+	for (int la = 0; la < (int)mapLattice.size(); la++)
+	{
+		if(mapLattice[la].PtInRect(point))
+		{
+			result = mapLattice[la];
+			break;
+		}
+	}
+	return result;
+}
+
+void CSubMapPosDlg::drawMapLatticeSelect(CDCHandle dc)
+{
+	CBrush brCr1;
+	brCr1.CreateSolidBrush(RGB(0, 0, 192));
+	CBrush old_brush = dc.SelectBrush(brCr1);
+
+	for (int sel = 0; sel < (int)mapLatticeSelect.size(); sel++)
+	{
+		dc.Rectangle(mapLatticeSelect[sel].left, mapLatticeSelect[sel].top, mapLatticeSelect[sel].right, mapLatticeSelect[sel].bottom);
+	}
+
+	dc.SelectBrush(old_brush);
 }
