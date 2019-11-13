@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "ResolutionPositionDlg.h"
 #include "SubMapPosDlg.h"
-
+CButton CResolutionPositionDlg::childAreaCheck;
 
 BOOL CResolutionPositionDlg::PreTranslateMessage(MSG* pMsg)
 {
@@ -36,6 +36,8 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	pLoop->AddIdleHandler(this);
 
 	UIAddChildWindowContainer(m_hWnd);
+
+	childAreaCheck.Attach(GetDlgItem(IDCCK_CHILDAREA));
 
 	startPoint = CPoint(0, 0);
 	bLClick = false;
@@ -106,14 +108,13 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	CGAgt::GResCha()->setMilitarybranch(CUnitSize::emMilitarybranch(combatType, incUnitScale.GetCurSel()));
 
 	incMapImpact.Attach(GetDlgItem(IDCC_INMAPIMPACT));
-	incMapImpact.AddString(CStringW("수면"));
-	incMapImpact.AddString(CStringW("해수면"));
-	incMapImpact.AddString(CStringW("산악"));
-	incMapImpact.AddString(CStringW("소택지"));
-	incMapImpact.AddString(CStringW("산림"));
-	incMapImpact.AddString(CStringW("늪지"));
-	incMapImpact.AddString(CStringW("경작지"));
+	vector<CString> topoChar = CResolutionChange::strTopographicChar(combatType);
+	for (int i = 0; i < (int)topoChar.size(); i++)
+	{
+		incMapImpact.AddString(topoChar[i]);
+	}
 	incMapImpact.SetCurSel(0);
+	CGAgt::GResCha()->setTopographicChar(CResolutionChange::emTopographicChar(combatType, incMapImpact.GetCurSel()));
 
 	incDivisionCount.Attach(GetDlgItem(IDCC_INDIVISIONCOUNT));
 	vector<CString> divisionCount = strDivisionCount(CUnitSize::INFANTRY, CUnitSize::INFANTRY_SQUAD);
@@ -195,7 +196,6 @@ LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/
 	CGAgt::GResCha()->setCombatent(combatType);
 	CGAgt::GResCha()->setForce(CUnitSize::emForce(incUnitBlueRed.GetCurSel()));
 	CGAgt::GResCha()->setMilitarybranch(mil);
-
 	CGAgt::GResCha()->changeDisaggregated();
 	return 0;
 }
@@ -203,13 +203,14 @@ LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/
 LRESULT CResolutionPositionDlg::OnBnClickedResolutionclear(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	subMapPosDlg->clearResolution();
+	subMapPosDlg->clearAll();
 	return 0;
 }
 
 LRESULT CResolutionPositionDlg::OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	subMapPosDlg->clearAll();
 
 	incUnitScale.ResetContent();
 	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
@@ -220,7 +221,17 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, W
 	}
 	incUnitScale.SetCurSel(0);
 
+	incMapImpact.ResetContent();
+	vector<CString> topoChar = CResolutionChange::strTopographicChar(combatType);
+	for (int i = 0; i < (int)topoChar.size(); i++)
+	{
+		incMapImpact.AddString(topoChar[i]);
+	}
+	incMapImpact.SetCurSel(0);
+
 	SendMessage(WM_COMMAND, MAKEWPARAM(IDCC_INUNITSCALE, CBN_SELCHANGE), (LPARAM)incUnitScale.m_hWnd);
+
+	SendMessage(WM_COMMAND, MAKEWPARAM(IDCC_INMAPIMPACT, CBN_SELCHANGE), (LPARAM)incMapImpact.m_hWnd);
 
 	return 0;
 }
@@ -228,6 +239,7 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, W
 LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	subMapPosDlg->clearPosition();
 
 	incDeployment.ResetContent();
 	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
@@ -248,6 +260,21 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, 
 	}
 	incDivisionCount.SetCurSel(divisionCount.size()-1);
 
+	return 0;
+}
+
+LRESULT CResolutionPositionDlg::OnCbnSelchangeDefault(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	subMapPosDlg->clearPosition();
+	return 0;
+}
+
+LRESULT CResolutionPositionDlg::OnCbnSelchangeInMapImpact(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
+	CGAgt::GResCha()->setTopographicChar(CResolutionChange::emTopographicChar(combatType, incMapImpact.GetCurSel()));
 	return 0;
 }
 
@@ -327,3 +354,7 @@ int CResolutionPositionDlg::valDivisionCount(int selNum)
 	return val;
 }
 
+UINT CResolutionPositionDlg::getMapSelect()
+{
+	return incMapImpact.GetCurSel();
+}

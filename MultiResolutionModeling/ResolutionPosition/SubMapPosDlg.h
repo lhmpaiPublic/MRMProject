@@ -5,10 +5,12 @@
 #pragma once
 
 #define IMAGE_MAX 8
+#define MAPIMAGE_MAX 7
 class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 {
 	//
 	static UINT imgId[IMAGE_MAX];
+	static UINT mapImgId[MAPIMAGE_MAX];
 
 	HWND hWnd;
 
@@ -27,6 +29,7 @@ class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 	CSize winSz;
 	vector<CRect> mapLattice;
 	vector<CRect> mapLatticeSelect;
+	vector<UINT> selImgMap;
 public:
 	enum { IDD = IDD_SUBMAPPOSDLG };
 
@@ -57,7 +60,9 @@ public:
 	//Dlg 종료 함수
 	void DlgClose();
 	//위치 변환 지우기
-	void clearResolution();
+	void clearAll();
+	void clearPosition();
+	void clearMapPos();
 	//Dlg 초기화 
 	//======================================================//
 	//			초기화

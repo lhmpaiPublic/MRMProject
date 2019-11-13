@@ -273,7 +273,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\MapImage\fa.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\MapImage\fo.png"
+				>
+			</File>
+			<File
 				RelativePath=".\res\hand.cur"
+				>
+			</File>
+			<File
+				RelativePath=".\res\MapImage\ho.png"
 				>
 			</File>
 			<File
@@ -313,11 +325,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\MapImage\mo.png"
+				>
+			</File>
+			<File
 				RelativePath=".\res\MultiResolutionModeling.ico"
 				>
 			</File>
 			<File
 				RelativePath=".\MultiResolutionModeling.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\res\MapImage\ri.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\MapImage\se.png"
+				>
+			</File>
+			<File
+				RelativePath=".\res\MapImage\sw.png"
 				>
 			</File>
 		</Filter>
@@ -644,6 +672,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\CommonResolution\vecPoint4.h"
+					>
+				</File>
+				<File
 					RelativePath=".\CommonResolution\vector2d.h"
 					>
 				</File>
@@ -665,6 +697,10 @@
 				</File>
 				<File
 					RelativePath=".\CommonResolution\UnitSize.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\CommonResolution\vecPoint4.cpp"
 					>
 				</File>
 				<File

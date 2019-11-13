@@ -21,6 +21,20 @@
 #define IDB_EXAMPLE                     215
 #define IDC_DIVIDER                     216
 #define IDC_HYPERLINK                   217
+#define IDB_PNG1                        218
+#define IDB_MAPFA                       218
+#define IDB_PNG2                        219
+#define IDB_MAPFO                       219
+#define IDB_PNG3                        220
+#define IDB_MAPHO                       220
+#define IDB_PNG4                        221
+#define IDB_MAPMO                       221
+#define IDB_PNG5                        222
+#define IDB_MAPRI                       222
+#define IDB_PNG6                        223
+#define IDB_MAPSE                       223
+#define IDB_PNG7                        224
+#define IDB_MAPSW                       224
 #define IDC_LOGTEXT                     1000
 #define IDCC_INDEPLOYMENT               1001
 #define IDCE_INPOSX                     1002
@@ -58,6 +72,8 @@
 #define IDCCUST_HIMODELRATIO            1021
 #define IDCCUST_LOWMODELRATIO           1022
 #define IDCCUST_LOWMODELLIST4           1022
+#define IDC_CHECK1                      1025
+#define IDCCK_CHILDAREA                 1025
 #define IDC_LOGWINDOW                   57665
 #define IDC_RESPOSWIN                   57666
 #define IDC_RESPROPERTYWIN              57667
@@ -66,9 +82,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        218
+#define _APS_NEXT_RESOURCE_VALUE        225
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1025
+#define _APS_NEXT_CONTROL_VALUE         1026
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -3,8 +3,11 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "ResolutionPositionDlg.h"
 #include "SubMapPosDlg.h"
 #include "../ImageLoadApi/ImageLoadApi.h"
+
+
 #define SUBMAPOSDLG_POSX 50
 #define SUBMAPOSDLG_POSY 160
 
@@ -29,6 +32,7 @@ void CSubMapPosDlg::init(HWND _hWnd)
 	typeOption = 0;
 	mapLattice.clear();
 	mapLatticeSelect.clear();
+	selImgMap.clear();
 
 	bLClick = false;
 }
@@ -44,13 +48,46 @@ UINT CSubMapPosDlg::imgId[IMAGE_MAX]=
 	IDB_RP_MAPGRID_8
 };
 
-void CSubMapPosDlg::clearResolution()
+UINT CSubMapPosDlg::mapImgId[MAPIMAGE_MAX]=
+{
+	IDB_MAPRI,
+	IDB_MAPSE,
+	IDB_MAPMO,
+	IDB_MAPHO,
+	IDB_MAPFO,
+	IDB_MAPSW,
+	IDB_MAPFA
+};
+
+void CSubMapPosDlg::clearPosition()
+{
+	drawPosItem.clear();
+	drawPosItemsize = 1;
+	typeOption = 0;
+
+	InvalidateRect(NULL);
+	//InvalidateRect를 강제로 바로 실행 하기 위해존제..
+	UpdateWindow();
+}
+
+void CSubMapPosDlg::clearMapPos()
+{
+	mapLatticeSelect.clear();
+	selImgMap.clear();
+
+	InvalidateRect(NULL);
+	//InvalidateRect를 강제로 바로 실행 하기 위해존제..
+	UpdateWindow();
+}
+
+void CSubMapPosDlg::clearAll()
 {
 	drawPosItem.clear();
 	drawPosItemsize = 1;
 	typeOption = 0;
 
 	mapLatticeSelect.clear();
+	selImgMap.clear();
 
 	InvalidateRect(NULL);
 	//InvalidateRect를 강제로 바로 실행 하기 위해존제..
@@ -162,14 +199,6 @@ BOOL CSubMapPosDlg::OnEraseBkgnd(CDCHandle dc)
 
 void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 {
-	CBrush Red;
-	Red.CreateSolidBrush(RGB(255, 0, 0));
-	CBrush old_brush = dc.SelectBrush(Red);
-
-	CPen penRed;
-	penRed.CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
-	CPen old_pen = dc.SelectPen(penRed);
-
 	//부대 규모에 따라서 격자의 크기 옵션 적용
 	float opt = 1.0f;
 	if(typeOption == 1)
@@ -204,6 +233,10 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	//영역 사각형 그리기
 	if(drawAreaPosItem.size() >= 4)
 	{
+		CPen penRed;
+		penRed.CreatePen(PS_SOLID, 2, RGB(0, 0, 255));
+		CPen old_pen = dc.SelectPen(penRed);
+
 		CPoint pt[5];
 		pt[0] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[0].x*opt)), (SUBMAPOSDLG_CENTERPOSY - (int)(drawAreaPosItem[0].y*opt)));
 		pt[1] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[1].x*opt)), (SUBMAPOSDLG_CENTERPOSY - (int)(drawAreaPosItem[1].y*opt)));
@@ -212,17 +245,45 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 		pt[4] = CPoint((SUBMAPOSDLG_CENTERPOSX + (int)(drawAreaPosItem[0].x*opt)), (SUBMAPOSDLG_CENTERPOSY - (int)(drawAreaPosItem[0].y*opt)));
 
 		dc.Polyline(pt, 5);
+		dc.SelectPen(old_pen);
 	}
 
 	//분할 부대 위치 그리기
 	for (int i = 0; i < min((int)drawPosItem.size(), drawPosItemsize); i++)
 	{
+		int clr = 255/(int)(drawPosItem.size()-1);
+		CPen penRed;
+		penRed.CreatePen(PS_SOLID, 3, RGB((clr*i), 0, 255-(clr*i)));
+		CPen old_pen = dc.SelectPen(penRed);
+
+		CBrush Red;
+		Red.CreateSolidBrush(RGB((clr*i), 0, 255-(clr*i)));
+		CBrush old_brush = dc.SelectBrush(Red);
+
 		int left = (int)(SUBMAPOSDLG_CENTERPOSX + (drawPosItem[i].x*opt))-SUBMAPOSDLG_RECREDSIZE;
 		int top = (int)(SUBMAPOSDLG_CENTERPOSY - (drawPosItem[i].y*opt))-SUBMAPOSDLG_RECREDSIZE;
 		int right = (int)(SUBMAPOSDLG_CENTERPOSX + (drawPosItem[i].x*opt))+SUBMAPOSDLG_RECREDSIZE;
 		int bottom = (int)(SUBMAPOSDLG_CENTERPOSY - (drawPosItem[i].y*opt))+SUBMAPOSDLG_RECREDSIZE;
 		dc.Rectangle(left, top, right, bottom);
+
+		//분할 객체 영역 사각형 그리기
+		if((BST_CHECKED == CResolutionPositionDlg::childAreaCheck.GetCheck()) && drawAreaPosItem.size() >= 8)
+		{
+			CPoint pt[5];
+			pt[0] = CPoint((((left+right)/2) + (int)(drawAreaPosItem[4].x*opt)), (((top+bottom)/2) - (int)(drawAreaPosItem[4].y*opt)));
+			pt[1] = CPoint((((left+right)/2) + (int)(drawAreaPosItem[5].x*opt)), (((top+bottom)/2) - (int)(drawAreaPosItem[5].y*opt)));
+			pt[2] = CPoint((((left+right)/2) + (int)(drawAreaPosItem[6].x*opt)), (((top+bottom)/2) - (int)(drawAreaPosItem[6].y*opt)));
+			pt[3] = CPoint((((left+right)/2) + (int)(drawAreaPosItem[7].x*opt)), (((top+bottom)/2) - (int)(drawAreaPosItem[7].y*opt)));
+			pt[4] = CPoint((((left+right)/2) + (int)(drawAreaPosItem[4].x*opt)), (((top+bottom)/2) - (int)(drawAreaPosItem[4].y*opt)));
+			dc.Polyline(pt, 5);
+		}
+		dc.SelectPen(old_pen);
+		dc.SelectBrush(old_brush);
 	}
+
+	CBrush Red;
+	Red.CreateSolidBrush(RGB(255, 0, 0));
+	CBrush old_brush = dc.SelectBrush(Red);
 
 	//다시 합쳐진 부대 그리기
 	int left = (int)(SUBMAPOSDLG_CENTERPOSX + (drawAggPosItem.x*opt))-SUBMAPOSDLG_RECREDSIZE;
@@ -230,9 +291,7 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	int right = (int)(SUBMAPOSDLG_CENTERPOSX + (drawAggPosItem.x*opt))+SUBMAPOSDLG_RECREDSIZE;
 	int bottom = (int)(SUBMAPOSDLG_CENTERPOSY - (drawAggPosItem.y*opt))+SUBMAPOSDLG_RECREDSIZE;
 	dc.Ellipse(left, top, right, bottom);
-
 	dc.SelectBrush(old_brush);
-	dc.SelectPen(old_pen);
 
 	//영역 크기 텍스트 쓰기
 	dc.SetBkMode(TRANSPARENT);
@@ -245,7 +304,6 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	font.CreateFontIndirect(&lf);;
 	CFont font_old = dc.SelectFont(font);
 	dc.DrawText(drawtextItem.GetBuffer(), drawtextItem.GetLength(), CRect((SUBMAPOSDLG_POSTEXTX - 80), SUBMAPOSDLG_POSTEXTY+10, (SUBMAPOSDLG_POSTEXTX-80) + ((drawtextItem.GetLength()*12)), SUBMAPOSDLG_POSTEXTY+35), DT_TOP|DT_LEFT);
-
 	dc.SelectFont(font_old);
 }
 
@@ -285,6 +343,8 @@ LRESULT CSubMapPosDlg::OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lP
 
 LRESULT CSubMapPosDlg::OnLButtonDblClk(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
 {
+	if(drawPosItem.size())
+		clearPosition();
 	if(addMapLatticeSelect(CPoint(LOWORD(lParam), HIWORD(lParam))))
 	{
 		InvalidateRect(NULL);
@@ -370,6 +430,7 @@ bool CSubMapPosDlg::addMapLatticeSelect(CPoint point)
 	if(mapLatticeSelect.end() == find(mapLatticeSelect.begin(), mapLatticeSelect.end(), val))
 	{
 		mapLatticeSelect.push_back(val);
+		selImgMap.push_back(CGAgt::GResCha()->getTopographicChar());
 		b = true;
 	}
 	return b;
@@ -391,14 +452,32 @@ CRect CSubMapPosDlg::findMapLattice(CPoint point)
 
 void CSubMapPosDlg::drawMapLatticeSelect(CDCHandle dc)
 {
-	CBrush brCr1;
-	brCr1.CreateSolidBrush(RGB(0, 0, 192));
-	CBrush old_brush = dc.SelectBrush(brCr1);
+	//CBrush brCr1;
+	//brCr1.CreateSolidBrush(RGB(0, 0, 192));
+	//CBrush old_brush = dc.SelectBrush(brCr1);
 
+	
 	for (int sel = 0; sel < (int)mapLatticeSelect.size(); sel++)
 	{
-		dc.Rectangle(mapLatticeSelect[sel].left, mapLatticeSelect[sel].top, mapLatticeSelect[sel].right, mapLatticeSelect[sel].bottom);
+		CGdiPlusBitmapResource pBitmap;
+		pBitmap.Load(mapImgId[selImgMap[sel]],_T("PNG"));
+		CBitmap backimage = pBitmap.GetWinBitmap();
+
+		// create memory DC
+		dc.SetBkColor(RGB(255,0,0));
+		CDC * pMemDC = new CDC;
+		pMemDC -> CreateCompatibleDC(dc.m_hDC);
+		CBitmapHandle pOldBitmap;
+
+		SIZE bmSize;
+		backimage.GetSize(bmSize);
+		pOldBitmap = pMemDC -> SelectBitmap(backimage);
+		dc.BitBlt(mapLatticeSelect[sel].left,mapLatticeSelect[sel].top,bmSize.cx, bmSize.cy,pMemDC->m_hDC,0,0,SRCCOPY);
+		pMemDC -> SelectBitmap(pOldBitmap);
+		delete pMemDC;
+
+		//dc.Rectangle(mapLatticeSelect[sel].left, mapLatticeSelect[sel].top, mapLatticeSelect[sel].right, mapLatticeSelect[sel].bottom);
 	}
 
-	dc.SelectBrush(old_brush);
+	//dc.SelectBrush(old_brush);
 }

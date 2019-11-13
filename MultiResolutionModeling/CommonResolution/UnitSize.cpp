@@ -51,10 +51,14 @@ vector<int> CUnitSize::getINFANTRYSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE fo
 {
 	vector<int> size;
 	VECVECINT infVal = mapCombatant[INFANTRY];
-	int xVal = infVal[mil][mo+ fo+ WIDTH];
-	int yVal = infVal[mil][mo + fo + HIGHT];
-	size.push_back(xVal);
-	size.push_back(yVal);
+	size.push_back(infVal[mil][mo+ fo+ WIDTH]);
+	size.push_back(infVal[mil][mo + fo + HIGHT]);
+
+	if(mil-1 >= INFANTRY_SQUAD)
+	{
+		size.push_back(infVal[mil-1][mo+ fo+ WIDTH]);
+		size.push_back(infVal[mil-1][mo + fo + HIGHT]);
+	}
 	return size;
 }
 
@@ -62,10 +66,14 @@ vector<int> CUnitSize::getARMOREDSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE fo)
 {
 	vector<int> size;
 	VECVECINT infVal = mapCombatant[ARMORED];
-	int xVal = infVal[mil][mo + fo + WIDTH];
-	int yVal = infVal[mil][mo + fo + HIGHT];
-	size.push_back(xVal);
-	size.push_back(yVal);
+	size.push_back(infVal[mil][mo+ fo+ WIDTH]);
+	size.push_back(infVal[mil][mo + fo + HIGHT]);
+
+	if(mil-1 >= ARMORED_PLATOON)
+	{
+		size.push_back(infVal[mil-1][mo+ fo+ WIDTH]);
+		size.push_back(infVal[mil-1][mo + fo + HIGHT]);
+	}
 	return size;
 }
 
@@ -73,10 +81,14 @@ vector<int> CUnitSize::getARTILLERYSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE f
 {
 	vector<int> size;
 	VECVECINT infVal = mapCombatant[ARTILLERY];
-	int xVal = infVal[mil][mo + fo + WIDTH];
-	int yVal = infVal[mil][mo + fo + HIGHT];
-	size.push_back(xVal);
-	size.push_back(yVal);
+	size.push_back(infVal[mil][mo+ fo+ WIDTH]);
+	size.push_back(infVal[mil][mo + fo + HIGHT]);
+
+	if(mil-1 >= ARTILLERY_COMPANY)
+	{
+		size.push_back(infVal[mil-1][mo+ fo+ WIDTH]);
+		size.push_back(infVal[mil-1][mo + fo + HIGHT]);
+	}
 	return size;
 }
 

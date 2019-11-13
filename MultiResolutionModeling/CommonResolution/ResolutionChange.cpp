@@ -47,9 +47,7 @@ void CResolutionChange::changeDisaggregated()
 	CLogDlg::insertStream(CStringA(CUnitSize::strForce(inPosVal.unitSizeVal.force)).GetBuffer(), '	');
 	CLogDlg::insertStream(CStringA(CUnitSize::strCombatent(inPosVal.unitSizeVal.combat)).GetBuffer(), '	');
 	CLogDlg::insertStream(CStringA(CUnitSize::strMilitarybranch(inPosVal.unitSizeVal.combat, inPosVal.unitSizeVal.mil)).GetBuffer(), '	');
-
 	CLogDlg::addLogTextStream();
-
 
 	CLogDlg::AddLogText("<====================>");
 	CLogDlg::AddLogText("<출력 값>");
@@ -647,12 +645,28 @@ vector<CVector2d> CResolutionChange::deploymentPosition(DEPLOYMENTTYPE deploymen
 vector<CVector2d> CResolutionChange::areaPosition(CVector2d front, CVector2d cross, vector<int> sizeUnit)
 {
 	vector<CVector2d> result;
-	result.resize(AREAPOS_SIZE);
+	if(sizeUnit.size() <= SIZEVEC_SIZE)
+	{
+		result.resize(AREAPOS_SIZE);
+		result[AREAPOS_NUM1] = cross*((float)-1*sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)sizeUnit[SIZEVEC_HIGHT]/2);
+		result[AREAPOS_NUM2] = cross*((float)sizeUnit[SIZEVEC_WIDTH]/2) + front*(float)(sizeUnit[SIZEVEC_HIGHT]/2);
+		result[AREAPOS_NUM3] = cross*((float)sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVEC_HIGHT]/2);
+		result[AREAPOS_NUM4] = cross*((float)-1*sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVEC_HIGHT]/2);
+	}
+	else
+	{
+		result.resize(AREABTP_SIZE);
+		result[AREAPOS_NUM1] = cross*((float)-1*sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)sizeUnit[SIZEVEC_HIGHT]/2);
+		result[AREAPOS_NUM2] = cross*((float)sizeUnit[SIZEVEC_WIDTH]/2) + front*(float)(sizeUnit[SIZEVEC_HIGHT]/2);
+		result[AREAPOS_NUM3] = cross*((float)sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVEC_HIGHT]/2);
+		result[AREAPOS_NUM4] = cross*((float)-1*sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVEC_HIGHT]/2);
 
-	result[AREAPOS_NUM1] = cross*((float)-1*sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)sizeUnit[SIZEVEC_HIGHT]/2);
-	result[AREAPOS_NUM2] = cross*((float)sizeUnit[SIZEVEC_WIDTH]/2) + front*(float)(sizeUnit[SIZEVEC_HIGHT]/2);
-	result[AREAPOS_NUM3] = cross*((float)sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVEC_HIGHT]/2);
-	result[AREAPOS_NUM4] = cross*((float)-1*sizeUnit[SIZEVEC_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVEC_HIGHT]/2);
+		result[AREABTP_NUM1] = cross*((float)-1*sizeUnit[SIZEVECBT_WIDTH]/2) + front*((float)sizeUnit[SIZEVECBT_HIGHT]/2);
+		result[AREABTP_NUM2] = cross*((float)sizeUnit[SIZEVECBT_WIDTH]/2) + front*(float)(sizeUnit[SIZEVECBT_HIGHT]/2);
+		result[AREABTP_NUM3] = cross*((float)sizeUnit[SIZEVECBT_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVECBT_HIGHT]/2);
+		result[AREABTP_NUM4] = cross*((float)-1*sizeUnit[SIZEVECBT_WIDTH]/2) + front*((float)-1*sizeUnit[SIZEVECBT_HIGHT]/2);
+	}
+	
 	return result;
 }
 
@@ -919,6 +933,122 @@ CResolutionChange::DEPLOYMENTTYPE CResolutionChange::emDeploymentType(CUnitSize:
 	return em;
 }
 
+CString CResolutionChange::strTopographicChar(CUnitSize::COMBATANT combat, CResolutionChange::TOPOGRAPHICCHAR em)
+{
+	CString strEm = "UNKNOW";
+	if(CUnitSize::INFANTRY == combat)
+	{
+		switch (em)
+		{
+		case TOPO_MAPRI:strEm = "수면";
+			break;
+		case TOPO_MAPSE:strEm = "해수면";
+			break;
+		default:
+			break;
+		}
+	}
+	else if(CUnitSize::ARMORED == combat)
+	{
+		switch (em)
+		{
+		case TOPO_MAPSE:strEm = "해수면";
+			break;
+		case TOPO_MAPFO:strEm = "산림화";
+			break;
+		case TOPO_MAPSW:strEm = "늪지";
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		switch (em)
+		{
+		case TOPO_MAPRI:strEm = "수면";
+			break;
+		case TOPO_MAPMO:strEm = "산악";
+			break;
+		case TOPO_MAPHO:strEm = "소택지";
+			break;
+		default:
+			break;
+		}
+	}
+	return strEm;
+}
+
+vector<CString> CResolutionChange::strTopographicChar(CUnitSize::COMBATANT combat)
+{
+	vector<CString> strEm;
+	strEm.clear();
+	if(CUnitSize::INFANTRY == combat)
+	{
+		strEm.push_back("수면");
+		strEm.push_back("해수면");
+	}
+	else if(CUnitSize::ARMORED == combat)
+	{
+		strEm.push_back("해수면");
+		strEm.push_back("산림화");
+		strEm.push_back("늪지");
+	}
+	else
+	{
+		strEm.push_back("수면");
+		strEm.push_back("산악");
+		strEm.push_back("소택지");
+	}
+	return strEm;
+}
+
+CResolutionChange::TOPOGRAPHICCHAR CResolutionChange::emTopographicChar(CUnitSize::COMBATANT combat, int selNum)
+{
+	CResolutionChange::TOPOGRAPHICCHAR em = TOPO_MAPRI;
+	if(CUnitSize::INFANTRY == combat)
+	{
+		switch (selNum)
+		{
+		case 0: em = TOPO_MAPRI;
+			break;
+		case 1: em = TOPO_MAPSE;
+			break;
+		default:
+			break;
+		}
+	}
+	else if(CUnitSize::ARMORED == combat)
+	{
+		switch (selNum)
+		{
+		case 0: em = TOPO_MAPSE;
+			break;
+		case 1: em = TOPO_MAPFO;
+			break;
+		case 2: em = TOPO_MAPSW;
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		switch (selNum)
+		{
+		case 0: em = TOPO_MAPRI;
+			break;
+		case 1: em = TOPO_MAPMO;
+			break;
+		case 2: em = TOPO_MAPHO;
+			break;
+		default:
+			break;
+		}
+	}
+	return em;
+}
+
 void CResolutionChange::setParentPos(CVector2d parentPos)
 {
 	inPosVal.parent = parentPos;
@@ -952,4 +1082,14 @@ void CResolutionChange::setCombatent(CUnitSize::COMBATANT em)
 void CResolutionChange::setMilitarybranch(CUnitSize::MILITARYBRANCH em)
 {
 	inPosVal.unitSizeVal.mil = em;
+}
+
+void CResolutionChange::setTopographicChar(TOPOGRAPHICCHAR em)
+{
+	topoChar = em;
+}
+
+CResolutionChange::TOPOGRAPHICCHAR CResolutionChange::getTopographicChar()
+{
+	return topoChar;
 }

@@ -47,6 +47,14 @@ public:
 	{
 		SIZEVEC_WIDTH = 0,
 		SIZEVEC_HIGHT,
+		SIZEVEC_SIZE
+	};
+
+	enum SIZEVECTORBUTTOMTYPE
+	{
+		SIZEVECBT_WIDTH = 2,
+		SIZEVECBT_HIGHT,
+		SIZEVECBT_SIZE
 	};
 
 	//Deployment Type 정의
@@ -83,6 +91,16 @@ public:
 		AREAPOS_SIZE
 	};
 
+	//분할객체 영역
+	enum AREABUTTOMPOS
+	{
+		AREABTP_NUM1 = 4,
+		AREABTP_NUM2,
+		AREABTP_NUM3,
+		AREABTP_NUM4,
+		AREABTP_SIZE
+	};
+
 	//보병분대 분해 요소 Type 정의
 	enum INFANTRYSQUADDISAGGREGATEDTYPE
 	{
@@ -113,6 +131,22 @@ public:
 		ARCOMDISAGG_SIZE
 	};
 
+	//부대의 지형요소
+	enum TOPOGRAPHICCHAR
+	{
+		TOPO_MAPRI = 0,
+		TOPO_MAPSE,
+		TOPO_MAPMO,
+		TOPO_MAPHO,
+		TOPO_MAPFO,
+		TOPO_MAPSW,
+		TOPO_MAPFA
+	};
+	static CString strTopographicChar(CUnitSize::COMBATANT combat, CResolutionChange::TOPOGRAPHICCHAR em);
+	static vector<CString> strTopographicChar(CUnitSize::COMBATANT combat);
+	static CResolutionChange::TOPOGRAPHICCHAR emTopographicChar(CUnitSize::COMBATANT combat, int selNum);
+
+
 	struct inputPosVal
 	{
 		inputPosVal(){}
@@ -124,7 +158,7 @@ public:
 private:
 	CUnitSize *unitSizeVal;
 	inputPosVal inPosVal;
-
+	TOPOGRAPHICCHAR topoChar;
 public:
 	void setParentPos(CVector2d parentPos);
 	void setDirectionType(DIRECTIONTYPE em);
@@ -133,6 +167,9 @@ public:
 	void setForce(CUnitSize::FORCE em);
 	void setCombatent(CUnitSize::COMBATANT em);
 	void setMilitarybranch(CUnitSize::MILITARYBRANCH em);
+	void setTopographicChar(TOPOGRAPHICCHAR em);
+
+	TOPOGRAPHICCHAR getTopographicChar();
 public:	
 
 	void changeAggregated();

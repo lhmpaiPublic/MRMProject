@@ -25,6 +25,8 @@ class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, publi
 	CPoint startPoint;
 	bool bLClick;
 public:
+	static CButton childAreaCheck;
+
 	enum { IDD = IDD_RESOLUTIONPOSITION };
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -43,6 +45,15 @@ public:
 		COMMAND_HANDLER(IDCB_RESOLUTIONCLEAR, BN_CLICKED, OnBnClickedResolutionclear)
 		COMMAND_HANDLER(IDCC_INUNITTYPE, CBN_SELCHANGE, OnCbnSelchangeInunittype)
 		COMMAND_HANDLER(IDCC_INUNITSCALE, CBN_SELCHANGE, OnCbnSelchangeInunitscale)
+
+		COMMAND_HANDLER(IDCC_INDEPLOYMENT, CBN_SELCHANGE, OnCbnSelchangeDefault)
+		COMMAND_HANDLER(IDCC_INUNITPOSTURE, CBN_SELCHANGE, OnCbnSelchangeDefault)
+		COMMAND_HANDLER(IDCC_INUNITBLUERED, CBN_SELCHANGE, OnCbnSelchangeDefault)
+		COMMAND_HANDLER(IDCC_INDIRECTION, CBN_SELCHANGE, OnCbnSelchangeDefault)		
+		COMMAND_HANDLER(IDCC_INDIVISIONCOUNT, CBN_SELCHANGE, OnCbnSelchangeDefault)
+
+		COMMAND_HANDLER(IDCC_INMAPIMPACT, CBN_SELCHANGE, OnCbnSelchangeInMapImpact)
+
 		MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown)
 		MESSAGE_HANDLER(WM_MOUSEMOVE, OnLMouseMove)
 		MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp)
@@ -67,6 +78,10 @@ public:
 	LRESULT OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
+	LRESULT OnCbnSelchangeDefault(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+	LRESULT OnCbnSelchangeInMapImpact(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
 	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text);
 
 	LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
@@ -77,5 +92,6 @@ public:
 
 	vector<CString> strDivisionCount(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil);
 	int valDivisionCount(int selNum);
+	UINT getMapSelect();
 	
 };
