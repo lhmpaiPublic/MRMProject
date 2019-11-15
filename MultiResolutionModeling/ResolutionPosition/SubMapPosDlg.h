@@ -15,11 +15,10 @@ class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 	HWND hWnd;
 
 	vector<CVector2d> drawPosItem;
-	int typeOption;
 	CVector2d drawAggPosItem;
 	vector<CVector2d> drawAreaPosItem;
 	int drawPosItemsize;
-	CString drawtextItem;
+	CSize areaSize;
 
 	CRect winPos;
 	CPoint startPoint;
@@ -30,6 +29,8 @@ class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 	vector<CRect> mapLattice;
 	vector<CRect> mapLatticeSelect;
 	vector<UINT> selImgMap;
+
+	int latticSize;
 public:
 	enum { IDD = IDD_SUBMAPPOSDLG };
 
@@ -109,12 +110,17 @@ public:
 
 	void drawResolutionPos(CDCHandle dc);
 
-	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text);
+	void drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
 	void drawResolutionPositionSize(int drawSize);
 
-	void makeMapLattice();
+	void makeMapLattice(int nRows, int nCols, int nRowDistance, int nColDistance);
 	//void drawMapLattice(CDCHandle dc);
 	bool addMapLatticeSelect(CPoint point);
 	CRect findMapLattice(CPoint point);
 	void drawMapLatticeSelect(CDCHandle dc);
+	float getMapOpt();
+
+	//기본 맵 격자 그리기
+	void baseMapLatticeDraw(CDCHandle dc);
+	void baseMapLatticeDraw(CDCHandle dc, int nRows, int nCols, int nRowDistance, int nColDistance);
 };

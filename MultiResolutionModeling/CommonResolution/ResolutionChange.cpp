@@ -53,78 +53,12 @@ void CResolutionChange::changeDisaggregated()
 	CLogDlg::AddLogText("<출력 값>");
 
 	vector<CVector2d> drawPosItem;
-	int typeOp = 0;
 	vector<CVector2d> areaPos;
-	CString drawtext;
-	if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY)
-	{
-		if(inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_SQUAD)
-		{
-			typeOp = 1;
-		}
-		else if(inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_COMPANY)
-		{
-			typeOp = 2;
-		}
-		else if(inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_BATTALION)
-		{
-			typeOp = 3;
-		}
-		else
-		{
-			typeOp = 0;
-		}
-	}
-	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARMORED)
-	{
-		if(inPosVal.unitSizeVal.moveType == CUnitSize::DEFENCE)
-		{
-			
-			if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_COMPANY)
-			{
-				typeOp = 2;
-			}
-			else if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_BATTALION)
-			{
-				typeOp = 4;
-			}
-			else
-			{
-				typeOp = 0;
-			}
-		}
-		else
-		{
-			if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_COMPANY)
-			{
-				typeOp = 2;
-			}
-			else if(inPosVal.unitSizeVal.mil == CUnitSize::ARMORED_BATTALION)
-			{
-				typeOp = 4;
-			}
-			else
-			{
-				typeOp = 0;
-			}
-		}
-	}
-	else
-	{
-		if(inPosVal.unitSizeVal.mil == CUnitSize::ARTILLERY_BATTALION)
-		{
-			typeOp = 2;
-		}
-		else
-		{
-			typeOp = 0;
-		}
-	}
-
+	CSize areaSize;
 
 	if(inPosVal.unitSizeVal.combat == CUnitSize::INFANTRY && inPosVal.unitSizeVal.mil == CUnitSize::INFANTRY_SQUAD)
 	{
-		vector<CVector2d> vecHiData = changeDisaggregatedPositionInfantrySquad(inPosVal, areaPos, drawtext);
+		vector<CVector2d> vecHiData = changeDisaggregatedPositionInfantrySquad(inPosVal, areaPos, areaSize);
 
 		vector<int> logVal;
 		vector<float> logVal_sub;
@@ -182,7 +116,7 @@ void CResolutionChange::changeDisaggregated()
 	}
 	else if(inPosVal.unitSizeVal.combat == CUnitSize::ARTILLERY && inPosVal.unitSizeVal.mil == CUnitSize::ARTILLERY_COMPANY)
 	{
-		vector<CVector2d> vecHiData = changeDisaggregatedPositionArtilleryCompany(inPosVal, areaPos, drawtext);
+		vector<CVector2d> vecHiData = changeDisaggregatedPositionArtilleryCompany(inPosVal, areaPos, areaSize);
 
 		vector<int> logVal;
 		vector<float> logVal_sub;
@@ -240,7 +174,7 @@ void CResolutionChange::changeDisaggregated()
 	}
 	else
 	{
-		vector<CVector2d> vecHiData = changeDisaggregatedPosition(inPosVal, areaPos, drawtext);
+		vector<CVector2d> vecHiData = changeDisaggregatedPosition(inPosVal, areaPos, areaSize);
 		vector<int> logVal;
 		vector<int> logVal_sub;
 		for(int i = 0; i < (int)vecHiData.size(); i++)
@@ -296,12 +230,12 @@ void CResolutionChange::changeDisaggregated()
 		CLogDlg::addLogTextStream();
 	}	
 
-	CGAgt::G()->drawResolutionPosition(drawPosItem, typeOp, areaPos, drawtext);
+	CGAgt::G()->drawResolutionPosition(drawPosItem, areaPos, areaSize);
 
 	CLogDlg::AddLogText("<====================>");
 }
 
-vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val, vector<CVector2d>& areaPos, CString& drawText)
+vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val, vector<CVector2d>& areaPos, CSize& areaSize)
 {
 	//지향방향 노말 벡터
 	CVector2d front = frontDirection(val.dir);
@@ -313,7 +247,8 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val
 	CLogDlg::insertStream("작전지역 :");
 	CLogDlg::insertStreamVec(sizeUnit, '	');
 	CLogDlg::addLogTextStream();
-	drawText.Format(_T("작전지역 : %d X %d "), sizeUnit[SIZEVEC_WIDTH], sizeUnit[SIZEVEC_HIGHT]);
+	areaSize.cx = sizeUnit[SIZEVEC_WIDTH];
+	areaSize.cy = sizeUnit[SIZEVEC_HIGHT];
 
 	//최종 분해 요소 값
 	vector<CVector2d> vecHiData = deploymentPosition(val.dep, val.parent, front, cross, sizeUnit);
@@ -323,7 +258,7 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val
 	return vecHiData;
 }
 
-vector<CVector2d> CResolutionChange::changeDisaggregatedPositionInfantrySquad(inputPosVal val, vector<CVector2d>& areaPos, CString& drawText)
+vector<CVector2d> CResolutionChange::changeDisaggregatedPositionInfantrySquad(inputPosVal val, vector<CVector2d>& areaPos, CSize& areaSize)
 {
 	//지향방향 노말 벡터
 	CVector2d front = frontDirection(val.dir);
@@ -336,7 +271,8 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPositionInfantrySquad(in
 	CLogDlg::insertStream("작전지역 :");
 	CLogDlg::insertStreamVec(sizeUnit, '	');
 	CLogDlg::addLogTextStream();
-	drawText.Format(_T("작전지역 : %d X %d "), sizeUnit[SIZEVEC_WIDTH], sizeUnit[SIZEVEC_HIGHT]);
+	areaSize.cx = sizeUnit[SIZEVEC_WIDTH];
+	areaSize.cy = sizeUnit[SIZEVEC_HIGHT];
 
 	areaPos = areaPosition(front, cross, sizeUnit);
 
@@ -449,7 +385,7 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPositionInfantrySquad(in
 	return result;
 }
 
-vector<CVector2d> CResolutionChange::changeDisaggregatedPositionArtilleryCompany(inputPosVal val, vector<CVector2d>& areaPos, CString& drawText)
+vector<CVector2d> CResolutionChange::changeDisaggregatedPositionArtilleryCompany(inputPosVal val, vector<CVector2d>& areaPos, CSize& areaSize)
 {
 	//지향방향 노말 벡터
 	CVector2d front = frontDirection(val.dir);
@@ -462,7 +398,8 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPositionArtilleryCompany
 	CLogDlg::insertStream("작전지역 :");
 	CLogDlg::insertStreamVec(sizeUnit, '	');
 	CLogDlg::addLogTextStream();
-	drawText.Format(_T("작전지역 : %d X %d "), sizeUnit[SIZEVEC_WIDTH], sizeUnit[SIZEVEC_HIGHT]);
+	areaSize.cx = sizeUnit[SIZEVEC_WIDTH];
+	areaSize.cy = sizeUnit[SIZEVEC_HIGHT];
 
 	areaPos = areaPosition(front, cross, sizeUnit);
 

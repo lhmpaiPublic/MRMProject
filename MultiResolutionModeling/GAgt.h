@@ -41,5 +41,5 @@ public:
 
 	CPropertyList* PropLi();
 
-	void drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text);
+	void drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
 };

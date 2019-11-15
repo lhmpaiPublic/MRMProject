@@ -8,17 +8,32 @@
 #include "../ImageLoadApi/ImageLoadApi.h"
 
 
-#define SUBMAPOSDLG_POSX 50
-#define SUBMAPOSDLG_POSY 160
+#define SUBMAPOSDLG_POSX 5
+#define SUBMAPOSDLG_POSY 180
 
-#define SUBMAPOSDLG_CENTERPOSX 450
-#define SUBMAPOSDLG_CENTERPOSY 450
+#define SUBMAPOSDLG_STARTCX 1
+#define SUBMAPOSDLG_STARTCY 1
+
+#define SUBMAPOSDLG_CX 1053
+#define SUBMAPOSDLG_CY 1053
+
+#define SUBMAPOSDLG_PIXCELX 42
+#define SUBMAPOSDLG_PIXCELY 42
+
+#define SUBMAPOSDLG_DISTX 25
+#define SUBMAPOSDLG_DISTY 25
+
+#define SUBMAPOSDLG_CENTERPOSX 526
+#define SUBMAPOSDLG_CENTERPOSY 526
 
 #define SUBMAPOSDLG_CENTERSIZE 10
 #define SUBMAPOSDLG_RECREDSIZE 5
 
-#define SUBMAPOSDLG_POSTEXTX 450
+#define SUBMAPOSDLG_POSTEXTX 526
 #define SUBMAPOSDLG_POSTEXTY 50
+
+#define LATTICEDIV 40
+
 
 CSubMapPosDlg::CSubMapPosDlg()
 {
@@ -29,10 +44,11 @@ void CSubMapPosDlg::init(HWND _hWnd)
 	hWnd = _hWnd;
 	drawPosItem.clear();
 	drawPosItemsize = 1;
-	typeOption = 0;
 	mapLattice.clear();
 	mapLatticeSelect.clear();
 	selImgMap.clear();
+
+	latticSize = 0;
 
 	bLClick = false;
 }
@@ -63,7 +79,6 @@ void CSubMapPosDlg::clearPosition()
 {
 	drawPosItem.clear();
 	drawPosItemsize = 1;
-	typeOption = 0;
 
 	InvalidateRect(NULL);
 	//InvalidateRect를 강제로 바로 실행 하기 위해존제..
@@ -84,7 +99,6 @@ void CSubMapPosDlg::clearAll()
 {
 	drawPosItem.clear();
 	drawPosItemsize = 1;
-	typeOption = 0;
 
 	mapLatticeSelect.clear();
 	selImgMap.clear();
@@ -101,19 +115,19 @@ LRESULT CSubMapPosDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
 	ATLASSERT(pLoop != NULL);
 	pLoop->AddMessageFilter(this);
 
-	CGdiPlusBitmapResource pBitmap;
-	pBitmap.Load(imgId[0],_T("PNG"));
-	CBitmap backimage = pBitmap.GetWinBitmap();
-	BITMAP bitmap;
-	::GetObject(backimage, sizeof(BITMAP), &bitmap); 
-	winSz.cx = bitmap.bmWidth;
-	winSz.cy = bitmap.bmHeight;
+	//CGdiPlusBitmapResource pBitmap;
+	//pBitmap.Load(imgId[0],_T("PNG"));
+	//CBitmap backimage = pBitmap.GetWinBitmap();
+	//BITMAP bitmap;
+	//::GetObject(backimage, sizeof(BITMAP), &bitmap); 
+	//winSz.cx = bitmap.bmWidth;
+	//winSz.cy = bitmap.bmHeight;
 
-	CRect parentRect;
-	::GetWindowRect(hWnd, &parentRect);
-	MoveWindow(CRect(SUBMAPOSDLG_POSX, SUBMAPOSDLG_POSY, SUBMAPOSDLG_POSX+winSz.cx, SUBMAPOSDLG_POSY+winSz.cy));
+	//MoveWindow(CRect(SUBMAPOSDLG_POSX, SUBMAPOSDLG_POSY, SUBMAPOSDLG_POSX+winSz.cx, SUBMAPOSDLG_POSY+winSz.cy));
 
-	makeMapLattice();
+	MoveWindow(CRect(SUBMAPOSDLG_POSX, SUBMAPOSDLG_POSY, SUBMAPOSDLG_POSX+SUBMAPOSDLG_CX, SUBMAPOSDLG_POSY+SUBMAPOSDLG_CY));
+
+	makeMapLattice(SUBMAPOSDLG_PIXCELX, SUBMAPOSDLG_PIXCELX, SUBMAPOSDLG_DISTX, SUBMAPOSDLG_DISTX);
 	return TRUE;
 }
 //--------------------------------------------------------------
@@ -163,23 +177,24 @@ void CSubMapPosDlg::buttonAnimation()
 //---------------------------------------------------------------
 BOOL CSubMapPosDlg::OnEraseBkgnd(CDCHandle dc)
 {
-	CGdiPlusBitmapResource pBitmap;
-	pBitmap.Load(imgId[typeOption],_T("PNG"));
-	CBitmap backimage = pBitmap.GetWinBitmap();
+	//CGdiPlusBitmapResource pBitmap;
+	//pBitmap.Load(imgId[typeOption],_T("PNG"));
+	//CBitmap backimage = pBitmap.GetWinBitmap();
 
 	// create memory DC
-	dc.SetBkColor(RGB(255,0,0));
-	CDC * pMemDC = new CDC;
-	pMemDC -> CreateCompatibleDC(dc.m_hDC);
-	CBitmapHandle pOldBitmap;
+	dc.FillSolidRect(CRect(0, 0, SUBMAPOSDLG_CX, SUBMAPOSDLG_CY), RGB(255,255,255));
+	//CDC * pMemDC = new CDC;
+	//pMemDC -> CreateCompatibleDC(dc.m_hDC);
+	//CBitmapHandle pOldBitmap;
 
-	SIZE bmSize;
-	backimage.GetSize(bmSize);
-	pOldBitmap = pMemDC -> SelectBitmap(backimage);
-	dc.BitBlt(0,0,bmSize.cx, bmSize.cy,pMemDC->m_hDC,0,0,SRCCOPY);
-	pMemDC -> SelectBitmap(pOldBitmap);
-	delete pMemDC;
+	//SIZE bmSize;
+	//backimage.GetSize(bmSize);
+	//pOldBitmap = pMemDC -> SelectBitmap(backimage);
+	//dc.BitBlt(0,0,bmSize.cx, bmSize.cy,pMemDC->m_hDC,0,0,SRCCOPY);
+	//pMemDC -> SelectBitmap(pOldBitmap);
+	//delete pMemDC;
 
+	baseMapLatticeDraw(dc);
 	//drawMapLattice(dc);
 
 	drawMapLatticeSelect(dc);
@@ -197,38 +212,42 @@ BOOL CSubMapPosDlg::OnEraseBkgnd(CDCHandle dc)
 	return FALSE;
 }
 
-void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
+float CSubMapPosDlg::getMapOpt()
 {
 	//부대 규모에 따라서 격자의 크기 옵션 적용
 	float opt = 1.0f;
-	if(typeOption == 1)
+	int maxArea = max(areaSize.cx, areaSize.cy);
+	if(maxArea <= 500)
 	{
-		opt = 5;
+		int pxVec[] = {3, 5, 7, 10, 12, 15};
+		for (int i = 0; i < sizeof(pxVec)/sizeof(int); i++)
+		{
+			if(maxArea < pxVec[i]*LATTICEDIV)
+			{
+				latticSize = pxVec[i];
+				opt = (float)(SUBMAPOSDLG_DISTX*LATTICEDIV)/(float)(pxVec[i]*LATTICEDIV);
+				break;
+			}
+		}
 	}
-	else if(typeOption == 2)
+	else
 	{
-		opt = 0.5f;
+		for (int px = 15; px <= 100; px+=5)
+		{
+			if(maxArea < px*LATTICEDIV)
+			{
+				latticSize = px;
+				opt = (float)(SUBMAPOSDLG_DISTX*LATTICEDIV)/(float)(px*LATTICEDIV);
+				break;
+			}
+		}
 	}
-	else if(typeOption == 3)
-	{
-		opt = 0.25f;
-	}
-	else if(typeOption == 4)
-	{
-		opt = 0.2f;
-	}
-	else if(typeOption == 5)
-	{
-		opt = 0.8f;
-	}
-	else if(typeOption == 6)
-	{
-		opt = 0.2f;
-	}
-	else if(typeOption == 7)
-	{
-		opt = 0.088f;
-	}
+	return opt;
+}
+
+void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
+{
+	float opt = getMapOpt();
 
 	//영역 사각형 그리기
 	if(drawAreaPosItem.size() >= 4)
@@ -294,7 +313,7 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	dc.SelectBrush(old_brush);
 
 	//영역 크기 텍스트 쓰기
-	dc.SetBkMode(TRANSPARENT);
+	dc.SetBkColor(RGB(255, 255, 255));
 	dc.SetTextColor(RGB(0, 100, 255));
 	LOGFONT lf;
 	memset(&lf, 0, sizeof(LOGFONT));
@@ -303,17 +322,19 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	CFont font;
 	font.CreateFontIndirect(&lf);;
 	CFont font_old = dc.SelectFont(font);
-	dc.DrawText(drawtextItem.GetBuffer(), drawtextItem.GetLength(), CRect((SUBMAPOSDLG_POSTEXTX - 80), SUBMAPOSDLG_POSTEXTY+10, (SUBMAPOSDLG_POSTEXTX-80) + ((drawtextItem.GetLength()*12)), SUBMAPOSDLG_POSTEXTY+35), DT_TOP|DT_LEFT);
+
+	CString drawAreaText;
+	drawAreaText.Format(_T("작전지역 : %d X %d , px Size : %d "), areaSize.cx, areaSize.cy, latticSize);
+	dc.DrawText(drawAreaText.GetBuffer(), drawAreaText.GetLength(), CRect((SUBMAPOSDLG_POSTEXTX - 80), SUBMAPOSDLG_POSTEXTY+10, (SUBMAPOSDLG_POSTEXTX-80) + ((drawAreaText.GetLength()*12)), SUBMAPOSDLG_POSTEXTY+35), DT_TOP|DT_LEFT);
 	dc.SelectFont(font_old);
 }
 
-void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text)
+void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
 {
 	drawPosItem.clear();
 	drawPosItem = pos;
-	typeOption = typeOp;
 	drawAreaPosItem = areaPos;
-	drawtextItem = text;
+	areaSize = _areaSize;
 
 	CLogDlg::initStream();
 	CLogDlg::insertStream("출력개수 :");
@@ -371,19 +392,25 @@ LRESULT CSubMapPosDlg::OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 	return 0;
 }
 
-void CSubMapPosDlg::makeMapLattice()
+void CSubMapPosDlg::makeMapLattice(int nRows, int nCols, int nRowDistance, int nColDistance)
 {
-	for (int x = 0; x < (winSz.cx-50); x+=50)
+	CPoint ptInit(1,1);
+	CPoint ptMoving = ptInit;
+	for (int idxR = 0; idxR < nRows; idxR++)
 	{
-		for (int y = 0; y < (winSz.cy-50); y+=50)
+		for (int idxC = 0; idxC < nCols; idxC++)
 		{
 			CRect rc;
-			rc.left = x;
-			rc.right = x+50;
-			rc.top = y;
-			rc.bottom = y+50;
+			rc.left = ptMoving.x;
+			rc.right = ptMoving.x+nColDistance;
+			rc.top = ptMoving.y;
+			rc.bottom = ptMoving.y+nRowDistance;
 			mapLattice.push_back(rc);
+
+			ptMoving.x+=nColDistance;
 		}
+		ptMoving.x = ptInit.x;
+		ptMoving.y+=nRowDistance;
 	}
 }
 
@@ -480,4 +507,76 @@ void CSubMapPosDlg::drawMapLatticeSelect(CDCHandle dc)
 	}
 
 	//dc.SelectBrush(old_brush);
+}
+
+void CSubMapPosDlg::baseMapLatticeDraw(CDCHandle dc)
+{
+	CPen penRed;
+	penRed.CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
+	CPen old_pen = dc.SelectPen(penRed);
+	//외곽 라인 그리기
+	dc.MoveTo(SUBMAPOSDLG_STARTCX, SUBMAPOSDLG_STARTCY);
+	dc.LineTo(SUBMAPOSDLG_CX, SUBMAPOSDLG_STARTCY);
+	dc.MoveTo(SUBMAPOSDLG_CX, SUBMAPOSDLG_STARTCY);
+	dc.LineTo(SUBMAPOSDLG_CX, SUBMAPOSDLG_CY);
+	dc.MoveTo(SUBMAPOSDLG_CX, SUBMAPOSDLG_CY);
+	dc.LineTo(SUBMAPOSDLG_STARTCX, SUBMAPOSDLG_CY);
+	dc.MoveTo(SUBMAPOSDLG_STARTCX, SUBMAPOSDLG_CY);
+	dc.LineTo(SUBMAPOSDLG_STARTCX, SUBMAPOSDLG_STARTCY);
+
+	////내부 두꺼운 라인그리기
+	//for (int ln = 0; ln < SUBMAPOSDLG_CENTERPOSX; ln+=(SUBMAPOSDLG_DISTX*2))
+	//{
+	//	dc.MoveTo(SUBMAPOSDLG_CENTERPOSX+ln, SUBMAPOSDLG_STARTCY);
+	//	dc.LineTo(SUBMAPOSDLG_CENTERPOSX+ln, SUBMAPOSDLG_CY);
+
+	//	dc.MoveTo(SUBMAPOSDLG_CENTERPOSX-ln, SUBMAPOSDLG_STARTCY);
+	//	dc.LineTo(SUBMAPOSDLG_CENTERPOSX-ln, SUBMAPOSDLG_CY);
+	//}
+
+	//for (int ln = 0; ln < SUBMAPOSDLG_CENTERPOSY; ln+=(SUBMAPOSDLG_DISTY*2))
+	//{
+	//	dc.MoveTo(SUBMAPOSDLG_STARTCX, SUBMAPOSDLG_CENTERPOSY+ln);
+	//	dc.LineTo(SUBMAPOSDLG_CX, SUBMAPOSDLG_CENTERPOSY+ln);
+
+	//	dc.MoveTo(SUBMAPOSDLG_STARTCX, SUBMAPOSDLG_CENTERPOSY-ln);
+	//	dc.LineTo(SUBMAPOSDLG_CX, SUBMAPOSDLG_CENTERPOSY-ln);
+	//}	
+
+	dc.MoveTo(SUBMAPOSDLG_CENTERPOSX, SUBMAPOSDLG_STARTCY);
+	dc.LineTo(SUBMAPOSDLG_CENTERPOSX, SUBMAPOSDLG_CY);
+	dc.MoveTo(SUBMAPOSDLG_STARTCX, SUBMAPOSDLG_CENTERPOSY);
+	dc.LineTo(SUBMAPOSDLG_CX, SUBMAPOSDLG_CENTERPOSY);
+
+
+	dc.SelectPen(old_pen);
+	baseMapLatticeDraw(dc, SUBMAPOSDLG_PIXCELX, SUBMAPOSDLG_PIXCELX, SUBMAPOSDLG_DISTX, SUBMAPOSDLG_DISTX);
+	
+}
+
+void CSubMapPosDlg::baseMapLatticeDraw(CDCHandle dc, int nRows, int nCols, int nRowDistance, int nColDistance)
+{
+	CPen penRed;
+	penRed.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+	CPen old_pen = dc.SelectPen(penRed);
+	CPoint ptInit(1,1);
+	CPoint ptMoving = ptInit;
+	for (int idxR = 0; idxR < nRows; idxR++)
+	{
+		for (int idxC = 0; idxC < nCols; idxC++)
+		{
+			dc.MoveTo(ptMoving.x, ptMoving.y);
+			dc.LineTo(ptMoving.x+nColDistance, ptMoving.y);
+			dc.MoveTo(ptMoving.x+nColDistance, ptMoving.y);
+			dc.LineTo(ptMoving.x+nColDistance, ptMoving.y+nRowDistance);
+			dc.MoveTo(ptMoving.x+nColDistance, ptMoving.y+nRowDistance);
+			dc.LineTo(ptMoving.x, ptMoving.y+nRowDistance);
+			dc.MoveTo(ptMoving.x, ptMoving.y+nRowDistance);
+			dc.LineTo(ptMoving.x, ptMoving.y);
+			ptMoving.x+=nColDistance;
+		}
+		ptMoving.x = ptInit.x;
+		ptMoving.y+=nRowDistance;
+	}
+	dc.SelectPen(old_pen);
 }

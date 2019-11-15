@@ -278,9 +278,9 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInMapImpact(WORD /*wNotifyCode*/, 
 	return 0;
 }
 
-void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, int typeOp, vector<CVector2d> areaPos, CString text)
+void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
 {
-	subMapPosDlg->drawResolutionPosition(pos, typeOp, areaPos, text);
+	subMapPosDlg->drawResolutionPosition(pos, areaPos, _areaSize);
 }
 
 LRESULT CResolutionPositionDlg::OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
