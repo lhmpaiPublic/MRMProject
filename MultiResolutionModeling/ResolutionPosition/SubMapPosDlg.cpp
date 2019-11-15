@@ -613,7 +613,7 @@ bool CSubMapPosDlg::examineLatticeSelec(CVector2d vecHiPos, CVector2d parent, fl
 void CSubMapPosDlg::examineMapAffect(vector<CVector2d>& vecHiPos, CSize hiSize, CVector2d parent, CVector2d front, CVector2d cross)
 {
 	float opt = getMapOpt();
-	float move = sqrt(pow((float)hiSize.cy, 2)/(float)2);
+	float move = sqrt(pow((float)(hiSize.cy/2), 2)/(float)2);
 	for (int hP = 0; hP < (int)vecHiPos.size(); hP++)
 	{
 		if(examineLatticeSelec(vecHiPos[hP], parent, opt))
@@ -621,7 +621,7 @@ void CSubMapPosDlg::examineMapAffect(vector<CVector2d>& vecHiPos, CSize hiSize, 
 			vector<int> rdVec;
 			vector<CVector2d> result;
 			result.resize(3);
-			result[0] = vecHiPos[hP] + front*((float)hiSize.cy*-1);
+			result[0] = vecHiPos[hP] + front*((float)(hiSize.cy/2)*-1);
 			if(false == examineLatticeSelec(result[0], parent, opt))
 			{
 				rdVec.push_back(0);
