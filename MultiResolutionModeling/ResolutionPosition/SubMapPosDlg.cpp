@@ -482,10 +482,8 @@ bool CSubMapPosDlg::findMapLatticeSelect(int left, int top, int right, int botto
 	bool b = false;
 	for (int la = 0; la < (int)mapLatticeSelect.size(); la++)
 	{
-		if(mapLatticeSelect[la].PtInRect(CPoint(left, top))
-			||mapLatticeSelect[la].PtInRect(CPoint(left, bottom))
-			||mapLatticeSelect[la].PtInRect(CPoint(right, top))
-			||mapLatticeSelect[la].PtInRect(CPoint(right, bottom)))
+		CRect rectDiff;
+		if(rectDiff.IntersectRect(mapLatticeSelect[la], CRect(left, top, right, bottom)))
 		{
 			b = true;
 			break;
@@ -598,25 +596,51 @@ void CSubMapPosDlg::baseMapLatticeDraw(CDCHandle dc, int nRows, int nCols, int n
 	dc.SelectPen(old_pen);
 }
 
+bool CSubMapPosDlg::examineLatticeSelec(CVector2d vecHiPos, CVector2d parent, float opt)
+{
+	bool b = false;
+	int left = (int)(SUBMAPOSDLG_CENTERPOSX + ((vecHiPos.x-parent.x)*opt))-SUBMAPOSDLG_RECREDSIZE;
+	int top = (int)(SUBMAPOSDLG_CENTERPOSY - ((vecHiPos.y-parent.y)*opt))-SUBMAPOSDLG_RECREDSIZE;
+	int right = (int)(SUBMAPOSDLG_CENTERPOSX + ((vecHiPos.x-parent.x)*opt))+SUBMAPOSDLG_RECREDSIZE;
+	int bottom = (int)(SUBMAPOSDLG_CENTERPOSY - ((vecHiPos.y-parent.y)*opt))+SUBMAPOSDLG_RECREDSIZE;
+	if(findMapLatticeSelect(left, top, right, bottom))
+	{
+		b = true;
+	}
+	return b;
+}
+
 void CSubMapPosDlg::examineMapAffect(vector<CVector2d>& vecHiPos, CSize hiSize, CVector2d parent, CVector2d front, CVector2d cross)
 {
 	float opt = getMapOpt();
 	float move = sqrt(pow((float)hiSize.cy, 2)/(float)2);
 	for (int hP = 0; hP < (int)vecHiPos.size(); hP++)
 	{
-		int left = (int)(SUBMAPOSDLG_CENTERPOSX + ((vecHiPos[hP].x-parent.x)*opt))-SUBMAPOSDLG_RECREDSIZE;
-		int top = (int)(SUBMAPOSDLG_CENTERPOSY - ((vecHiPos[hP].y-parent.y)*opt))-SUBMAPOSDLG_RECREDSIZE;
-		int right = (int)(SUBMAPOSDLG_CENTERPOSX + ((vecHiPos[hP].x-parent.x)*opt))+SUBMAPOSDLG_RECREDSIZE;
-		int bottom = (int)(SUBMAPOSDLG_CENTERPOSY - ((vecHiPos[hP].y-parent.y)*opt))+SUBMAPOSDLG_RECREDSIZE;
-		if(findMapLatticeSelect(left, top, right, bottom))
+		if(examineLatticeSelec(vecHiPos[hP], parent, opt))
 		{
+			vector<int> rdVec;
 			vector<CVector2d> result;
 			result.resize(3);
 			result[0] = vecHiPos[hP] + front*((float)hiSize.cy*-1);
+			if(false == examineLatticeSelec(result[0], parent, opt))
+			{
+				rdVec.push_back(0);
+			}
 			result[1] = vecHiPos[hP] + front*(move*-1) + cross*(move*-1);
+			if(false == examineLatticeSelec(result[1], parent, opt))
+			{
+				rdVec.push_back(1);
+			}
 			result[2] = vecHiPos[hP] + front*(move*-1) + cross*(move);
-			int rd = rand()%3;
-			vecHiPos[hP] = result[rd];
+			if(false == examineLatticeSelec(result[2], parent, opt))
+			{
+				rdVec.push_back(2);
+			}
+			if(rdVec.size())
+			{
+				int rd = rand()%rdVec.size();
+				vecHiPos[hP] = result[rdVec[rd]];
+			}
 		}
 	}	
 }

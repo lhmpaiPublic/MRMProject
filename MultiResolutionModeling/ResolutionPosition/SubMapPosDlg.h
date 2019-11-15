@@ -127,4 +127,6 @@ public:
 	
 	//그릴 좌표의 격자 검사하여 지형의 영향에 이동 위치 계산
 	void examineMapAffect(vector<CVector2d>& vecHiPos, CSize hiSize, CVector2d parent, CVector2d front, CVector2d cross);
+
+	bool examineLatticeSelec(CVector2d vecHiPos, CVector2d parent, float opt);
 };
