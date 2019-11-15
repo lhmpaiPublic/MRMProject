@@ -11,6 +11,10 @@ class CGAgt
 public:
 	static CGAgt* G();
 	static CResolutionChange* GResCha();
+	static CResolutionPositionDlg* ResPosDlg();
+	static CResolutionChange* ResCha();
+	static CResolutionPropertyDlg* ResPptyDlg();
+	static CPropertyList* PropLi();
 	CGAgt();
 	~CGAgt();
 
@@ -33,13 +37,7 @@ public:
 	void ShowDlg(DLGNAME name);
 	void HideDlg(DLGNAME name);
 
-	CResolutionPositionDlg* ResPosDlg();
-
-	CResolutionChange* ResCha();
-
-	CResolutionPropertyDlg* ResPptyDlg();
-
-	CPropertyList* PropLi();
-
-	void drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
+	//void drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
 };
+
+#define GPOSSUBDLG CGAgt::ResPosDlg()->foSMPDg()

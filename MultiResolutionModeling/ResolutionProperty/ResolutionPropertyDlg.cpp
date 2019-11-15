@@ -130,7 +130,7 @@ LRESULT CResolutionPropertyDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	m_lowModelList.AddColumn( _T( "분대3" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT   );
 	m_lowModelList.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
 	m_lowModelList.ShowHeaderSort(FALSE);	
-	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTLOW, &m_lowModelList, 
+	CGAgt::PropLi()->initPropertyItem(SPrMoTy::MTLOW, &m_lowModelList, 
 		SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel()),
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), SPrMoTy::INFANTRY));
@@ -145,7 +145,7 @@ LRESULT CResolutionPropertyDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	m_lowModelRatio.AddColumn( _T( "분대3" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT   );
 	m_lowModelRatio.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
 	m_lowModelRatio.ShowHeaderSort(FALSE);	
-	CGAgt::G()->PropLi()->lowPropertyIRatio(&m_lowModelRatio, 
+	CGAgt::PropLi()->lowPropertyIRatio(&m_lowModelRatio, 
 		SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel()),
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), SPrMoTy::INFANTRY));
@@ -163,7 +163,7 @@ LRESULT CResolutionPropertyDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	m_hiModelList.AddColumn( _T( "분대3" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
 	m_hiModelList.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
 	m_hiModelList.ShowHeaderSort(FALSE);	
-	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTHI, &m_hiModelList, 
+	CGAgt::PropLi()->initPropertyItem(SPrMoTy::MTHI, &m_hiModelList, 
 		SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel()),
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), SPrMoTy::INFANTRY));
@@ -181,7 +181,7 @@ LRESULT CResolutionPropertyDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	m_hiModelRatio.AddColumn( _T( "분대3" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
 	m_hiModelRatio.AddColumn( _T( " " ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT );
 	m_hiModelRatio.ShowHeaderSort(FALSE);	
-	CGAgt::G()->PropLi()->hiPropertyRatio(&m_hiModelRatio, 
+	CGAgt::PropLi()->hiPropertyRatio(&m_hiModelRatio, 
 		SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel()),
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), SPrMoTy::INFANTRY));
@@ -352,22 +352,22 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode
 		m_hiModelRatio.SetColumn(10, _T("분대3"));
 	}
 
-	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTLOW, &m_lowModelList, 
+	CGAgt::PropLi()->initPropertyItem(SPrMoTy::MTLOW, &m_lowModelList, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
 
-	CGAgt::G()->PropLi()->lowPropertyIRatio(&m_lowModelRatio, 
+	CGAgt::PropLi()->lowPropertyIRatio(&m_lowModelRatio, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
 
-	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTHI, &m_hiModelList, 
+	CGAgt::PropLi()->initPropertyItem(SPrMoTy::MTHI, &m_hiModelList, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
 
-	CGAgt::G()->PropLi()->hiPropertyRatio(&m_hiModelRatio, 
+	CGAgt::PropLi()->hiPropertyRatio(&m_hiModelRatio, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
@@ -386,22 +386,22 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyPropertydiv(WORD /*wNotifyCode
 	m_hiModelList.DeleteAllItems();
 	m_hiModelRatio.DeleteAllItems();
 	SPrMoTy::COMBATANT combatType = SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel());
-	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTLOW, &m_lowModelList, 
+	CGAgt::PropLi()->initPropertyItem(SPrMoTy::MTLOW, &m_lowModelList, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
 
-	CGAgt::G()->PropLi()->lowPropertyIRatio(&m_lowModelRatio, 
+	CGAgt::PropLi()->lowPropertyIRatio(&m_lowModelRatio, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
 
-	CGAgt::G()->PropLi()->initPropertyItem(SPrMoTy::MTHI, &m_hiModelList, 
+	CGAgt::PropLi()->initPropertyItem(SPrMoTy::MTHI, &m_hiModelList, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
 
-	CGAgt::G()->PropLi()->hiPropertyRatio(&m_hiModelRatio, 
+	CGAgt::PropLi()->hiPropertyRatio(&m_hiModelRatio, 
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));
@@ -838,7 +838,7 @@ LRESULT CResolutionPropertyDlg::OnBnClickedPptyResolutionchange(WORD /*wNotifyCo
 	CLogDlg::AddLogText(osItemText.str().c_str());
 
 	SPrMoTy::COMBATANT combatType = SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel());
-	CGAgt::G()->PropLi()->resolutionChangeProperty(&m_lowModelRatio, &m_lowModelList, &m_hiModelRatio, &m_hiModelList,
+	CGAgt::PropLi()->resolutionChangeProperty(&m_lowModelRatio, &m_lowModelList, &m_hiModelRatio, &m_hiModelList,
 		combatType,
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), combatType));

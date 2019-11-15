@@ -19,13 +19,15 @@ class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, publi
 	CComboBox incMapImpact;
 	CComboBox incDivisionCount;
 
-	CSubMapPosDlg* subMapPosDlg;
+	CSubMapPosDlg* mSubMapPosDlg;
 
 	CRect winPos;
 	CPoint startPoint;
 	bool bLClick;
 public:
 	static CButton childAreaCheck;
+
+	CSubMapPosDlg* foSMPDg();
 
 	enum { IDD = IDD_RESOLUTIONPOSITION };
 
@@ -82,7 +84,7 @@ public:
 
 	LRESULT OnCbnSelchangeInMapImpact(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
-	void drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
+	//void drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
 
 	LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 

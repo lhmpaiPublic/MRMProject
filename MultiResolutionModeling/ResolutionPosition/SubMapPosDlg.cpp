@@ -477,6 +477,23 @@ CRect CSubMapPosDlg::findMapLattice(CPoint point)
 	return result;
 }
 
+bool CSubMapPosDlg::findMapLatticeSelect(int left, int top, int right, int bottom)
+{
+	bool b = false;
+	for (int la = 0; la < (int)mapLatticeSelect.size(); la++)
+	{
+		if(mapLatticeSelect[la].PtInRect(CPoint(left, top))
+			||mapLatticeSelect[la].PtInRect(CPoint(left, bottom))
+			||mapLatticeSelect[la].PtInRect(CPoint(right, top))
+			||mapLatticeSelect[la].PtInRect(CPoint(right, bottom)))
+		{
+			b = true;
+			break;
+		}
+	}
+	return b;
+}
+
 void CSubMapPosDlg::drawMapLatticeSelect(CDCHandle dc)
 {
 	//CBrush brCr1;
@@ -579,4 +596,27 @@ void CSubMapPosDlg::baseMapLatticeDraw(CDCHandle dc, int nRows, int nCols, int n
 		ptMoving.y+=nRowDistance;
 	}
 	dc.SelectPen(old_pen);
+}
+
+void CSubMapPosDlg::examineMapAffect(vector<CVector2d>& vecHiPos, CSize hiSize, CVector2d parent, CVector2d front, CVector2d cross)
+{
+	float opt = getMapOpt();
+	float move = sqrt(pow((float)hiSize.cy, 2)/(float)2);
+	for (int hP = 0; hP < (int)vecHiPos.size(); hP++)
+	{
+		int left = (int)(SUBMAPOSDLG_CENTERPOSX + ((vecHiPos[hP].x-parent.x)*opt))-SUBMAPOSDLG_RECREDSIZE;
+		int top = (int)(SUBMAPOSDLG_CENTERPOSY - ((vecHiPos[hP].y-parent.y)*opt))-SUBMAPOSDLG_RECREDSIZE;
+		int right = (int)(SUBMAPOSDLG_CENTERPOSX + ((vecHiPos[hP].x-parent.x)*opt))+SUBMAPOSDLG_RECREDSIZE;
+		int bottom = (int)(SUBMAPOSDLG_CENTERPOSY - ((vecHiPos[hP].y-parent.y)*opt))+SUBMAPOSDLG_RECREDSIZE;
+		if(findMapLatticeSelect(left, top, right, bottom))
+		{
+			vector<CVector2d> result;
+			result.resize(3);
+			result[0] = vecHiPos[hP] + front*((float)hiSize.cy*-1);
+			result[1] = vecHiPos[hP] + front*(move*-1) + cross*(move*-1);
+			result[2] = vecHiPos[hP] + front*(move*-1) + cross*(move);
+			int rd = rand()%3;
+			vecHiPos[hP] = result[rd];
+		}
+	}	
 }

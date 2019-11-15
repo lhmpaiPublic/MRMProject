@@ -96,25 +96,25 @@ void CGAgt::HideDlg(DLGNAME name)
 
 CResolutionPositionDlg* CGAgt::ResPosDlg()
 {
-	return mResPosDlg;
+	return  G()->mResPosDlg;
 }
 
 CResolutionChange* CGAgt::ResCha()
 {
-	return mResCha;
+	return G()->mResCha;
 }
 
 CPropertyList* CGAgt::PropLi()
 {
-	return mPropList;
+	return G()->mPropList;
 }
 
 CResolutionPropertyDlg* CGAgt::ResPptyDlg()
 {
-	return mResPptyDlg;
+	return G()->mResPptyDlg;
 }
 
-void CGAgt::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
-{
-	mResPosDlg->drawResolutionPosition(pos, areaPos, _areaSize);
-}
+//void CGAgt::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
+//{
+//	mResPosDlg->drawResolutionPosition(pos, areaPos, _areaSize);
+//}

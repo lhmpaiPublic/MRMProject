@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "UnitSize.h"
 #include <math.h>
+#include "../ResolutionPosition/ResolutionPositionDlg.h"
+#include "../ResolutionPosition/SubMapPosDlg.h"
 
 
 CResolutionChange::CResolutionChange()
@@ -230,7 +232,7 @@ void CResolutionChange::changeDisaggregated()
 		CLogDlg::addLogTextStream();
 	}	
 
-	CGAgt::G()->drawResolutionPosition(drawPosItem, areaPos, areaSize);
+	GPOSSUBDLG->drawResolutionPosition(drawPosItem, areaPos, areaSize);
 
 	CLogDlg::AddLogText("<====================>");
 }
@@ -252,6 +254,11 @@ vector<CVector2d> CResolutionChange::changeDisaggregatedPosition(inputPosVal val
 
 	//최종 분해 요소 값
 	vector<CVector2d> vecHiData = deploymentPosition(val.dep, val.parent, front, cross, sizeUnit);
+
+	if(sizeUnit.size() > SIZEVEC_SIZE)
+	{
+		GPOSSUBDLG->examineMapAffect(vecHiData, CSize(sizeUnit[SIZEVECBT_WIDTH], sizeUnit[SIZEVECBT_HIGHT]), val.parent, front, cross);
+	}	
 
 	areaPos = areaPosition(front, cross, sizeUnit);
 

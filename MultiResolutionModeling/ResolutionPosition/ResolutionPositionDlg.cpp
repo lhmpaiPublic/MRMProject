@@ -7,6 +7,11 @@
 #include "SubMapPosDlg.h"
 CButton CResolutionPositionDlg::childAreaCheck;
 
+CSubMapPosDlg* CResolutionPositionDlg::foSMPDg()
+{
+	return mSubMapPosDlg;
+}
+
 BOOL CResolutionPositionDlg::PreTranslateMessage(MSG* pMsg)
 {
 	return CWindow::IsDialogMessage(pMsg);
@@ -125,10 +130,10 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	incDivisionCount.SetCurSel(divisionCount.size()-1);
 
 	//CSubMapPosDlg
-	subMapPosDlg = new CSubMapPosDlg();
-	subMapPosDlg->init(m_hWnd);
-	subMapPosDlg->Create(m_hWnd);
-	subMapPosDlg->ShowWindow(SW_SHOW);
+	mSubMapPosDlg = new CSubMapPosDlg();
+	mSubMapPosDlg->init(m_hWnd);
+	mSubMapPosDlg->Create(m_hWnd);
+	mSubMapPosDlg->ShowWindow(SW_SHOW);
 
 	//CXLEzAutomation xlEz;
 	//xlEz.OpenExcelFile(_T("E:\\_GitProject\\MRMWorkspace\\MRMProject\\MultiResolutionModeling\\sampleExcel.xls"));
@@ -185,7 +190,7 @@ LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	//출력 Position 크기
-	subMapPosDlg->drawResolutionPositionSize(valDivisionCount(incDivisionCount.GetCurSel()));
+	mSubMapPosDlg->drawResolutionPositionSize(valDivisionCount(incDivisionCount.GetCurSel()));
 
 	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
 	CUnitSize::MILITARYBRANCH mil = CUnitSize::emMilitarybranch(combatType, incUnitScale.GetCurSel());
@@ -203,14 +208,14 @@ LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/
 LRESULT CResolutionPositionDlg::OnBnClickedResolutionclear(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	subMapPosDlg->clearAll();
+	mSubMapPosDlg->clearAll();
 	return 0;
 }
 
 LRESULT CResolutionPositionDlg::OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	subMapPosDlg->clearAll();
+	mSubMapPosDlg->clearAll();
 
 	incUnitScale.ResetContent();
 	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
@@ -239,7 +244,7 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, W
 LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	subMapPosDlg->clearPosition();
+	mSubMapPosDlg->clearPosition();
 
 	incDeployment.ResetContent();
 	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
@@ -266,7 +271,7 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, 
 LRESULT CResolutionPositionDlg::OnCbnSelchangeDefault(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	subMapPosDlg->clearPosition();
+	mSubMapPosDlg->clearPosition();
 	return 0;
 }
 
@@ -277,11 +282,11 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInMapImpact(WORD /*wNotifyCode*/, 
 	CGAgt::GResCha()->setTopographicChar(CResolutionChange::emTopographicChar(combatType, incMapImpact.GetCurSel()));
 	return 0;
 }
-
-void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
-{
-	subMapPosDlg->drawResolutionPosition(pos, areaPos, _areaSize);
-}
+//
+//void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
+//{
+//	mSubMapPosDlg->drawResolutionPosition(pos, areaPos, _areaSize);
+//}
 
 LRESULT CResolutionPositionDlg::OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
 {

@@ -170,6 +170,9 @@ public:
 	void setTopographicChar(TOPOGRAPHICCHAR em);
 
 	TOPOGRAPHICCHAR getTopographicChar();
+
+	static CVector2d frontDirection(DIRECTIONTYPE dir);
+	static CVector2d crossDirection(CVector2d frontNorDir);
 public:	
 
 	void changeAggregated();
@@ -179,10 +182,6 @@ public:
 	vector<CVector2d> changeDisaggregatedPosition(inputPosVal val, vector<CVector2d>& areaPos, CSize& areaSize);
 	vector<CVector2d> changeDisaggregatedPositionInfantrySquad(inputPosVal val, vector<CVector2d>& areaPos, CSize& areaSize);
 	vector<CVector2d> changeDisaggregatedPositionArtilleryCompany(inputPosVal val, vector<CVector2d>& areaPos, CSize& areaSize);
-
-	CVector2d frontDirection(DIRECTIONTYPE dir);
-
-	CVector2d crossDirection(CVector2d frontNorDir);
 
 	CVector2d calcPosition(CALCPOSITIONTYPE calcType, CVector2d parent, CVector2d front, CVector2d cross, vector<int> sizeUnit);
 
