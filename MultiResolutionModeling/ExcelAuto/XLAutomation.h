@@ -30,7 +30,7 @@ class CXLAutomation
 #define xlUp -4162
 
 public:
-	BOOL OpenExcelFile(CString szFileName);
+	BOOL OpenExcelFile(CString szFileName, CString sheetName);
 	BOOL InsertPictureToWorksheet(BYTE* pImage, int Column, int Row, double dPicWidth, double dPicHeight);
 	BOOL PlaceImageToClipboard(BYTE* pImage);
 	BOOL InsertPictureToWorksheet(CString szFileName, int Column, int Row, double dPicWidth, double dPicHeight);
@@ -59,7 +59,7 @@ public:
 	BOOL SetExcelVisible(BOOL bVisible);
 
 	BOOL CloseExcel();
-	BOOL selectWorksheets(CString szFileName, CString sheetName);
+	BOOL selectWorksheets(CString sheetName);
 
 protected:
 	void ShowException(LPOLESTR szMember, HRESULT hr, EXCEPINFO *pexcep, unsigned int uiArgErr);

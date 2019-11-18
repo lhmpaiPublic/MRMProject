@@ -373,7 +373,8 @@ BOOL CXLAutomation::CloseExcel()
 {
 	if (m_pdispExcelApp == NULL)
 		return FALSE;
-
+	if (m_pdispWorkbook == NULL)
+		return FALSE;
 	ClearAllArgs();
 	return ExlInvoke(m_pdispWorkbook, L"Close", NULL, DISPATCH_PROPERTYGET, DISP_FREEARGS);
 
@@ -1244,7 +1245,7 @@ BOOL CXLAutomation::InsertPictureToWorksheet(BYTE *pImage, int Column, int Row, 
 }
 
 //Open Microsoft Excel file and switch to the firs available worksheet. 
-BOOL CXLAutomation::OpenExcelFile(CString szFileName)
+BOOL CXLAutomation::OpenExcelFile(CString szFileName, CString sheetName)
 {
 	//Leave if the file cannot be open
 	if(NULL == m_pdispExcelApp)
@@ -1264,7 +1265,7 @@ BOOL CXLAutomation::OpenExcelFile(CString szFileName)
 
 	//Now let's get the first worksheet of this workbook
 	ClearAllArgs();
-	AddArgumentInt2(NULL, 0, 1);
+	AddArgumentCString(NULL, 0, sheetName);
 	if (!ExlInvoke(vargWorkbook.pdispVal, L"Worksheets", &vargWorksheet, DISPATCH_PROPERTYGET, DISP_FREEARGS))
 		return FALSE;
 
@@ -1279,18 +1280,29 @@ BOOL CXLAutomation::OpenExcelFile(CString szFileName)
 	return TRUE;
 }
 
-BOOL CXLAutomation::selectWorksheets(CString szFileName, CString sheetName)
+BOOL CXLAutomation::selectWorksheets(CString sheetName)
 {
 	//Leave if the file cannot be open
-	if(NULL == m_pdispExcelApp)
+	if(NULL == m_pdispWorkbook)
 		return FALSE;
-	if(szFileName.IsEmpty())
+	if(sheetName.IsEmpty())
 		return FALSE;
+	
 	VARIANTARG vargWorksheet;
 
+	//Now let's get the first worksheet of this workbook
 	ClearAllArgs();
-	AddArgumentInt2(NULL, 0, 2);
+	AddArgumentCString(NULL, 0, sheetName);
 	if (!ExlInvoke(m_pdispWorkbook, L"Worksheets", &vargWorksheet, DISPATCH_PROPERTYGET, DISP_FREEARGS))
 		return FALSE;
+
+	//Close the empty worksheet
+	//ClearAllArgs();
+	//if (!ExlInvoke(m_pdispWorkbook, L"Close", NULL, DISPATCH_PROPERTYGET, DISP_FREEARGS))
+	//	return FALSE;
+	//Remember the newly open worksheet 
+	//m_pdispWorkbook = vargWorkbook.pdispVal;
+	m_pdispWorksheet = vargWorksheet.pdispVal;
+
 	return TRUE;
 }

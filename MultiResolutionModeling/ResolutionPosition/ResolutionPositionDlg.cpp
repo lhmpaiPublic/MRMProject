@@ -135,23 +135,24 @@ LRESULT CResolutionPositionDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 	mSubMapPosDlg->Create(m_hWnd);
 	mSubMapPosDlg->ShowWindow(SW_SHOW);
 
-	//CXLEzAutomation xlEz;
-	//xlEz.OpenExcelFile(_T("E:\\_GitProject\\MRMWorkspace\\MRMProject\\MultiResolutionModeling\\sampleExcel.xls"));
-	////xlEz.OpenExcelFile(_T(".\\sampleExcel.xls"));
-	//CString valxl;// = xlEz.GetCellValue(1, 1);
-	////valxl = xlEz.GetCellValue(1, 2);
-	////valxl = xlEz.GetCellValue(1, 3);
-	////valxl = xlEz.GetCellValue(2, 1);
-	//xlEz.selectWorksheets(_T("E:\\_GitProject\\MRMWorkspace\\MRMProject\\MultiResolutionModeling\\sampleExcel.xls"), L"Aircraft");
-	//valxl = xlEz.GetCellValue(1, 1);
-	//valxl = xlEz.GetCellValue(1, 2);
-	//valxl = xlEz.GetCellValue(1, 3);
-	//xlEz.ReleaseExcel();
+	CXLEzAutomation xlEz;
+	xlEz.OpenExcelFile(_T("E:\\_GitProject\\MRMWorkspace\\MRMProject\\MultiResolutionModeling\\sampleExcel.xls"), _T("Ship"));
+	CString valxl;// = xlEz.GetCellValue(1, 1);
+	valxl = xlEz.GetCellValue(1, 2);
+	valxl = xlEz.GetCellValue(1, 3);
+	valxl = xlEz.GetCellValue(2, 1);
+	//xlEz.CloseExcelFile();
+	xlEz.selectWorksheets(_T("Aircraft"));
+	valxl = xlEz.GetCellValue(1, 1);
+	valxl = xlEz.GetCellValue(1, 2);
+	valxl = xlEz.GetCellValue(1, 3);
+	xlEz.CloseExcelFile();
+	xlEz.ReleaseExcel();
 
 	////xlEz.OpenExcelFile(_T("E:\\_GitProject\\MRMWorkspace\\MRMProject\\MultiResolutionModeling\\sampleExcel.xls"));
 	////xlEz.ExportCString(_T("Ship"));
 	////valxl = xlEz.GetCellValue(1, 1);
-	////xlEz.CloseExcelFile();
+	////
 	return TRUE;
 }
 

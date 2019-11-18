@@ -16,7 +16,7 @@ class CXLEzAutomation
 {
 public:
 	BOOL InsertPictureFromBuffer(BYTE* pImage, int Column, int Row, double dXScale, double dYScale);
-	BOOL OpenExcelFile(CString szFileName);
+	BOOL OpenExcelFile(CString szFileName, CString sheetName);
 	BOOL PlacePictureToClipboard(BYTE* pImage);
 	BOOL InsertPictureFromClipboard(int Column, int Row);
 	BOOL InsertPictureFromFile(CString szFileName, int Column, int Row);
@@ -33,7 +33,7 @@ public:
 	virtual ~CXLEzAutomation();
 
 	BOOL CloseExcelFile();
-	BOOL selectWorksheets(CString szFileName, CString sheetName);
+	BOOL selectWorksheets(CString sheetName);
 
 protected:
 	CXLAutomation* m_pXLServer;

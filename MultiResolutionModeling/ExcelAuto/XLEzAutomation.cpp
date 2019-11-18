@@ -107,9 +107,9 @@ BOOL CXLEzAutomation::PlacePictureToClipboard(BYTE *pImage)
 	return m_pXLServer->PlaceImageToClipboard(pImage);
 }
 //Open Excell file
-BOOL CXLEzAutomation::OpenExcelFile(CString szFileName)
+BOOL CXLEzAutomation::OpenExcelFile(CString szFileName, CString sheetName)
 {
-	return m_pXLServer->OpenExcelFile(szFileName);
+	return m_pXLServer->OpenExcelFile(szFileName, sheetName);
 }
 
 BOOL CXLEzAutomation::CloseExcelFile()
@@ -126,7 +126,7 @@ BOOL CXLEzAutomation::InsertPictureFromBuffer(BYTE *pImage, int Column, int Row,
 	return m_pXLServer->InsertPictureToWorksheet(pImage, Column, Row, dXScale, dYScale);
 }
 
-BOOL CXLEzAutomation::selectWorksheets(CString szFileName, CString sheetName)
+BOOL CXLEzAutomation::selectWorksheets(CString sheetName)
 {
-	return m_pXLServer->selectWorksheets(szFileName, sheetName);
+	return m_pXLServer->selectWorksheets(sheetName);
 }
