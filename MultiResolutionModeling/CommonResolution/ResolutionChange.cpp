@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "UnitSize.h"
 #include <math.h>
 #include "../ResolutionPosition/ResolutionPositionDlg.h"
 #include "../ResolutionPosition/SubMapPosDlg.h"

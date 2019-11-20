@@ -6,30 +6,43 @@
 
 #define IMAGE_MAX 8
 #define MAPIMAGE_MAX 7
+//위치 좌표 표현 객체
 class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 {
 	//
 	static UINT imgId[IMAGE_MAX];
 	static UINT mapImgId[MAPIMAGE_MAX];
-
+	//부모 핸들
 	HWND hWnd;
-
+	//저해상도 위치좌표
 	vector<CVector2d> drawPosItem;
+	//고해상도 위치좌표
 	CVector2d drawAggPosItem;
+	//부대 영역 표시 
 	vector<CVector2d> drawAreaPosItem;
+	//그릴 위치 개체 수
 	int drawPosItemsize;
+	//영역 크기
 	CSize areaSize;
 
+	//마우스로 화면 이동
+	//윈도우 영역
 	CRect winPos;
+	//시작점
 	CPoint startPoint;
+	//클릭 여부
 	bool bLClick;
 
-
+	//화면 크기
 	CSize winSz;
+	//맵 격자 저장
 	vector<CRect> mapLattice;
+	//선택된 맵 격자
 	vector<CRect> mapLatticeSelect;
+	//격자 선택 이미지 번호
 	vector<UINT> selImgMap;
 
+	//격자 크기
 	int latticSize;
 public:
 	enum { IDD = IDD_SUBMAPPOSDLG };

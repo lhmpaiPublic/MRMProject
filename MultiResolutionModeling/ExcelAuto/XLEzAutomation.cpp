@@ -26,7 +26,7 @@
 CXLEzAutomation::CXLEzAutomation()
 {
 	//Starts Excel with bVisible = TRUE and creates empty worksheet 
-	m_pXLServer = new CXLAutomation;
+	m_pXLServer = new CXLAutomation();
 }
 
 CXLEzAutomation::CXLEzAutomation(BOOL bVisible)
@@ -129,4 +129,9 @@ BOOL CXLEzAutomation::InsertPictureFromBuffer(BYTE *pImage, int Column, int Row,
 BOOL CXLEzAutomation::selectWorksheets(CString sheetName)
 {
 	return m_pXLServer->selectWorksheets(sheetName);
+}
+
+BOOL CXLEzAutomation::SetExcelVisible(BOOL b)
+{
+	return m_pXLServer->SetExcelVisible(b);
 }

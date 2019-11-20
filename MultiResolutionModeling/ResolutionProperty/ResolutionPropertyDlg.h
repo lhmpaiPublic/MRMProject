@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
+//자산 표현 객체
 class CResolutionPropertyDlg : public CDialogImpl<CResolutionPropertyDlg>, public CUpdateUI<CResolutionPropertyDlg>,
 		public CMessageFilter, public CIdleHandler
 {

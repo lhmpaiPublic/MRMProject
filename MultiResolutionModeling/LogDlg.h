@@ -4,6 +4,7 @@
 
 #pragma once
 
+//로그 출력 개체
 class CLogDlg : public CDialogImpl<CLogDlg>
 {
 	static CButton csvLogCheck;

@@ -6,6 +6,9 @@
 #define MAKEMIL2(a, b)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff)) | ((DWORD)(((BYTE)((DWORD_PTR)(b)) & 0xff) << 8 ))
 #define MAKEMIL1(a)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff))
 
+
+//자산변환 객체들
+//자산 인덱스에 값
 typedef struct _SVecCompIdxVal
 {
 	static bool compare(_SVecCompIdxVal val1, _SVecCompIdxVal val2)
@@ -16,6 +19,7 @@ typedef struct _SVecCompIdxVal
 	float val;
 }SVeCoIdVa;
 
+//int string 쌍으로 이루어진 객체
 typedef struct _SVecStringInt
 {
 	_SVecStringInt()
@@ -112,6 +116,7 @@ private:
 	vector<CString> sValue;
 }SVeStIn;
 
+//컬럼 이름 정의
 typedef struct _SProductColumnName
 {
 	enum LOWCOLUMNNAME
@@ -179,6 +184,7 @@ typedef struct _SProductColumnName
 	};
 }SPrCoNa;
 
+//자산의 모델 유형
 typedef struct _SProductModelType
 {
 	enum MODELTYPE
@@ -397,6 +403,7 @@ typedef struct _SProductModelType
 //매핑키, 유일키(LOW, HI 분리)
 typedef CAtlMap<int, vector<int> > ProductKeyMap;
 
+//자산 매핑 키
 typedef struct _SProductMappKey
 {
 	void setVal(SPrMoTy::MODELTYPE moType, int mappKey, int proKey)
@@ -431,6 +438,7 @@ private:
 	ProductKeyMap PrMaKeVal[SPrMoTy::MT_SIZE];
 }SPrMaKe;
 
+//자산 이름
 typedef struct _SProductNum
 {
 	int retention; //보유량
@@ -456,6 +464,7 @@ typedef struct _SProductNum
 	}
 }SPrNu;
 
+//자산 유형 저장 객체
 typedef struct _SProductClassKind
 {
 	void setVal(SPrNu val)
@@ -497,6 +506,7 @@ private:
 }SPrClKi;
 
 //소대 분할
+//자산 분대 
 typedef struct _SProductSquad
 {
 	enum MILITARYBRANCH
@@ -526,6 +536,7 @@ private:
 }SPrSq;
 
 //중대분할
+//자산 중대
 typedef struct _SProductPlatoon
 {
 	enum MILITARYBRANCH
@@ -569,6 +580,7 @@ private:
 }SPrPl;
 
 //대대분할
+//자산 대대
 typedef struct _SProductCompany
 {
 	enum MILITARYBRANCH
@@ -620,6 +632,7 @@ private:
 }SPrCo;
 
 //UNIT Type 분할
+//자산 대대 저장 객체
 typedef struct _SProductBattalion
 {
 	enum MILITARYBRANCH
@@ -677,7 +690,7 @@ private:
 
 typedef CAtlMap<SPrMoTy::PRODUCTTYPE, SPrBa> SPrBaMap;
 
-
+//자산 키 매핑 관계 저장 객체
 typedef struct _SProductValue
 {
 	int accreditation;	//인가량
@@ -719,6 +732,7 @@ typedef struct _SProductKeyMappString
 	vector<CString> keyStr;
 }SPrKeMaSt;
 
+//자산 매핑 리스트 인덱스 접근 객체
 typedef struct _SProductKeyMappListIndex
 {
 	void setVal(int idx)
@@ -734,6 +748,7 @@ private:
 	vector<int> MakLidx;
 }SPrKeMaLiIn;
 
+//자산 매핑 저장 객체
 typedef struct _SProductMapping
 {
 	void setVal(SPrMoTy::MODELTYPE modelType, SPrMoTy::COMBATANTCLASS combatClass, SPrVa val)
@@ -811,6 +826,7 @@ typedef struct _SProductMapping
 //int : 매핑키(숫자), SPrMa : 매핑자산(low, hi)
 typedef CAtlMap<SPrMoTy::PRODUCTTYPE, SPrMa> ProductMappingVal;
 
+//자산 키 저장 객체
 typedef struct _SProductKey
 {
 	void setVal(int _mappKey, int _primKey, int _colNum)
@@ -841,7 +857,7 @@ private:
 }SPrKe;
 //장비이름으로 고유키값 찾기
 typedef CAtlMap<CAtlString, SPrKe, CStringElementTraits<CString> > PropNameKeyVal;
-
+//고유키로 매핑 찾기
 typedef CAtlMap<int, SPrKeMaSt> PropKeyMappString;
-
+//고유키로 매핑 리스트 인덱스 찾기
 typedef CAtlMap<int, SPrKeMaLiIn> PropKeyMappListIndex;

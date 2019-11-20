@@ -366,7 +366,6 @@ BOOL CXLAutomation::SetExcelVisible(BOOL bVisible)
 	ClearAllArgs();
 	AddArgumentBool(NULL, 0, bVisible);
 	return ExlInvoke(m_pdispExcelApp, L"Visible", NULL, DISPATCH_PROPERTYPUT, DISP_FREEARGS);
-
 }
 
 BOOL CXLAutomation::CloseExcel()
@@ -1288,7 +1287,7 @@ BOOL CXLAutomation::selectWorksheets(CString sheetName)
 	if(sheetName.IsEmpty())
 		return FALSE;
 	
-	VARIANTARG vargWorksheet;
+	VARIANTARG vargWorksheet, varg1;
 
 	//Now let's get the first worksheet of this workbook
 	ClearAllArgs();
@@ -1296,13 +1295,17 @@ BOOL CXLAutomation::selectWorksheets(CString sheetName)
 	if (!ExlInvoke(m_pdispWorkbook, L"Worksheets", &vargWorksheet, DISPATCH_PROPERTYGET, DISP_FREEARGS))
 		return FALSE;
 
+	m_pdispWorksheet = vargWorksheet.pdispVal;
+	// set wb.ActiveSheet
+	ClearAllArgs();
+	if (!ExlInvoke(vargWorksheet.pdispVal, L"Activate", &varg1, DISPATCH_METHOD, DISP_FREEARGS))
+		return FALSE;
+
 	//Close the empty worksheet
 	//ClearAllArgs();
 	//if (!ExlInvoke(m_pdispWorkbook, L"Close", NULL, DISPATCH_PROPERTYGET, DISP_FREEARGS))
 	//	return FALSE;
-	//Remember the newly open worksheet 
-	//m_pdispWorkbook = vargWorkbook.pdispVal;
-	m_pdispWorksheet = vargWorksheet.pdispVal;
+	//Remember the newly open worksheet 	
 
 	return TRUE;
 }

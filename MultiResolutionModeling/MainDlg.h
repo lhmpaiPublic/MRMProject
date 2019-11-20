@@ -4,6 +4,7 @@
 
 #pragma once
 
+//∏ﬁ¿Œ 
 class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
 		public CMessageFilter, public CIdleHandler
 {

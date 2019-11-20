@@ -6,13 +6,8 @@
 #pragma once
 
 #include "GlobalApi/GlobalApi.h"
-
 #include "ImageLoadApi/ImageLoadApi.h"
-
 #include "SubCombo/SubCombo.h"
-
 #include "SubEdit/SubEdit.h"
-
 #include "SubStatic/SubStatic.h"
-
 #include "SubListControl/SubListControl.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-
+//CSV 파일 운용 객체
 class CCSVFile
 {
 public:

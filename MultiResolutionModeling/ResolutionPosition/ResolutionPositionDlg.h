@@ -4,6 +4,7 @@
 
 #pragma once
 
+//위치변환 출력 객체
 class CSubMapPosDlg;
 class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, public CUpdateUI<CResolutionPositionDlg>,
 		public CMessageFilter, public CIdleHandler
@@ -24,6 +25,9 @@ class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, publi
 	CRect winPos;
 	CPoint startPoint;
 	bool bLClick;
+
+	//엑셀 오토메이션
+	//CXLEzAutomation* xlEz;
 public:
 	static CButton childAreaCheck;
 

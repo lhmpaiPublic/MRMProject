@@ -1,6 +1,6 @@
 #pragma once
 
-
+//부대 크기 저장 객체
 class CUnitSize
 {
 public:
@@ -78,15 +78,15 @@ public:
 			moveType = _moveType; force = _force; combat = _combat; mil = _mil;
 		}
 	};
-
+	//부대 타입별 크기 csv파일 읽기
 	void loadCSVFile(string fileName);
-
+	//보병 타입별 영역 
 	vector<int> getINFANTRYSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE fo);
-
+	//전차 타입별 영역
 	vector<int> getARMOREDSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE fo);
-
+	//포병 타입별 영역
 	vector<int> getARTILLERYSize(MILITARYBRANCH mil, MOVETYPE mo, FORCE fo);
-
+	//부대 타입별 크기
 	vector<int> unitZoneSize(InputVal in);
 
 private:

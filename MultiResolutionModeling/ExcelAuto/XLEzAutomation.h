@@ -12,6 +12,7 @@
 #include "XLAutomation.h"
 #define xlNormal -4143
 
+//excel Automation °´Ã¼
 class CXLEzAutomation  
 {
 public:
@@ -35,6 +36,7 @@ public:
 	BOOL CloseExcelFile();
 	BOOL selectWorksheets(CString sheetName);
 
+	BOOL SetExcelVisible(BOOL b);
 protected:
 	CXLAutomation* m_pXLServer;
 };

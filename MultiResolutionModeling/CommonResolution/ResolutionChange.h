@@ -1,7 +1,6 @@
 #pragma once
 
-
-#include "UnitSize.h"
+//위치변환 응용객체
 class CResolutionChange
 {
 public:
@@ -146,7 +145,7 @@ public:
 	static vector<CString> strTopographicChar(CUnitSize::COMBATANT combat);
 	static CResolutionChange::TOPOGRAPHICCHAR emTopographicChar(CUnitSize::COMBATANT combat, int selNum);
 
-
+	//위치변환 입력 정의 객체
 	struct inputPosVal
 	{
 		inputPosVal(){}
@@ -156,8 +155,11 @@ public:
 		CUnitSize::InputVal unitSizeVal;
 	};
 private:
+	//부대 타입별 크기 저장 변수
 	CUnitSize *unitSizeVal;
+	//변환 입력 변수
 	inputPosVal inPosVal;
+	//지형영향 변수
 	TOPOGRAPHICCHAR topoChar;
 public:
 	void setParentPos(CVector2d parentPos);
@@ -174,24 +176,26 @@ public:
 	static CVector2d frontDirection(DIRECTIONTYPE dir);
 	static CVector2d crossDirection(CVector2d frontNorDir);
 public:	
-
+	//고 -> 저 변환
 	void changeAggregated();
-
+	//저 -> 고 변환
 	void changeDisaggregated();
-
+	//고해상도 변환
 	vector<CVector2d> changeDisaggregatedPosition(inputPosVal val, vector<CVector2d>& areaPos, CSize& areaSize);
+	//고해상도 변환(보병 분대)
 	vector<CVector2d> changeDisaggregatedPositionInfantrySquad(inputPosVal val, vector<CVector2d>& areaPos, CSize& areaSize);
+	//고해상도 변환(포대)
 	vector<CVector2d> changeDisaggregatedPositionArtilleryCompany(inputPosVal val, vector<CVector2d>& areaPos, CSize& areaSize);
-
+	//위치 계산
 	CVector2d calcPosition(CALCPOSITIONTYPE calcType, CVector2d parent, CVector2d front, CVector2d cross, vector<int> sizeUnit);
-
+	//대형 전개
 	vector<CVector2d> deploymentPosition(DEPLOYMENTTYPE deployment, CVector2d parent, CVector2d front, CVector2d cross, vector<int> sizeUnit);
-
+	//부대 타입별 영역 좌표
 	vector<CVector2d> areaPosition(CVector2d front, CVector2d cross, vector<int> sizeUnit);
-
+	//저해상도 변환
 	CVector2d changeAggregatedPosition(vector<CVector2d> posList);
-
+	//저해상도 변환
 	static CVector2d changeAggregatedPosition(vector<CVector2d> posList, int size);
-
+	//저해상도 변환(보병 분대)
 	CVector2d changeAggregatedPositionInfantrySquad(vector<CVector2d> posList);
 };

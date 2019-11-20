@@ -1,6 +1,6 @@
 #ifndef VECPOINT4_H
 #define VECPOINT4_H
-
+//谅钎 按眉
 typedef struct _S2Point
 {
 	int posX;
@@ -86,7 +86,7 @@ typedef struct _S2Point
 
 }S2Pos;
 
-
+//谅钎 4俺 备己 按眉
 class CVecPoint4 {
 public:
 	enum POS
