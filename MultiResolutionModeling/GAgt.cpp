@@ -18,7 +18,7 @@ CGAgt* CGAgt::G()
 
 CResolutionChange* CGAgt::GResCha()
 {
-	return G()->ResCha();
+	return G()->mResCha;
 }
 
 CGAgt::CGAgt()
@@ -99,10 +99,6 @@ CResolutionPositionDlg* CGAgt::ResPosDlg()
 	return  G()->mResPosDlg;
 }
 
-CResolutionChange* CGAgt::ResCha()
-{
-	return G()->mResCha;
-}
 
 CPropertyList* CGAgt::PropLi()
 {

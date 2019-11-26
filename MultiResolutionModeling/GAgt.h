@@ -16,7 +16,6 @@ public:
 	static CGAgt* G();
 	static CResolutionChange* GResCha();
 	static CResolutionPositionDlg* ResPosDlg();
-	static CResolutionChange* ResCha();
 	static CResolutionPropertyDlg* ResPptyDlg();
 	static CPropertyList* PropLi();
 	CGAgt();

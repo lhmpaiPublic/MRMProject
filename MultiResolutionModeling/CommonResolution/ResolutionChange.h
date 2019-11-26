@@ -156,7 +156,7 @@ public:
 	};
 private:
 	//부대 타입별 크기 저장 변수
-	CUnitSize *unitSizeVal;
+	CUnitSize* unitSizeVal;
 	//변환 입력 변수
 	inputPosVal inPosVal;
 	//지형영향 변수
