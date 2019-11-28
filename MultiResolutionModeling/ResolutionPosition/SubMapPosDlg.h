@@ -123,7 +123,7 @@ public:
 
 	void drawResolutionPos(CDCHandle dc);
 
-	void drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
+	int drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
 	void drawResolutionPositionSize(int drawSize);
 
 	void makeMapLattice(int nRows, int nCols, int nRowDistance, int nColDistance);

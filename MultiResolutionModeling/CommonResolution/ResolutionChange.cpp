@@ -231,7 +231,15 @@ void CResolutionChange::changeDisaggregated()
 		CLogDlg::addLogTextStream();
 	}	
 
-	GPOSSUBDLG->drawResolutionPosition(drawPosItem, areaPos, areaSize);
+	//저해상도 좌표(실제 통합된 좌표)계산
+	int drawAggsize = GPOSSUBDLG->drawResolutionPosition(drawPosItem, areaPos, areaSize);
+	CVector2d drawAggPosItem = CResolutionChange::changeAggregatedPosition(drawPosItem, drawAggsize);
+
+	CLogDlg::initStream();
+	CLogDlg::insertStream("선택된 개수 Agg 좌표 :");
+	CLogDlg::insertStream(drawAggPosItem.x,'	');
+	CLogDlg::insertStream(drawAggPosItem.y,'	');
+	CLogDlg::addLogTextStream();
 
 	CLogDlg::AddLogText("<====================>");
 }

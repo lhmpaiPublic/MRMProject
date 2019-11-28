@@ -109,8 +109,3 @@ CResolutionPropertyDlg* CGAgt::ResPptyDlg()
 {
 	return G()->mResPptyDlg;
 }
-
-//void CGAgt::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
-//{
-//	mResPosDlg->drawResolutionPosition(pos, areaPos, _areaSize);
-//}

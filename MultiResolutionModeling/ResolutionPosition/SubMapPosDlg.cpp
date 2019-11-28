@@ -329,7 +329,7 @@ void CSubMapPosDlg::drawResolutionPos(CDCHandle dc)
 	dc.SelectFont(font_old);
 }
 
-void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
+int CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
 {
 	drawPosItem.clear();
 	drawPosItem = pos;
@@ -346,6 +346,7 @@ void CSubMapPosDlg::drawResolutionPosition(vector<CVector2d> pos, vector<CVector
 	InvalidateRect(NULL);
 	//InvalidateRect를 강제로 바로 실행 하기 위해존제..
 	UpdateWindow();
+	return drawPosItemsize;
 }
 
 void CSubMapPosDlg::drawResolutionPositionSize(int drawSize)

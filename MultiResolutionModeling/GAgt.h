@@ -47,8 +47,6 @@ public:
 	void ShowDlg(DLGNAME name);
 	//°³Ã¼ Hide
 	void HideDlg(DLGNAME name);
-
-	//void drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
 };
 
 #define GPOSSUBDLG CGAgt::ResPosDlg()->foSMPDg()

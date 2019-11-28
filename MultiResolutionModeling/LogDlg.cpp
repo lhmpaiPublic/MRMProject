@@ -154,6 +154,15 @@ void CLogDlg::insertStream(int val, char delimiter)
 	mkcsvLog  << val;
 }
 
+void CLogDlg::insertStream(float val, char delimiter)
+{
+	if(false == bFirst) mkLog  << delimiter;
+	if(false == bFirst) mkcsvLog  << ',';
+	bFirst = false;
+	mkLog  << val;
+	mkcsvLog  << val;
+}
+
 void CLogDlg::insertStreamVec(vector<int> val, char delimiter)
 {
 	for (int i = 0; i <(int) val.size(); i++)

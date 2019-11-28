@@ -289,11 +289,6 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInMapImpact(WORD /*wNotifyCode*/, 
 	CGAgt::GResCha()->setTopographicChar(CResolutionChange::emTopographicChar(combatType, incMapImpact.GetCurSel()));
 	return 0;
 }
-//
-//void CResolutionPositionDlg::drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize)
-//{
-//	mSubMapPosDlg->drawResolutionPosition(pos, areaPos, _areaSize);
-//}
 
 LRESULT CResolutionPositionDlg::OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
 {
