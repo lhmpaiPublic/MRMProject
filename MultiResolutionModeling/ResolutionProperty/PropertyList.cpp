@@ -124,10 +124,6 @@ bool CPropertyList::getPropKeyMappListIndex(int mappKey, SPrMoTy::MODELTYPE mode
 	return (0 != idxVal.size());
 }
 
-void CPropertyList::initPropertyList(CString fileNm)
-{
-
-}
 
 void CPropertyList::loadCSVFile(string fileName, SPrMoTy::COMBATANT combat)
 {
