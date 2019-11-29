@@ -121,25 +121,34 @@ public:
 	//---------------------------------------------------------------
 	BOOL OnEraseBkgnd(CDCHandle dc);
 
+	//해상도변환 좌표 화면 출력
 	void drawResolutionPos(CDCHandle dc);
-
+	//화면 출력 해상도변환 좌표 설정
 	int drawResolutionPosition(vector<CVector2d> pos, vector<CVector2d> areaPos, CSize _areaSize);
+	//해상도변환 영역 크기 화면 출력
 	void drawResolutionPositionSize(int drawSize);
 
+	//맵 격자 정보 생성
 	void makeMapLattice(int nRows, int nCols, int nRowDistance, int nColDistance);
 	//void drawMapLattice(CDCHandle dc);
+	//선택 격자 정보 추가
 	bool addMapLatticeSelect(CPoint point);
+	//마우스 포인트의 격자 정보 검색
 	CRect findMapLattice(CPoint point);
+	//선택된 격자와 영역정보 비교 검색
 	bool findMapLatticeSelect(int left, int top, int right, int bottom);
+	//선택된 격자 정보 화면출력
 	void drawMapLatticeSelect(CDCHandle dc);
+	//맵 격자간 사용 수치 옵션
 	float getMapOpt();
 
 	//기본 맵 격자 그리기
 	void baseMapLatticeDraw(CDCHandle dc);
+	//기본 격자 생성 및 출력
 	void baseMapLatticeDraw(CDCHandle dc, int nRows, int nCols, int nRowDistance, int nColDistance);
 	
 	//그릴 좌표의 격자 검사하여 지형의 영향에 이동 위치 계산
 	void examineMapAffect(vector<CVector2d>& vecHiPos, CSize hiSize, CVector2d parent, CVector2d front, CVector2d cross);
-
+	//영역좌표와 선택된 격자 정보와 비교
 	bool examineLatticeSelec(CVector2d vecHiPos, CVector2d parent, float opt);
 };

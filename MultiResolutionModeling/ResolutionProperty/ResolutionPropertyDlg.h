@@ -92,27 +92,45 @@ public:
 	LRESULT OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 
 	LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+	//부대유형 변경 이벤트
 	LRESULT OnCbnSelchangePptyInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	//부대규모 변경 이벤트
 	LRESULT OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	//자산구분 변경 이벤트
 	LRESULT OnCbnSelchangePptyPropertydiv(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
+	//저해상도 CListCtrl 선택 이벤트
 	LRESULT OnLowModelListSelected( LPNMHDR lpNMHDR );
+	//저해상도 CListCtrl 왼쪽마우스 선택 이벤트
 	LRESULT OnLowModelListSelectedLeft( LPNMHDR lpNMHDR );
+	//저해상도 CListCtrl 오른쪽 마우스 선택 이벤트
 	LRESULT OnLowModelListSelectedRight( LPNMHDR lpNMHDR );
+	//저해상도 CListCtrl 내용 변경 이벤트
 	LRESULT OnLowModelListModify( LPNMHDR lpNMHDR );
 
+	//고해상도 CListCtrl 선택 이벤트
 	LRESULT OnHiModelListSelected( LPNMHDR lpNMHDR );
+	//고해상도 CListCtrl 왼쪽 마우스 선택 이벤트
 	LRESULT OnHiModelListSelectedLeft( LPNMHDR lpNMHDR );
 
+	//고해상도 비율 CListCtrl 선택 이벤트
 	LRESULT OnHiModelRatioSelected( LPNMHDR lpNMHDR );
+	//고해상도 비율 CListCtrl 왼쪽 마우스 선택 이벤트
 	LRESULT OnHiModelRatioSelectedLeft( LPNMHDR lpNMHDR );
+	//고해상도 비율 CListCtrl 오른쪽 마우스 선택 이벤트
 	LRESULT OnHiModelRatioSelectedRight( LPNMHDR lpNMHDR );
+	//고해상도 비율 CListCtrl 내용 변경 이벤트
 	LRESULT OnHiModelRatioModify( LPNMHDR lpNMHDR );
 
+	//저해상도 비율 CListCtrl 선택 이벤트
 	LRESULT OnLowModelRatioSelected( LPNMHDR lpNMHDR );
+	//저해상도 비율 CListCtrl 왼쪽 마우스 선택 이벤트
 	LRESULT OnLowModelRatioSelectedLeft( LPNMHDR lpNMHDR );
+	//저해상도 비율 CListCtrl 오른쪽 마우스 선택 이벤트
 	LRESULT OnLowModelRatioSelectedRight( LPNMHDR lpNMHDR );
+	//저해상도 비율 CListCtrl 내용 변경 이벤트
 	LRESULT OnLowModelRatioModify( LPNMHDR lpNMHDR );
 
+	//해상도 변환 실행 이벤트
 	LRESULT OnBnClickedPptyResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };

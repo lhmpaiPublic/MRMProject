@@ -94,8 +94,11 @@ public:
 
 	LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
+	//고해상도 분할 개체 수 요구
 	vector<CString> strDivisionCount(CUnitSize::COMBATANT combat, CUnitSize::MILITARYBRANCH mil);
+	//콤보박스에 있는 분할 개체 수 요구
 	int valDivisionCount(int selNum);
+	//선택 맵 번호
 	UINT getMapSelect();
 	
 };
