@@ -61,6 +61,9 @@ void CGAgt::initGAgt(HWND _hParent)
 
 	mResPptyDlg = new CResolutionPropertyDlg();
 	if(mResPptyDlg)	mResPptyDlg->Create(hParent);
+
+	mResHPptyDlg = new CResolHiPropDlg();
+	if(mResHPptyDlg)	mResHPptyDlg->Create(hParent);
 }
 
 void CGAgt::releaseDlg()
@@ -76,6 +79,8 @@ void CGAgt::ShowDlg(DLGNAME name)
 		break;
 	case RESPPTY:mResPptyDlg->ShowWindow(SW_SHOW);
 		break;
+	case RESHPPTY:mResHPptyDlg->ShowWindow(SW_SHOW);
+		break;
 	default:
 		break;
 	}
@@ -88,6 +93,8 @@ void CGAgt::HideDlg(DLGNAME name)
 	case RESPOS:mResPosDlg->ShowWindow(SW_HIDE);
 		break;
 	case RESPPTY:mResPptyDlg->ShowWindow(SW_HIDE);
+		break;
+	case RESHPPTY:mResHPptyDlg->ShowWindow(SW_HIDE);
 		break;
 	default:
 		break;
@@ -108,4 +115,9 @@ CPropertyList* CGAgt::PropLi()
 CResolutionPropertyDlg* CGAgt::ResPptyDlg()
 {
 	return G()->mResPptyDlg;
+}
+
+CResolHiPropDlg* CGAgt::ResHPptyDlg()
+{
+	return G()->mResHPptyDlg;
 }

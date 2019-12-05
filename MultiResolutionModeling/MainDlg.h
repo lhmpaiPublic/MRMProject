@@ -27,8 +27,8 @@ public:
 		COMMAND_HANDLER(IDC_LOGWINDOW, BN_CLICKED, OnBnClickedLogwindow)
 		COMMAND_HANDLER(IDC_RESPOSWIN, BN_CLICKED, OnBnClickedResposwin)
 		COMMAND_HANDLER(IDC_RESPROPERTYWIN, BN_CLICKED, OnBnClickedRespropertywin)
-		REFLECT_NOTIFICATIONS()	
-		
+		COMMAND_HANDLER(IDC_RESHIPROPWIN, BN_CLICKED, OnBnClickedReshipropwin)
+		REFLECT_NOTIFICATIONS()		
 	END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -46,4 +46,5 @@ public:
 	LRESULT OnBnClickedLogwindow(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnBnClickedResposwin(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnBnClickedRespropertywin(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnBnClickedReshipropwin(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };

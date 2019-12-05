@@ -123,3 +123,11 @@ LRESULT CMainDlg::OnBnClickedRespropertywin(WORD /*wNotifyCode*/, WORD /*wID*/, 
 	CGAgt::G()->ShowDlg(CGAgt::RESPPTY);
 	return 0;
 }
+
+LRESULT CMainDlg::OnBnClickedReshipropwin(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	CGAgt::G()->ShowDlg(CGAgt::RESHPPTY);
+	return 0;
+}

@@ -5,6 +5,7 @@ class CResolutionPositionDlg;
 class CResolutionChange;
 class CPropertyList;
 class CResolutionPropertyDlg;
+class CResolHiPropDlg;
 
 //객체 생성 및 관리 개체
 class CGAgt
@@ -17,6 +18,7 @@ public:
 	static CResolutionChange* GResCha();
 	static CResolutionPositionDlg* ResPosDlg();
 	static CResolutionPropertyDlg* ResPptyDlg();
+	static CResolHiPropDlg* ResHPptyDlg();
 	static CPropertyList* PropLi();
 	CGAgt();
 	~CGAgt();
@@ -36,12 +38,16 @@ private:
 	CResolutionPropertyDlg* mResPptyDlg;
 	//자산변환 개체
 	CPropertyList* mPropList;
+
+	//고해상도 자산변환 출력 개체
+	CResolHiPropDlg* mResHPptyDlg;
 public:
 	//CSV open Type 정의
 	enum DLGNAME
 	{
 		RESPOS = 0,
 		RESPPTY,
+		RESHPPTY,
 	};
 	//개체 Show
 	void ShowDlg(DLGNAME name);

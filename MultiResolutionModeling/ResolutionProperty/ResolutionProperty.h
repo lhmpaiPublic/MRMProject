@@ -7,5 +7,6 @@
 #endif // _MSC_VER > 1000
 // Resolution Position dlg
 #include "ResolutionPropertyDlg.h"
+#include "ResolHiPropDlg.h"
 
 #endif //__RESOLUTIONPROPERTY_B7A15A9D01DC403996FC45F7F92F52D3_H__

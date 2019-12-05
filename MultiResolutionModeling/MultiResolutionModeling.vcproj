@@ -580,6 +580,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ResolutionProperty\ResolHiPropDlg.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ResolutionProperty\ResolutionProperty.h"
 					>
 				</File>
@@ -593,6 +597,10 @@
 				>
 				<File
 					RelativePath=".\ResolutionProperty\PropertyList.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ResolutionProperty\ResolHiPropDlg.cpp"
 					>
 				</File>
 				<File

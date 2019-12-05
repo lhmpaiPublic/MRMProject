@@ -943,7 +943,7 @@ void CPropertyList::resolutionChangeProperty(CListCtrl* listCtrlLowRatio, CListC
 					retVal[2] = (int)accRatio[2];
 					retVal[3] = (int)accRatio[3];
 					int retToTalVal = retVal[0] + retVal[1] + retVal[2] + retVal[3];
-					int retRest = (accTotal-hItemNum) - retToTalVal;
+					int retRest = hItemNum - retToTalVal;
 
 					if(retRest > 0)
 					{

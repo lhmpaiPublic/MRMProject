@@ -35,6 +35,7 @@
 #define IDB_MAPSE                       223
 #define IDB_PNG7                        224
 #define IDB_MAPSW                       224
+#define IDD_RESOLHIPROP                 225
 #define IDC_LOGTEXT                     1000
 #define IDCC_INDEPLOYMENT               1001
 #define IDCE_INPOSX                     1002
@@ -74,17 +75,25 @@
 #define IDCCUST_LOWMODELLIST4           1022
 #define IDC_CHECK1                      1025
 #define IDCCK_CHILDAREA                 1025
+#define IDCC_HPPTY_INUNITTYPE           1026
+#define IDCC_HPPTY_INUNITSCALE          1027
+#define IDCC_HPPTY_PROPERTYDIV          1028
+#define IDCB_HPPTY_RESOLUTIONCHANGE     1029
+#define IDCCUST_HHIMODELLIST            1030
+#define IDCCUST_HLOWMODELLIST           1031
+#define IDCCUST_HLOWMODELRATIO          1032
 #define IDC_LOGWINDOW                   57665
 #define IDC_RESPOSWIN                   57666
 #define IDC_RESPROPERTYWIN              57667
+#define IDC_RESHIPROPWIN                57668
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        225
+#define _APS_NEXT_RESOURCE_VALUE        226
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1026
+#define _APS_NEXT_CONTROL_VALUE         1033
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
