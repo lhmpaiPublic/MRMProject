@@ -14,7 +14,6 @@ class CResolHiPropDlg : public CDialogImpl<CResolHiPropDlg>, public CUpdateUI<CR
 	CListCtrl m_lowModelList;
 	CListCtrl m_lowModelRatio;
 	CListCtrl m_hiModelList;
-	//CListCtrl m_hiModelRatio;
 	CImageList m_ilItemImages;
 	CFont m_fntCustomFont1;
 	CFont m_fntCustomFont2;
@@ -23,11 +22,11 @@ class CResolHiPropDlg : public CDialogImpl<CResolHiPropDlg>, public CUpdateUI<CR
 	CComboBox inUnitScale;
 	CComboBox propertyDiv;
 
-	bool bEditHiRatio;
-	int hiRatioSelectNum;
-
 	bool bEditLowRatio;
 	int lowRatioSelectNum;
+
+	bool bEditHiItem;
+	int hiItemSelectNum;
 public:
 	CResolHiPropDlg();
 
@@ -54,23 +53,13 @@ public:
 		COMMAND_HANDLER(IDCC_HPPTY_INUNITSCALE, CBN_SELCHANGE, OnCbnSelchangeHPptyInunitscale)
 		COMMAND_HANDLER(IDCC_HPPTY_PROPERTYDIV, CBN_SELCHANGE, OnCbnSelchangeHPptyPropertydiv)
 
-		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELLIST, LCN_SELECTED, OnLowModelListSelected)
-		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELLIST, LCN_LEFTCLICK, OnLowModelListSelectedLeft)
-		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELLIST, LCN_RIGHTCLICK, OnLowModelListSelectedRight)
-		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELLIST, LCN_MODIFIED, OnLowModelListModify)
-		//NOTIFY_HANDLER_EX(IDCCUST_HIMODELLIST, LCN_SELECTED, OnHiModelListSelected)
-		NOTIFY_HANDLER_EX(IDCCUST_HIMODELLIST, LCN_LEFTCLICK, OnHiModelListSelectedLeft)
-		//NOTIFY_HANDLER_EX(IDCCUST_HIMODELRATIO, LCN_SELECTED, OnHiModelRatioSelected)
-		//NOTIFY_HANDLER_EX(IDCCUST_HIMODELRATIO, LCN_LEFTCLICK, OnHiModelRatioSelectedLeft)
-		//NOTIFY_HANDLER_EX(IDCCUST_HIMODELRATIO, LCN_RIGHTCLICK, OnHiModelRatioSelectedRight)
-		//NOTIFY_HANDLER_EX(IDCCUST_HIMODELRATIO, LCN_MODIFIED, OnHiModelRatioModify)
+		NOTIFY_HANDLER_EX(IDCCUST_HHIMODELLIST, LCN_LEFTCLICK, OnHiModelListSelectedLeft)
+		NOTIFY_HANDLER_EX(IDCCUST_HHIMODELLIST, LCN_MODIFIED, OnHiModelListModify)
 
-		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELRATIO, LCN_SELECTED, OnLowModelRatioSelected)
-		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELRATIO, LCN_LEFTCLICK, OnLowModelRatioSelectedLeft)
-		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELRATIO, LCN_RIGHTCLICK, OnLowModelRatioSelectedRight)
-		//NOTIFY_HANDLER_EX(IDCCUST_LOWMODELRATIO, LCN_MODIFIED, OnLowModelRatioModify)
+		NOTIFY_HANDLER_EX(IDCCUST_HLOWMODELRATIO, LCN_LEFTCLICK, OnLowModelRatioSelectedLeft)
+		NOTIFY_HANDLER_EX(IDCCUST_HLOWMODELRATIO, LCN_MODIFIED, OnLowModelRatioModify)
 
-		COMMAND_HANDLER(IDCB_PPTY_RESOLUTIONCHANGE, BN_CLICKED, OnBnClickedPptyResolutionchange)
+		COMMAND_HANDLER(IDCB_HPPTY_RESOLUTIONCHANGE, BN_CLICKED, OnBnClickedHpptyResolutionchange)
 		REFLECT_NOTIFICATIONS()		
 		
 	END_MSG_MAP()
@@ -99,38 +88,16 @@ public:
 	//자산구분 변경 이벤트
 	LRESULT OnCbnSelchangeHPptyPropertydiv(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
-	////저해상도 CListCtrl 선택 이벤트
-	//LRESULT OnLowModelListSelected( LPNMHDR lpNMHDR );
-	////저해상도 CListCtrl 왼쪽마우스 선택 이벤트
-	//LRESULT OnLowModelListSelectedLeft( LPNMHDR lpNMHDR );
-	////저해상도 CListCtrl 오른쪽 마우스 선택 이벤트
-	//LRESULT OnLowModelListSelectedRight( LPNMHDR lpNMHDR );
-	////저해상도 CListCtrl 내용 변경 이벤트
-	//LRESULT OnLowModelListModify( LPNMHDR lpNMHDR );
-
-	//고해상도 CListCtrl 선택 이벤트
-	LRESULT OnHiModelListSelected( LPNMHDR lpNMHDR );
 	//고해상도 CListCtrl 왼쪽 마우스 선택 이벤트
 	LRESULT OnHiModelListSelectedLeft( LPNMHDR lpNMHDR );
+	//고해상도 CListCtrl 내용 변경 이벤트
+	LRESULT OnHiModelListModify( LPNMHDR lpNMHDR );
 
-	////고해상도 비율 CListCtrl 선택 이벤트
-	//LRESULT OnHiModelRatioSelected( LPNMHDR lpNMHDR );
-	////고해상도 비율 CListCtrl 왼쪽 마우스 선택 이벤트
-	//LRESULT OnHiModelRatioSelectedLeft( LPNMHDR lpNMHDR );
-	////고해상도 비율 CListCtrl 오른쪽 마우스 선택 이벤트
-	//LRESULT OnHiModelRatioSelectedRight( LPNMHDR lpNMHDR );
-	////고해상도 비율 CListCtrl 내용 변경 이벤트
-	//LRESULT OnHiModelRatioModify( LPNMHDR lpNMHDR );
-
-	////저해상도 비율 CListCtrl 선택 이벤트
-	//LRESULT OnLowModelRatioSelected( LPNMHDR lpNMHDR );
-	////저해상도 비율 CListCtrl 왼쪽 마우스 선택 이벤트
-	//LRESULT OnLowModelRatioSelectedLeft( LPNMHDR lpNMHDR );
-	////저해상도 비율 CListCtrl 오른쪽 마우스 선택 이벤트
-	//LRESULT OnLowModelRatioSelectedRight( LPNMHDR lpNMHDR );
-	////저해상도 비율 CListCtrl 내용 변경 이벤트
-	//LRESULT OnLowModelRatioModify( LPNMHDR lpNMHDR );
+	//저해상도 비율 CListCtrl 왼쪽 마우스 선택 이벤트
+	LRESULT OnLowModelRatioSelectedLeft( LPNMHDR lpNMHDR );
+	//저해상도 비율 CListCtrl 내용 변경 이벤트
+	LRESULT OnLowModelRatioModify( LPNMHDR lpNMHDR );
 
 	//해상도 변환 실행 이벤트
-	LRESULT OnBnClickedPptyResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnBnClickedHpptyResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };
