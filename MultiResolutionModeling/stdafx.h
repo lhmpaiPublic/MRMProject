@@ -76,6 +76,7 @@ using namespace std;
 #include "GAgt.h"
 //로그 출력 클래스
 #include "LogDlg.h"
+#include "ResolutionProperty/PropertyKind.h"
 
 
 #if defined _M_IX86

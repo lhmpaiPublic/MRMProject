@@ -27,6 +27,18 @@ class CResolHiPropDlg : public CDialogImpl<CResolHiPropDlg>, public CUpdateUI<CR
 
 	bool bEditHiItem;
 	int hiItemSelectNum;
+
+	//고/저해상도 구분 자산 매핑 인덱스 정보
+	PropKeyMappListIndex itemListIndexHi[SPrMoTy::MT_SIZE];
+	//고/저해상도 구분 자산 키 정보
+	PropNameKeyVal itemKeyHi[SPrMoTy::MT_SIZE];
+	//고/저해상도 구분 자산 명 정보
+	PropKeyMappString itemMappStrHi[SPrMoTy::MT_SIZE];
+
+	//CListCtrl 저해상도 계산할 저해상도 보유량 COL 정보
+	static vector<SPrCoNa::LOWRATIOCOLUMNNAME> setLowRetenRitioNum;
+	//CListCtrl 계산할 고해상도 인가량 COL 정보
+	static vector<SPrCoNa::HICOLUMNNAME> setHiRetenListNum;
 public:
 	CResolHiPropDlg();
 
@@ -100,4 +112,20 @@ public:
 
 	//해상도 변환 실행 이벤트
 	LRESULT OnBnClickedHpptyResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+	void hHiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
+	void hLowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
+	void hLowPropertyIRatio(CListCtrl* listCtrl, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
+	//해상도 변환을 위한 정보 세팅
+	void resolutionChangeHiProperty(CListCtrl* listCtrlHi, CListCtrl* listCtrlLowRatio, CListCtrl* listCtrlLow, SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass);
+
+	//매핑키와 고/저해상도 구분 자산명 설정
+	void setPropKeyMappStringHi(int mappKey, SPrMoTy::MODELTYPE modelType, CString propName);
+	//매핑키와 고/저해상도 구분 자산명 요구
+	bool getPropKeyMappStringHi(int mappKey, SPrMoTy::MODELTYPE modelType, vector<CString>& strProp);
+	//매핑키와 고/저해상도 구분 인덱스 설정
+	void setPropKeyMappListIndexHi(int mappKey, SPrMoTy::MODELTYPE modelType, int idx);
+	//매핑키와 고/저해상도 구분 인덱스 요구
+	bool getPropKeyMappListIndexHi(int mappKey, SPrMoTy::MODELTYPE modelType, vector<int>& idxVal);
 };
+#define STPL_HHIR CResolHiPropDlg::setHiRetenListNum
