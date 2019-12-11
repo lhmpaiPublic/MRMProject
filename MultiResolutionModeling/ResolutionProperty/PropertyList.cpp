@@ -172,7 +172,7 @@ void CPropertyList::loadCSVFile(string fileName, SPrMoTy::COMBATANT combat)
 	}
 }
 
-void CPropertyList::getLowPropertyItem(SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass, vector<int>& lowKey, vector<int>& hiKey, SPrMa& prVal)
+void CPropertyList::getPropertyItem(SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass, vector<int>& lowKey, vector<int>& hiKey, SPrMa& prVal)
 {
 	lowKey = keyList[combat][propType].getMappKey(SPrMoTy::MTLOW);
 	hiKey = keyList[combat][propType].getMappKey(SPrMoTy::MTHI);

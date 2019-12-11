@@ -19,5 +19,5 @@ public:
 	//자산정보 CSV파일 로딩
 	void loadCSVFile(string fileName, SPrMoTy::COMBATANT combat);
 
-	void getLowPropertyItem(SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass, vector<int>& lowKey, vector<int>& hiKey, SPrMa& prVal);
+	void getPropertyItem(SPrMoTy::COMBATANT combat, SPrMoTy::PRODUCTTYPE propType, SPrMoTy::COMBATANTCLASS cbtClass, vector<int>& lowKey, vector<int>& hiKey, SPrMa& prVal);
 };

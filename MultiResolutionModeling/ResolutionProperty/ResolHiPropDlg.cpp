@@ -563,7 +563,7 @@ void CResolHiPropDlg::hHiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT co
 	vector<int> lowKey;
 	vector<int> hiKey;
 	SPrMa prVal;
-	CGAgt::PropLi()->getLowPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
+	CGAgt::PropLi()->getPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
 
 	itemKeyHi[SPrMoTy::MTHI].RemoveAll();
 	itemMappStrHi[SPrMoTy::MTHI].RemoveAll();
@@ -702,7 +702,7 @@ void CResolHiPropDlg::hLowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBATANT c
 	vector<int> lowKey;
 	vector<int> hiKey;
 	SPrMa prVal;
-	CGAgt::PropLi()->getLowPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
+	CGAgt::PropLi()->getPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
 
 	itemKeyHi[SPrMoTy::MTLOW].RemoveAll();
 	itemMappStrHi[SPrMoTy::MTLOW].RemoveAll();
@@ -750,7 +750,7 @@ void CResolHiPropDlg::hLowPropertyIRatio(CListCtrl* listCtrl, SPrMoTy::COMBATANT
 	vector<int> lowKey;
 	vector<int> hiKey;
 	SPrMa prVal;
-	CGAgt::PropLi()->getLowPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
+	CGAgt::PropLi()->getPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
 
 	for (int i = 0; i < (int)lowKey.size(); i++)
 	{

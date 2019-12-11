@@ -933,7 +933,7 @@ void CResolutionPropertyDlg::lowPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBA
 	vector<int> lowKey;
 	vector<int> hiKey;
 	SPrMa prVal;
-	CGAgt::PropLi()->getLowPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
+	CGAgt::PropLi()->getPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
 
 	itemKey[SPrMoTy::MTLOW].RemoveAll();
 	itemMappStr[SPrMoTy::MTLOW].RemoveAll();
@@ -1016,7 +1016,7 @@ void CResolutionPropertyDlg::lowPropertyIRatio(CListCtrl* listCtrl, SPrMoTy::COM
 	vector<int> lowKey;
 	vector<int> hiKey;
 	SPrMa prVal;
-	CGAgt::PropLi()->getLowPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
+	CGAgt::PropLi()->getPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
 
 	for (int i = 0; i < (int)lowKey.size(); i++)
 	{
@@ -1089,7 +1089,7 @@ void CResolutionPropertyDlg::hiPropertyItem(CListCtrl* listCtrl, SPrMoTy::COMBAT
 	vector<int> lowKey;
 	vector<int> hiKey;
 	SPrMa prVal;
-	CGAgt::PropLi()->getLowPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
+	CGAgt::PropLi()->getPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
 
 	itemKey[SPrMoTy::MTHI].RemoveAll();
 	itemMappStr[SPrMoTy::MTHI].RemoveAll();
@@ -1237,7 +1237,7 @@ void CResolutionPropertyDlg::hiPropertyRatio(CListCtrl* listCtrl, SPrMoTy::COMBA
 	vector<int> lowKey;
 	vector<int> hiKey;
 	SPrMa prVal;
-	CGAgt::PropLi()->getLowPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
+	CGAgt::PropLi()->getPropertyItem( combat, propType, cbtClass, lowKey, hiKey, prVal);
 
 	for (int i = 0; i < (int)lowKey.size(); i++)
 	{
