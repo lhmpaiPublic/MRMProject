@@ -906,6 +906,34 @@ void CResolHiPropDlg::resolutionChangeHiProperty(CListCtrl* listCtrlHi, CListCtr
 
 	CLogDlg::AddLogText(_T("======================================================================================="));
 	CLogDlg::initStream();
+	for (int columnCount = 0; columnCount < (int)listCtrlHi->GetColumnCount(); columnCount++)
+	{
+		CListColumn listColumn;
+		listCtrlHi->GetColumn(columnCount, listColumn);
+		if(0 == listColumn.m_strText.GetLength())
+			CLogDlg::insertStream(_T("	"), '	');
+		else
+			CLogDlg::insertStream(listColumn.m_strText.GetBuffer(), '	');
+	}
+	CLogDlg::addLogTextStream();
+
+	for (int itemCount = 0; itemCount < (int)listCtrlHi->GetItemCount(); itemCount++)
+	{
+		CLogDlg::initStream();
+		for (int columnCount = 0; columnCount < (int)listCtrlHi->GetColumnCount(); columnCount++)
+		{
+			CString str = CString(listCtrlHi->GetItemText(itemCount, columnCount));
+			if(0 == str.GetLength())
+				CLogDlg::insertStream(_T("	"), '	');
+			else
+				CLogDlg::insertStream(str.GetBuffer(), '	');
+
+		}
+		CLogDlg::addLogTextStream();
+	}
+
+	CLogDlg::AddLogText(_T("======================================================================================="));
+	CLogDlg::initStream();
 	for (int columnCount = 0; columnCount < (int)listCtrlLow->GetColumnCount(); columnCount++)
 	{
 		CListColumn listColumn;
@@ -924,34 +952,6 @@ void CResolHiPropDlg::resolutionChangeHiProperty(CListCtrl* listCtrlHi, CListCtr
 		for (int columnCount = 0; columnCount < (int)listCtrlLow->GetColumnCount(); columnCount++)
 		{
 			CString str = CString(listCtrlLow->GetItemText(itemCount, columnCount));
-			if(0 == str.GetLength())
-				CLogDlg::insertStream(_T("	"), '	');
-			else
-				CLogDlg::insertStream(str.GetBuffer(), '	');
-
-		}
-		CLogDlg::addLogTextStream();
-	}
-
-	CLogDlg::AddLogText(_T("======================================================================================="));
-	CLogDlg::initStream();
-	for (int columnCount = 0; columnCount < (int)listCtrlHi->GetColumnCount(); columnCount++)
-	{
-		CListColumn listColumn;
-		listCtrlHi->GetColumn(columnCount, listColumn);
-		if(0 == listColumn.m_strText.GetLength())
-			CLogDlg::insertStream(_T("	"), '	');
-		else
-			CLogDlg::insertStream(listColumn.m_strText.GetBuffer(), '	');
-	}
-	CLogDlg::addLogTextStream();
-
-	for (int itemCount = 0; itemCount < (int)listCtrlHi->GetItemCount(); itemCount++)
-	{
-		CLogDlg::initStream();
-		for (int columnCount = 0; columnCount < (int)listCtrlHi->GetColumnCount(); columnCount++)
-		{
-			CString str = CString(listCtrlHi->GetItemText(itemCount, columnCount));
 			if(0 == str.GetLength())
 				CLogDlg::insertStream(_T("	"), '	');
 			else
