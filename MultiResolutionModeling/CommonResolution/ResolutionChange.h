@@ -162,6 +162,7 @@ private:
 	//지형영향 변수
 	TOPOGRAPHICCHAR topoChar;
 public:
+	//입력처리 이벤트 저장
 	void setParentPos(CVector2d parentPos);
 	void setDirectionType(DIRECTIONTYPE em);
 	void setDeploymentType(DEPLOYMENTTYPE em);

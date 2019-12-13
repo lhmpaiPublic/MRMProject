@@ -1,6 +1,6 @@
 #pragma once
 
-
+//DWORD 비트 연산 정의
 #define MAKEMIL4(a, b, c, d)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff)) | ((DWORD)(((BYTE)((DWORD_PTR)(b)) & 0xff) << 8 )) | ((DWORD)(((BYTE)((DWORD_PTR)(c)) & 0xff) << 16 )) | ((DWORD)(((BYTE)((DWORD_PTR)(d)) & 0xff) << 24 ))
 #define MAKEMIL3(a, b, c)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff)) | ((DWORD)(((BYTE)((DWORD_PTR)(b)) & 0xff) << 8 )) | ((DWORD)(((BYTE)((DWORD_PTR)(c)) & 0xff) << 16 ))
 #define MAKEMIL2(a, b)      ((DWORD)(((BYTE)((DWORD_PTR)(a))) & 0xff)) | ((DWORD)(((BYTE)((DWORD_PTR)(b)) & 0xff) << 8 ))
@@ -11,6 +11,7 @@
 //자산 인덱스에 값
 typedef struct _SVecCompIdxVal
 {
+	//val 비교함수
 	static bool compare(_SVecCompIdxVal val1, _SVecCompIdxVal val2)
 	{
 		return val1.val > val2.val;
@@ -26,13 +27,16 @@ typedef struct _SVecStringInt
 	{
 		clearVal();
 	}
+
+	//변수 초기화
 	void clearVal()
 	{
 		size = 0;
 		iValue.clear();
 		sValue.clear();
 	}
-
+	
+	//해당 인덱스 객체 삭제
 	bool deleteVal(DWORD idx)
 	{
 		bool b = false;
@@ -44,7 +48,8 @@ typedef struct _SVecStringInt
 		}
 		return b;
 	}
-
+	
+	//변수 입력
 	void setVal(CString _sVal, int _iVal)
 	{
 		sValue.push_back(_sVal);
@@ -52,6 +57,7 @@ typedef struct _SVecStringInt
 		size = (int) sValue.size();
 	}
 
+	//변수 변경
 	bool modifyVal(DWORD idx, CString _sVal, int _iVal)
 	{
 		bool b = false;
@@ -64,6 +70,7 @@ typedef struct _SVecStringInt
 		return b;
 	}
 
+	//해당 인덱스  CString 요구
 	CString getSVal(DWORD idx)
 	{
 		CString rVal = _T("");
@@ -73,12 +80,14 @@ typedef struct _SVecStringInt
 		}
 		return rVal;
 	}
-
+	
+	//전체 값 CString 요구
 	vector<CString> getSVal()
 	{
 		return sValue;
 	}
 
+	//해당 인덱스  int 요구
 	int getIVal(DWORD idx)
 	{
 		int rVal = -1;
@@ -89,11 +98,13 @@ typedef struct _SVecStringInt
 		return rVal;
 	}
 
+	//전체 값 int 요구
 	vector<int> getIVal()
 	{
 		return iValue;
 	}
 
+	//값 CString int 요구
 	bool getIVal(DWORD idx, CString& sVal, int& iVal)
 	{
 		bool b = false;
@@ -406,6 +417,7 @@ typedef CAtlMap<int, vector<int> > ProductKeyMap;
 //자산 매핑 키
 typedef struct _SProductMappKey
 {
+	//값 입력 함수
 	void setVal(SPrMoTy::MODELTYPE moType, int mappKey, int proKey)
 	{
 		ProductKeyMap::CPair* pair = PrMaKeVal[moType].Lookup(mappKey);
@@ -420,7 +432,8 @@ typedef struct _SProductMappKey
 			PrMaKeVal[moType].SetAt(mappKey, val);
 		}
 	}
-
+	
+	//매핑 키 값 요구
 	vector<int> getMappKey(SPrMoTy::MODELTYPE moType)
 	{
 		vector<int> keyVal;
@@ -446,14 +459,18 @@ typedef struct _SProductNum
 	int key;	//유일 키값
 	int mappingNumber;	//매핑번호
 	CString strName;	//자산이름
+
+	//매핑 번호 비교
 	bool compareMappingNumber(int mappingNum)
 	{
 		return mappingNumber == mappingNum;
 	}
+	//유일키 비교
 	bool compareKey(int _key)
 	{
 		return key == _key;
 	}
+	//입력 값 변경
 	void modifyVal(_SProductNum val)
 	{
 		retention = val.retention;
@@ -467,16 +484,18 @@ typedef struct _SProductNum
 //자산 유형 저장 객체
 typedef struct _SProductClassKind
 {
+	//값 입력
 	void setVal(SPrNu val)
 	{
 		prNu.push_back(val);
 	}
-
+	//값 삭제
 	void clearVal()
 	{
 		prNu.clear();
 	}
 
+	//값 요구
 	vector<SPrNu> getVal(int mappingNum)
 	{
 		vector<SPrNu> val;
@@ -490,6 +509,7 @@ typedef struct _SProductClassKind
 		return val;
 	}
 
+	//값 변경
 	void modifyVal(SPrNu val)
 	{
 		for (int i = 0; i < (int)prNu.size(); i++)
@@ -697,15 +717,17 @@ typedef struct _SProductValue
 	int key;		//유일 키값
 	int mappKey;	//매핑 키
 	CString strName;	//자산이름
+	//매핑 키 비교
 	bool compareMappKey(int mappingNum)
 	{
 		return mappKey == mappingNum;
 	}
+	//유일 키 비교
 	bool compareKey(int _key)
 	{
 		return key == _key;
 	}
-
+	//log 출력
 	string strLogVal()
 	{
 		std::stringstream stm;
@@ -717,13 +739,16 @@ typedef struct _SProductValue
 	}
 }SPrVa;
 
+//매핑 키 스트링 객체
 typedef struct _SProductKeyMappString
 {
+	//입력
 	void setVal(CString propName)
 	{
 		keyStr.push_back(propName);
 	}
 
+	//요구
 	vector<CString> getVal()
 	{
 		return keyStr;
@@ -735,11 +760,13 @@ typedef struct _SProductKeyMappString
 //자산 매핑 리스트 인덱스 접근 객체
 typedef struct _SProductKeyMappListIndex
 {
+	//입력
 	void setVal(int idx)
 	{
 		MakLidx.push_back(idx);
 	}
 
+	//요구
 	vector<int> getVal()
 	{
 		return MakLidx;
@@ -751,11 +778,13 @@ private:
 //자산 매핑 저장 객체
 typedef struct _SProductMapping
 {
+	//입력
 	void setVal(SPrMoTy::MODELTYPE modelType, SPrMoTy::COMBATANTCLASS combatClass, SPrVa val)
 	{
 		prVa[modelType][combatClass].push_back(val);
 	}
 
+	//초기화
 	void clearVal()
 	{
 		for (int i = 0; i < (int)SPrMoTy::MT_SIZE; i++)
@@ -766,7 +795,7 @@ typedef struct _SProductMapping
 			}
 		}
 	}
-
+	//요구
 	vector<vector<SPrVa> > getVal(int mappingNum, SPrMoTy::COMBATANTCLASS combatClass)
 	{
 		vector<vector<SPrVa> > valvec2;
@@ -791,7 +820,7 @@ typedef struct _SProductMapping
 		valvec2.push_back(val);
 		return valvec2;
 	}
-
+	//요구
 	vector<SPrVa> getVal(int mappingNum, SPrMoTy::COMBATANTCLASS combatClass, SPrMoTy::MODELTYPE modelType)
 	{
 		vector<SPrVa> val;
@@ -805,7 +834,7 @@ typedef struct _SProductMapping
 		}
 		return val;
 	}
-
+	//요구
 	SPrVa getValKey(int key, SPrMoTy::COMBATANTCLASS combatClass, SPrMoTy::MODELTYPE modelType)
 	{
 		SPrVa val;
@@ -829,23 +858,24 @@ typedef CAtlMap<SPrMoTy::PRODUCTTYPE, SPrMa> ProductMappingVal;
 //자산 키 저장 객체
 typedef struct _SProductKey
 {
+	//입력
 	void setVal(int _mappKey, int _primKey, int _colNum)
 	{
 		mappKey = _mappKey;
 		primkey = _primKey;
 		colNum = _colNum;
 	}
-
+	//매핑키 요구
 	int getMappKey()
 	{
 		return mappKey;
 	}
-
+	//유일키 요구
 	int getPrimKey()
 	{
 		return primkey;
 	}
-
+	//컬렴 인덱스 요구
 	int getColNum()
 	{
 		return colNum;

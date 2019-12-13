@@ -9,7 +9,7 @@
 //위치 좌표 표현 객체
 class CSubMapPosDlg : public CDialogImpl<CSubMapPosDlg>, public CMessageFilter
 {
-	//
+	//이미지 id
 	static UINT imgId[IMAGE_MAX];
 	static UINT mapImgId[MAPIMAGE_MAX];
 	//부모 핸들
@@ -99,12 +99,10 @@ public:
 	//---------------------------------------------------------------
 	BOOL PreTranslateMessage(MSG* pMsg);
 
+	//마우스 이벤트 처리
 	LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
-
 	LRESULT OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
-
 	LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-
 	LRESULT OnLButtonDblClk(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
 
 	//--------------------------------------------------------------

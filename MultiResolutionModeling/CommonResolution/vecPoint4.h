@@ -86,7 +86,7 @@ typedef struct _S2Point
 
 }S2Pos;
 
-//谅钎 4俺 备己 按眉
+//谅钎 4俺 备己 按眉(4阿康开 历厘 按眉)
 class CVecPoint4 {
 public:
 	enum POS

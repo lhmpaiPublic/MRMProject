@@ -7,24 +7,30 @@
 class CResolHiPropDlg : public CDialogImpl<CResolHiPropDlg>, public CUpdateUI<CResolHiPropDlg>,
 		public CMessageFilter, public CIdleHandler
 {
-
+	//윈도우 마우스 이동 객체
 	CRect winPos;
 	CPoint startPoint;
 	bool bLClick;
+
+	//자산정보 출력 객체
 	CListCtrl m_lowModelList;
 	CListCtrl m_lowModelRatio;
 	CListCtrl m_hiModelList;
+
+	//이미지 객체
 	CImageList m_ilItemImages;
+	//폰트 정보 객체
 	CFont m_fntCustomFont1;
 	CFont m_fntCustomFont2;
-
+	//자산 추출 정보 선택 컨트롤
 	CComboBox inUnitType;
 	CComboBox inUnitScale;
 	CComboBox propertyDiv;
 
+	//자산정보 출력 객체 이벤트 상태 저장 변수
 	bool bEditLowRatio;
 	int lowRatioSelectNum;
-
+	//자산정보 출력 객체 이벤트 상태 저장 변수
 	bool bEditHiItem;
 	int hiItemSelectNum;
 
@@ -88,11 +94,11 @@ public:
 
 	void CloseDialog(int nVal);
 	
+	//마우스 이벤트 처리
 	LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
-
 	LRESULT OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
-
 	LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+
 	//부대유형 변경 이벤트
 	LRESULT OnCbnSelchangeHPptyInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	//부대규모 변경 이벤트
@@ -131,4 +137,5 @@ public:
 	//매핑키와 고/저해상도 구분 인덱스 요구
 	bool getPropKeyMappListIndexHi(int mappKey, SPrMoTy::MODELTYPE modelType, vector<int>& idxVal);
 };
+//객체 명 재 정의
 #define STPL_HHIR CResolHiPropDlg::setHiRetenListNum

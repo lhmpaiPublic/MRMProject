@@ -7,24 +7,32 @@
 class CResolutionPropertyDlg : public CDialogImpl<CResolutionPropertyDlg>, public CUpdateUI<CResolutionPropertyDlg>,
 		public CMessageFilter, public CIdleHandler
 {
+	//윈도우 마우스 이동 객체
 	CRect winPos;
 	CPoint startPoint;
 	bool bLClick;
+
+	//자산정보 출력 객체
 	CListCtrl m_lowModelList;
 	CListCtrl m_lowModelRatio;
 	CListCtrl m_hiModelList;
 	CListCtrl m_hiModelRatio;
+
+	//이미지 객체
 	CImageList m_ilItemImages;
+	//폰트 정보 객체
 	CFont m_fntCustomFont1;
 	CFont m_fntCustomFont2;
 
+	//자산정보 출력 선택 객체
 	CComboBox inUnitType;
 	CComboBox inUnitScale;
 	CComboBox propertyDiv;
 
+	//자산정보 출력 객체 이벤트 상태 저장 변수
 	bool bEditHiRatio;
 	int hiRatioSelectNum;
-
+	//자산정보 출력 객체 이벤트 상태 저장 변수
 	bool bEditLowRatio;
 	int lowRatioSelectNum;
 
@@ -113,12 +121,11 @@ public:
 	LRESULT OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 	void CloseDialog(int nVal);
-	
+	//마우스 이벤트 처리
 	LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
-
 	LRESULT OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
-
 	LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+
 	//부대유형 변경 이벤트
 	LRESULT OnCbnSelchangePptyInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	//부대규모 변경 이벤트
@@ -183,7 +190,7 @@ public:
 	bool getPropKeyMappListIndex(int mappKey, SPrMoTy::MODELTYPE modelType, vector<int>& idxVal);
 };
 
-
+//개체명 재 정의
 #define STPL_LOWR CResolutionPropertyDlg::setLowRetenListNum
 #define STPL_LOWA CResolutionPropertyDlg::setLowAccListNum
 #define STPL_HIR CResolutionPropertyDlg::setHiRetenListNum

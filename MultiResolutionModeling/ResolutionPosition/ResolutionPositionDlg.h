@@ -9,6 +9,7 @@ class CSubMapPosDlg;
 class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, public CUpdateUI<CResolutionPositionDlg>,
 		public CMessageFilter, public CIdleHandler
 {
+	//입력 컨트롤 목록
 	CEdit inePosX;
 	CEdit inePosY;
 	CComboBox incDeployment;
@@ -20,8 +21,10 @@ class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, publi
 	CComboBox incMapImpact;
 	CComboBox incDivisionCount;
 
+	//맵 출력 객체
 	CSubMapPosDlg* mSubMapPosDlg;
 
+	//윈도우 마우스로 이동 객체
 	CRect winPos;
 	CPoint startPoint;
 	bool bLClick;
@@ -29,8 +32,10 @@ class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, publi
 	//엑셀 오토메이션
 	//CXLEzAutomation* xlEz;
 public:
+	//하위 영역 출력 선택 체크박스
 	static CButton childAreaCheck;
 
+	//맵 객체 접근
 	CSubMapPosDlg* foSMPDg();
 
 	enum { IDD = IDD_RESOLUTIONPOSITION };
@@ -80,18 +85,18 @@ public:
 	LRESULT OnBnClickedResolutionclear(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 	void CloseDialog(int nVal);
-	
+	//부대 탑입 변경 이벤트 처리
 	LRESULT OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	//부대규모 변경 이벤트 처리
 	LRESULT OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-
+	//기본 변경 이벤트 처리
 	LRESULT OnCbnSelchangeDefault(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-
+	//앱 영향 이벤트 처리
 	LRESULT OnCbnSelchangeInMapImpact(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
+	//마우스 이벤트 처리
 	LRESULT OnLButtonDown(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
-
 	LRESULT OnLMouseMove(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/);
-
 	LRESULT OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
 	//고해상도 분할 개체 수 요구
