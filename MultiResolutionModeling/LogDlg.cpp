@@ -21,7 +21,10 @@ CLogDlg::~CLogDlg()
 
 LRESULT CLogDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-	CenterWindow(GetParent());
+	//CenterWindow(GetParent());
+	CRect parentPos;
+	GetParent().GetWindowRect(parentPos);
+	SetWindowPos(NULL, parentPos.right + 20, parentPos.top, 0, 0, SWP_NOSIZE|SWP_NOZORDER);
 	csvLogCheck.Attach(GetDlgItem(IDCCK_LOGCSVFILE));
 	return TRUE;
 }
