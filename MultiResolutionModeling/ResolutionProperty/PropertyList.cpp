@@ -191,3 +191,58 @@ vector<SVeCoIdVa> CPropertyList::randomVec(vector<SVeCoIdVa> val)
 	}
 	return rVal;
 }
+
+vector<int> CPropertyList::resolutionChangeProperty(vector<int> ratioVal, float retenVec, float accRatioTotal)
+{
+	vector<int> retVal;
+	retVal.resize(ratioVal.size());
+	if(0 == (int)retenVec)
+	{
+		for (int lowRatIdx = 0; lowRatIdx < (int)ratioVal.size(); lowRatIdx++)
+		{
+			retVal[lowRatIdx] = (int)retenVec;
+		}
+	}
+	else
+	{
+
+		vector<float> accRatio;
+		accRatio.resize(ratioVal.size());
+		int retToTalVal = 0;
+		for (int lowRatIdx = 0; lowRatIdx < (int)ratioVal.size(); lowRatIdx++)
+		{
+			accRatio[lowRatIdx] = (float)retenVec * ((float)ratioVal[lowRatIdx]/(float)accRatioTotal);
+			retVal[lowRatIdx] = (int)accRatio[lowRatIdx];
+			retToTalVal += retVal[lowRatIdx];
+		}
+		//계산 비에 의해서 정수 개수 외 나머지 몇개 인가를 계산
+		int retRest = (int)retenVec - retToTalVal;
+		//나머지 세팅 개수가 존재하면 진입한다.
+		if(retRest > 0)
+		{
+			vector<SVeCoIdVa> retRestVal;
+			retRestVal.resize(ratioVal.size());
+			//비율과 인텍스를 매핑하여 저장
+			for (int idx = 0; idx < (int)retRestVal.size(); idx++)
+			{
+				retRestVal[idx].idx = idx;
+				retRestVal[idx].val = (accRatio[idx] - retVal[idx]);
+			}
+			//랜덤으로 임의 순서 세팅
+			vector<SVeCoIdVa> listIndexSelect = randomVec(retRestVal);
+			//임의 순서에서 내림 차순 정령
+			sort(listIndexSelect.begin(), listIndexSelect.end(), SVeCoIdVa::compare);
+
+			int maxretValRest = 0;
+			//나머지 개수 만큼 개수를 증가 시킨다.
+			while(retRest > 0 && maxretValRest < (int)listIndexSelect.size())
+			{
+				retVal[listIndexSelect[maxretValRest].idx]++;
+				retRest--;
+				maxretValRest++;
+			}
+
+		}
+	}
+	return retVal;
+}

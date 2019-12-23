@@ -831,69 +831,23 @@ void CResolHiPropDlg::resolutionChangeHiProperty(CListCtrl* listCtrlHi, CListCtr
 			{
 				if(0 == accLowRatioTotal[idxRtn])
 					continue;
-				//보유량 합산이 0이면 0 세팅
-				if(0 == retenHiVec[idxRtn])
+				//LOW 비율을 읽는다.
+				vector<int> lowRatioVal;
+				lowRatioVal.resize(idxListLowVec.size());
+				for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
 				{
-					//Hi 값 -> LOW 보유량 최종 세팅
-					for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
-					{
-						osItemText.str(_T(""));
-						osItemText << retenHiVec[idxRtn];
-						listCtrlLow->SetItemText(idxListLowVec[idxLow], SPrCoNa::LMN_01, osItemText.str().c_str());
-					}
+					//LOW 비율
+					lowRatioVal[idxLow] = strtoul(CStringA(listCtrlLowRatio->GetItemText(idxListLowVec[idxLow], setLowRetenRitioNum[idxRtn])).GetBuffer(), NULL, 10);
 				}
-				else // if(0 != retenHiVec[idxRtn])
+
+				vector<int> retVal = CPropertyList::resolutionChangeProperty(lowRatioVal, (float)retenHiVec[idxRtn], (float)accLowRatioTotal[idxRtn]);
+
+				//Hi 값 -> LOW 보유량 최종 세팅
+				for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
 				{
-					vector<float> accRatio;
-					accRatio.resize(idxListLowVec.size());
-					vector<int> retVal;
-					retVal.resize(idxListLowVec.size());
-					int retToTalVal = 0;
-					for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
-					{
-						//LOW 비율
-						int lowRatioVal = strtoul(CStringA(listCtrlLowRatio->GetItemText(idxListLowVec[idxLow], setLowRetenRitioNum[idxRtn])).GetBuffer(), NULL, 10);
-
-						accRatio[idxLow] = retenHiVec[idxRtn] * ((float)lowRatioVal/(float)accLowRatioTotal[idxRtn]);
-						retVal[idxLow] = (int)accRatio[idxLow];
-						retToTalVal += retVal[idxLow];
-					}
-					//계산 비에 의해서 정수 개수 외 나머지 몇개 인가를 계산
-					int retRest = retenHiVec[idxRtn] - retToTalVal;
-
-					//나머지 세팅 개수가 존재하면 진입한다.
-					if(retRest > 0)
-					{
-						vector<SVeCoIdVa> retRestVal;
-						retRestVal.resize(idxListLowVec.size());
-						//비율과 인텍스를 매핑하여 저장
-						for (int idx = 0; idx < (int)retRestVal.size(); idx++)
-						{
-							retRestVal[idx].idx = idx;
-							retRestVal[idx].val = (accRatio[idx] - retVal[idx]);
-						}
-						//랜덤으로 임의 순서 세팅
-						vector<SVeCoIdVa> listIndexSelect = CPropertyList::randomVec(retRestVal);
-						//임의 순서에서 내림 차순 정령
-						sort(listIndexSelect.begin(), listIndexSelect.end(), SVeCoIdVa::compare);
-
-						int maxretValRest = 0;
-						//나머지 개수 만큼 개수를 증가 시킨다.
-						while(retRest > 0 && maxretValRest < (int)listIndexSelect.size())
-						{
-							retVal[listIndexSelect[maxretValRest].idx]++;
-							retRest--;
-							maxretValRest++;
-						}
-
-					}
-					//Hi 값 -> LOW 보유량 최종 세팅
-					for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
-					{
-						osItemText.str(_T(""));
-						osItemText << retVal[idxLow];
-						listCtrlLow->SetItemText(idxListLowVec[idxLow], SPrCoNa::LMN_01, osItemText.str().c_str());
-					}
+					osItemText.str(_T(""));
+					osItemText << retVal[idxLow];
+					listCtrlLow->SetItemText(idxListLowVec[idxLow], SPrCoNa::LMN_01, osItemText.str().c_str());
 				}
 			}
 		}
