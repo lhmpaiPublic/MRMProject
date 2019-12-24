@@ -192,7 +192,7 @@ vector<SVeCoIdVa> CPropertyList::randomVec(vector<SVeCoIdVa> val)
 	return rVal;
 }
 
-vector<int> CPropertyList::resolutionChangeProperty(vector<int> ratioVal, float retenVec, float accRatioTotal)
+vector<int> CPropertyList::calcResolutionChangeProperty(vector<int> ratioVal, float retenVec, float accRatioTotal)
 {
 	vector<int> retVal;
 	retVal.resize(ratioVal.size());

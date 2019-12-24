@@ -1417,7 +1417,7 @@ void CResolutionPropertyDlg::resolutionChangeProperty(CListCtrl* listCtrlLowRati
 				if(accHiTotal == 0)
 					continue;
 
-				vector<int> retVal = CPropertyList::resolutionChangeProperty(accTotalvec, (float)itemNum, (float)accHiTotal);
+				vector<int> retVal = CPropertyList::calcResolutionChangeProperty(accTotalvec, (float)itemNum, (float)accHiTotal);
 
 				//Low 설정 값 -> Hi 보유량 최종 세팅
 				for (int idx = 0; idx < (int)idxListHiVec.size(); idx++)
@@ -1444,7 +1444,7 @@ void CResolutionPropertyDlg::resolutionChangeProperty(CListCtrl* listCtrlLowRati
 					accVec[2] = strtoul(CStringA(listCtrlHiRatio->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[2])).GetBuffer(), NULL, 10);
 					accVec[3] = strtoul(CStringA(listCtrlHiRatio->GetItemText(idxListHiVec[idxHi], setHiRetenListNum[3])).GetBuffer(), NULL, 10);
 
-					vector<int> retVal = CPropertyList::resolutionChangeProperty(accVec, (float)hItemNum, (float)accTotal);
+					vector<int> retVal = CPropertyList::calcResolutionChangeProperty(accVec, (float)hItemNum, (float)accTotal);
 
 					for (int idx = 0; idx < (int)accVec.size(); idx++)
 					{
@@ -1515,7 +1515,7 @@ void CResolutionPropertyDlg::resolutionChangeProperty(CListCtrl* listCtrlLowRati
 					lowRatioVal[idxLow] = strtoul(CStringA(listCtrlLowRatio->GetItemText(idxListLowVec[idxLow], setLowRetenRitioNum[idxRtn])).GetBuffer(), NULL, 10);
 				}
 
-				vector<int> retVal = CPropertyList::resolutionChangeProperty(lowRatioVal, (float)retenHiVec[idxRtn], (float)accLowRatioTotal[idxRtn]);
+				vector<int> retVal = CPropertyList::calcResolutionChangeProperty(lowRatioVal, (float)retenHiVec[idxRtn], (float)accLowRatioTotal[idxRtn]);
 
 				//Hi 값 -> LOW 보유량 최종 세팅
 				for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)

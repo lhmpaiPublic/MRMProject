@@ -14,7 +14,7 @@ public:
 	//설정 아이템 랜덤 선택
 	static vector<SVeCoIdVa> randomVec(vector<SVeCoIdVa> val);
 	//자산 해상도변환 식 함수
-	static vector<int> resolutionChangeProperty(vector<int> ratioVal, float retenVec, float accRatioTotal);
+	static vector<int> calcResolutionChangeProperty(vector<int> ratioVal, float retenVec, float accRatioTotal);
 public:
 	CPropertyList();
 	~CPropertyList();

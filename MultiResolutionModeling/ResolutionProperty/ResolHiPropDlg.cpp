@@ -840,7 +840,7 @@ void CResolHiPropDlg::resolutionChangeHiProperty(CListCtrl* listCtrlHi, CListCtr
 					lowRatioVal[idxLow] = strtoul(CStringA(listCtrlLowRatio->GetItemText(idxListLowVec[idxLow], setLowRetenRitioNum[idxRtn])).GetBuffer(), NULL, 10);
 				}
 
-				vector<int> retVal = CPropertyList::resolutionChangeProperty(lowRatioVal, (float)retenHiVec[idxRtn], (float)accLowRatioTotal[idxRtn]);
+				vector<int> retVal = CPropertyList::calcResolutionChangeProperty(lowRatioVal, (float)retenHiVec[idxRtn], (float)accLowRatioTotal[idxRtn]);
 
 				//Hi 값 -> LOW 보유량 최종 세팅
 				for (int idxLow = 0; idxLow < (int)idxListLowVec.size(); idxLow++)
