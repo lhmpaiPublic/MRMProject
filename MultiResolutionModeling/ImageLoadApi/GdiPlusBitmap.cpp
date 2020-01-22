@@ -127,6 +127,78 @@ bool CGdiPlusBitmap::Load(LPCWSTR pFile)
 }
 //--------------------------------------------------------------
 //|
+//|png encod
+//|
+//---------------------------------------------------------------
+int CGdiPlusBitmap::GetEncoderClsid(const WCHAR* format/*IN*/, CLSID* pClsid/*OUT*/)
+{
+	int result = -1;
+	UINT num = 0;	//이미지 인코더의 개수
+	UINT size = 0;	//이미지 인코더 배열의 바이트 크기
+
+	ImageCodecInfo* pImageCodecInfo = NULL;
+	GetImageEncodersSize(&num, &size);
+
+	if(size != 0)
+	{
+		pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+		if(pImageCodecInfo != NULL)
+		{
+			GetImageEncoders(num, size, pImageCodecInfo);
+			for (UINT  i = 0; i < num; i++)
+			{
+				if (wcscmp(pImageCodecInfo[i].MimeType, format) == 0)
+				{
+					*pClsid = pImageCodecInfo[i].Clsid;
+					result = i; //성공
+				}
+			}
+			free(pImageCodecInfo); //해제
+		}
+	}
+	return result;
+}
+//--------------------------------------------------------------
+//|
+//|파일 PNG저장 함수
+//|
+//---------------------------------------------------------------
+bool CGdiPlusBitmap::SavePNG(const CString strSaveFilePath)
+{
+	Status stat = Ok;
+	CLSID pngClsid;
+	GetEncoderClsid(CA2T("image/png"), &pngClsid);
+	stat = m_pBitmap->Save(strSaveFilePath,&pngClsid);
+	return stat == Ok ? true : false;
+}
+
+BOOL CGdiPlusBitmap::SaveTransparentHBITMAPPNG(const HBITMAP& hSrcBimap, const CString strSaveFilePath, COLORREF colorRemove, WCHAR* format)
+{
+	Status stat = Ok;
+	Gdiplus::Bitmap gSrcBmp(hSrcBimap, NULL);
+	Gdiplus::Bitmap gDstBmp(gSrcBmp.GetWidth(), gSrcBmp.GetHeight(), PixelFormat32bppPARGB);
+
+	Gdiplus::Color colorSrc;
+	for (UINT nWidth = 0; nWidth < gSrcBmp.GetWidth(); nWidth++)
+	{
+		for (UINT nHeight = 0; nHeight < gSrcBmp.GetHeight(); nHeight++)
+		{
+			gSrcBmp.GetPixel(nWidth, nHeight, &colorSrc);
+			if(RGB(colorSrc.GetR(), colorSrc.GetG(), colorSrc.GetB()) != colorRemove)
+			{
+				gDstBmp.SetPixel(nWidth, nHeight, colorSrc);
+			}
+		}
+	}
+	CLSID imageClsid;
+	GetEncoderClsid(format, &imageClsid);
+
+	stat = gDstBmp.Save(strSaveFilePath, &imageClsid);
+
+	return stat == Ok ? TRUE : FALSE;
+}
+//--------------------------------------------------------------
+//|
 //|GDIPlus 객체를 넘긴다
 //|
 //---------------------------------------------------------------

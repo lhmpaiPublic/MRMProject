@@ -260,7 +260,6 @@ LRESULT CResolutionPropertyDlg::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
 
 LRESULT CResolutionPropertyDlg::OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: Add validation code 
 	ShowWindow(SW_HIDE);
 	return 0;
 }
@@ -305,8 +304,6 @@ LRESULT CResolutionPropertyDlg::OnLButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LP
 
 LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 	SPrMoTy::COMBATANT combatType = SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel());
 	inUnitScale.ResetContent();
 	vector<CString> vecCombatClass = SPrMoTy::strCOMBATANTCLASS(combatType);
@@ -325,8 +322,6 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunittype(WORD /*wNotifyCode*
 
 LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 	m_lowModelList.DeleteAllItems();
 	m_lowModelRatio.DeleteAllItems();
 	m_hiModelList.DeleteAllItems();
@@ -437,8 +432,6 @@ LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyInunitscale(WORD /*wNotifyCode
 
 LRESULT CResolutionPropertyDlg::OnCbnSelchangePptyPropertydiv(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
 	m_lowModelList.DeleteAllItems();
 	m_lowModelRatio.DeleteAllItems();
 	m_hiModelList.DeleteAllItems();
@@ -879,7 +872,6 @@ LRESULT CResolutionPropertyDlg::OnHiModelRatioModify( LPNMHDR lpNMHDR )
 
 LRESULT CResolutionPropertyDlg::OnBnClickedPptyResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
 #ifdef _UNICODE
 	wostringstream osItemText;

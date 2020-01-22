@@ -175,7 +175,6 @@ LRESULT CResolutionPositionDlg::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
 
 LRESULT CResolutionPositionDlg::OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: Add validation code 
 	ShowWindow(SW_HIDE);
 	return 0;
 }
@@ -195,7 +194,6 @@ void CResolutionPositionDlg::CloseDialog(int nVal)
 
 LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	//출력 Position 크기
 	mSubMapPosDlg->drawResolutionPositionSize(valDivisionCount(incDivisionCount.GetCurSel()));
 
@@ -214,14 +212,12 @@ LRESULT CResolutionPositionDlg::OnBnClickedResolutionchange(WORD /*wNotifyCode*/
 
 LRESULT CResolutionPositionDlg::OnBnClickedResolutionclear(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	mSubMapPosDlg->clearAll();
 	return 0;
 }
 
 LRESULT CResolutionPositionDlg::OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	mSubMapPosDlg->clearAll();
 
 	incUnitScale.ResetContent();
@@ -250,7 +246,6 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunittype(WORD /*wNotifyCode*/, W
 
 LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	mSubMapPosDlg->clearPosition();
 
 	incDeployment.ResetContent();
@@ -277,14 +272,12 @@ LRESULT CResolutionPositionDlg::OnCbnSelchangeInunitscale(WORD /*wNotifyCode*/, 
 
 LRESULT CResolutionPositionDlg::OnCbnSelchangeDefault(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	mSubMapPosDlg->clearPosition();
 	return 0;
 }
 
 LRESULT CResolutionPositionDlg::OnCbnSelchangeInMapImpact(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CUnitSize::COMBATANT combatType = CUnitSize::emCombatent(incUnitType.GetCurSel());
 	CGAgt::GResCha()->setTopographicChar(CResolutionChange::emTopographicChar(combatType, incMapImpact.GetCurSel()));
 	return 0;

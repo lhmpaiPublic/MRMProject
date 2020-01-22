@@ -24,12 +24,18 @@ public:
 	void Empty();
 	//파일을 이용하여 비트맵을 만들 때
 	bool Load(LPCWSTR pFile);
+	//저장
+	bool SavePNG(const CString strSaveFilePath);
 	//비트맵 객체를 넘긴다
 	operator Gdiplus::Bitmap*() const;
 	//Gdiplus 사용 등록
 	static void GdiStart();
 	//Gdiplus 사용 해제
 	static void GdiShut();
+	//png encod
+	static int GetEncoderClsid(const WCHAR* format/*IN*/, CLSID* pClsid/*OUT*/);
+	//
+	static BOOL SaveTransparentHBITMAPPNG(const HBITMAP& hSrcBimap, const CString strSaveFilePath, COLORREF colorRemove, WCHAR* format = CA2T("Image/png"));
 };
 //리소스 이미지를 로드해서 쓰기 위한 클래스
 class CGdiPlusBitmapResource : public CGdiPlusBitmap
@@ -53,5 +59,6 @@ public:
 	bool Load(UINT id, UINT type, HMODULE hInst = NULL);
 	//비트맵 파일을 넘긴다
 	CBitmap GetWinBitmap();
+
 };
 #endif //__GDIPLUSBITMAP_74F736E25AB94b5dA789E4730F58F2A1_H__

@@ -115,6 +115,10 @@ LRESULT CSubMapPosDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
 	ATLASSERT(pLoop != NULL);
 	pLoop->AddMessageFilter(this);
 
+	CGdiPlusBitmapResource pBitmap;
+	pBitmap.Load(mapImgId[1],_T("PNG"));
+	pBitmap.SavePNG(_T("111.png"));
+
 	//CGdiPlusBitmapResource pBitmap;
 	//pBitmap.Load(imgId[0],_T("PNG"));
 	//CBitmap backimage = pBitmap.GetWinBitmap();
