@@ -32,33 +32,39 @@ extern CAppModule _Module;
 #include <atlctrls.h>
 #include <atldlgs.h>
 #include <atlcoll.h>
+#include <atlctrlx.h>
+#include <atltheme.h>
 //COleDateTime 클래스
 #include <ATLComTime.h>
 #include <atlcom.h>
 #include <comdef.h>
 
+#include <stdio.h>
+#include <tchar.h>
+#include <shlobj.h>
 
-#include <string>
-#include <vector>
+//STL
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <istream>
+#include <iomanip>
 
+//STL CONTAIN
+#include <string>
+#include <vector>
 #include <set>
 #include <map>
 #include <algorithm>
-#include <atltheme.h>
-#include <atlctrlx.h>
-#include <vector>
-#include <shlobj.h>
+#include <utility>
 
 using namespace std;
 
 #include "resource.h"
-#include <stdio.h>
-#include <tchar.h>
 
+
+//================================
+//기본자료형 정의 클래스
+#include "BaseValue/BaseValue.h"
 
 //================================
 //이미지 관련 클래스

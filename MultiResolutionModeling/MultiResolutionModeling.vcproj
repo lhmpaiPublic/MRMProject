@@ -721,6 +721,26 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="BaseValue"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\BaseValue\BaseValue.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\BaseValue\BaseValue.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global

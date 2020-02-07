@@ -18,6 +18,17 @@ BOOL CMainDlg::OnIdle()
 	return FALSE;
 }
 
+namespace CMainDlgBVEm
+{
+	enum BVValue
+	{
+		FDDATA0 = BVEm::FD+0,
+		IIDATA1 = BVEm::II+1,
+		SSDATA2 = BVEm::SS+2,
+		SWDATA3 = BVEm::SW+3,
+	};
+}
+
 LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
 	// center the dialog on the screen
@@ -28,6 +39,25 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	SetIcon(hIcon, TRUE);
 	HICON hIconSmall = AtlLoadIconImage(IDR_MAINFRAME, LR_DEFAULTCOLOR, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON));
 	SetIcon(hIconSmall, FALSE);
+
+	////BaseValue 테스트 코드
+	//BaseValue va;
+	//va.add(CMainDlgBVEm::FDDATA0, 3.141592);
+	//va.add(CMainDlgBVEm::IIDATA1, 3);
+	//va.add(CMainDlgBVEm::SSDATA2, "한글저장안시");
+	//va.add_wstring(CMainDlgBVEm::SWDATA3, L"유니코드한글");
+
+	//vector<int> keys = va.get_Keys();
+
+	//wstring val1 = va.get_wstring(CMainDlgBVEm::SWDATA3);
+
+	//std::string valtoken = va.get_tokenize();
+
+	//vector<std::string> valpar = va.tokenize_getline(valtoken);
+
+	//BaseValue va2;
+	//va2.parsing(valtoken);
+
 
 	// register object for message filtering and idle updates
 	CMessageLoop* pLoop = _Module.GetMessageLoop();
