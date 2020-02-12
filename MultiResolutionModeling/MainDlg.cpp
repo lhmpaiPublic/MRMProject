@@ -18,14 +18,16 @@ BOOL CMainDlg::OnIdle()
 	return FALSE;
 }
 
-namespace CMainDlgBVEm
+namespace emMainDlgBV
 {
-	enum BVValue
+	enum na1
 	{
-		FDDATA0 = BVEm::FD+0,
-		IIDATA1 = BVEm::II+1,
-		SSDATA2 = BVEm::SS+2,
-		SWDATA3 = BVEm::SW+3,
+		DATA0 = 0,
+		DATA1,
+		DATA2,
+		DATA3,
+		DATA4,
+		DATA5,
 	};
 }
 
@@ -40,23 +42,35 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	HICON hIconSmall = AtlLoadIconImage(IDR_MAINFRAME, LR_DEFAULTCOLOR, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON));
 	SetIcon(hIconSmall, FALSE);
 
-	////BaseValue 테스트 코드
-	//BaseValue va;
-	//va.add(CMainDlgBVEm::FDDATA0, 3.141592);
-	//va.add(CMainDlgBVEm::IIDATA1, 3);
-	//va.add(CMainDlgBVEm::SSDATA2, "한글저장안시");
-	//va.add_wstring(CMainDlgBVEm::SWDATA3, L"유니코드한글");
+	//BaseValue 테스트 코드
+	BaseValue va;
+	va.add(emMainDlgBV::DATA0, 3.141592, 8);
+	va.add(emMainDlgBV::DATA1, 3);
+	va.add(emMainDlgBV::DATA2, "한글저장안시");
+	va.add_wstring(emMainDlgBV::DATA3, L"유니코드한글");
 
-	//vector<int> keys = va.get_Keys();
+	va.add_BV(emMainDlgBV::DATA4, va);
 
-	//wstring val1 = va.get_wstring(CMainDlgBVEm::SWDATA3);
+	vector<int> keys = va.get_Keys();
 
-	//std::string valtoken = va.get_tokenize();
+	vector<string> value_data = va.get_Values_data();
 
-	//vector<std::string> valpar = va.tokenize_getline(valtoken);
+	wstring val1 = va.get_wstring(emMainDlgBV::DATA3);
 
-	//BaseValue va2;
-	//va2.parsing(valtoken);
+	double dVal = va.get<double>(emMainDlgBV::DATA0);
+
+	std::string valtoken = va.get_tokenize();
+
+	BaseValue va2;
+	va2.parsing(valtoken);
+	va2.add_wstring(emMainDlgBV::DATA5, L"유니코드한글추가데이터");
+
+	va2.add_autoName(100);
+	va2.add_autoName(101);
+
+	keys = va2.get_Keys();
+
+	value_data = va2.get_Values_data();
 
 
 	// register object for message filtering and idle updates
