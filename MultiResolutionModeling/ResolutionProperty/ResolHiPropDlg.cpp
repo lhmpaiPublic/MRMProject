@@ -141,6 +141,7 @@ LRESULT CResolHiPropDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /
 		SPrMoTy::indexCOMBATANT(inUnitType.GetCurSel()),
 		SPrMoTy::indexPRODUCTTYPE(propertyDiv.GetCurSel()),
 		SPrMoTy::indexCOMBATANTCLASS(inUnitScale.GetCurSel(), SPrMoTy::INFANTRY));
+	m_lowModelList.ShowHeader(TRUE);
 
 	m_lowModelRatio.AddColumn( _T( "부대타입" ), 220, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_LEFT  );
 	m_lowModelRatio.AddColumn( _T( "소대" ), 60, -1, FALSE, ITEM_FORMAT_NONE, ITEM_FLAGS_RIGHT   );

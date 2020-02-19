@@ -682,6 +682,20 @@ public:
 		m_pDropTarget->Register( pDelegate );
 		
 		// register drop target
+		//HRESULT hr = RegisterDragDrop( m_hTargetWnd, m_pDropTarget );
+		//if(DRAGDROP_E_INVALIDHWND == hr)
+		//{
+		//	return FALSE;
+		//}
+		//else if(E_OUTOFMEMORY == hr)
+		//{
+		//	return FALSE;
+		//}
+		//else if(DRAGDROP_E_ALREADYREGISTERED == hr)
+		//{
+		//	return FALSE;
+		//}
+
 		if ( FAILED( RegisterDragDrop( m_hTargetWnd, m_pDropTarget ) ) )
 		{
 			m_pDropTarget = NULL;

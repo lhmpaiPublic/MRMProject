@@ -43,7 +43,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	SetIcon(hIconSmall, FALSE);
 
 	//BaseValue 테스트 코드
-	BaseValue va;
+	bv::BaseValue va;
 	va.add(emMainDlgBV::DATA0, 3.141592, 8);
 	va.add(emMainDlgBV::DATA1, 3);
 	va.add(emMainDlgBV::DATA2, "한글저장안시");
@@ -61,7 +61,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
 	std::string valtoken = va.get_tokenize();
 
-	BaseValue va2;
+	bv::BaseValue va2;
 	va2.parsing(valtoken);
 	va2.add_wstring(emMainDlgBV::DATA5, L"유니코드한글추가데이터");
 
