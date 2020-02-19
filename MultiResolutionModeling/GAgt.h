@@ -7,6 +7,9 @@ class CPropertyList;
 class CResolutionPropertyDlg;
 class CResolHiPropDlg;
 
+//OpenGL 테스트
+class COpenGLDlg;
+
 //객체 생성 및 관리 개체
 class CGAgt
 {
@@ -41,6 +44,9 @@ private:
 
 	//고해상도 자산변환 출력 개체
 	CResolHiPropDlg* mResHPptyDlg;
+
+	//OpenGL 객체
+	COpenGLDlg* mOpenGLDlg;
 public:
 	//CSV open Type 정의
 	enum DLGNAME
@@ -48,6 +54,7 @@ public:
 		RESPOS = 0,
 		RESPPTY,
 		RESHPPTY,
+		OPENGL,
 	};
 	//개체 Show
 	void ShowDlg(DLGNAME name);

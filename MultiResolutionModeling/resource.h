@@ -36,6 +36,8 @@
 #define IDB_PNG7                        224
 #define IDB_MAPSW                       224
 #define IDD_RESOLHIPROP                 225
+#define IDD_DIALOG1                     226
+#define IDD_OPENGLDLG                   226
 #define IDC_LOGTEXT                     1000
 #define IDCC_INDEPLOYMENT               1001
 #define IDCE_INPOSX                     1002
@@ -86,12 +88,13 @@
 #define IDC_RESPOSWIN                   57666
 #define IDC_RESPROPERTYWIN              57667
 #define IDC_RESHIPROPWIN                57668
+#define IDC_OPENGL                      57669
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        226
+#define _APS_NEXT_RESOURCE_VALUE        227
 #define _APS_NEXT_COMMAND_VALUE         32775
 #define _APS_NEXT_CONTROL_VALUE         1033
 #define _APS_NEXT_SYMED_VALUE           101

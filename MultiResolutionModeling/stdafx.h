@@ -65,6 +65,8 @@ using namespace std;
 //================================
 //기본자료형 정의 클래스
 #include "BaseValue/BaseValue.h"
+//OpenGL 클래스
+#include "OpenGL/AtlOpengl.h"
 
 //================================
 //이미지 관련 클래스

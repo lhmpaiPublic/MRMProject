@@ -5,6 +5,7 @@
 #include "ResolutionPosition/ResolutionPosition.h"
 #include "ResolutionProperty/ResolutionProperty.h"
 #include "ResolutionProperty/PropertyList.h"
+#include "OpenGL/OpenGLDlg.h"
 
 //초기화
 CGAgt* CGAgt::mG = NULL;
@@ -28,21 +29,42 @@ CGAgt::CGAgt()
 	mResCha = NULL;
 	mResPptyDlg = NULL;
 	mPropList = NULL;
+
+	//OpenGL
+	mOpenGLDlg = NULL;
 }
 
 CGAgt::~CGAgt()
 {
-	delete mResPosDlg;
-	mResPosDlg = NULL;
+	if(mResPosDlg)
+	{
+		delete mResPosDlg;
+		mResPosDlg = NULL;
+	}	
 
-	delete mResCha;
-	mResCha = NULL;
+	if(mResCha)
+	{
+		delete mResCha;
+		mResCha = NULL;
+	}	
 
-	delete mResPptyDlg;
-	mResPptyDlg = NULL;
+	if(mResPptyDlg)
+	{
+		delete mResPptyDlg;
+		mResPptyDlg = NULL;
+	}
+	
+	if(mPropList)
+	{
+		delete mPropList;
+		mPropList = NULL;
+	}	
 
-	delete mPropList;
-	mPropList = NULL;
+	if(mOpenGLDlg)
+	{
+		delete mOpenGLDlg;
+		mOpenGLDlg = NULL;
+	}	
 }
 
 void CGAgt::initGAgt(HWND _hParent)
@@ -64,11 +86,14 @@ void CGAgt::initGAgt(HWND _hParent)
 
 	mResHPptyDlg = new CResolHiPropDlg();
 	if(mResHPptyDlg)	mResHPptyDlg->Create(hParent);
+
+	mOpenGLDlg = new COpenGLDlg();
+	if(mOpenGLDlg)	mOpenGLDlg->Create(hParent);
 }
 
 void CGAgt::releaseDlg()
 {
-	if(mResPosDlg)	mResPosDlg->CloseDialog(0);
+	//if(mResPosDlg)	mResPosDlg->CloseDialog(0);
 }
 
 void CGAgt::ShowDlg(DLGNAME name)
@@ -80,6 +105,8 @@ void CGAgt::ShowDlg(DLGNAME name)
 	case RESPPTY:mResPptyDlg->ShowWindow(SW_SHOW);
 		break;
 	case RESHPPTY:mResHPptyDlg->ShowWindow(SW_SHOW);
+		break;
+	case OPENGL: mOpenGLDlg->ShowWindow(SW_SHOW);
 		break;
 	default:
 		break;
@@ -95,6 +122,8 @@ void CGAgt::HideDlg(DLGNAME name)
 	case RESPPTY:mResPptyDlg->ShowWindow(SW_HIDE);
 		break;
 	case RESHPPTY:mResHPptyDlg->ShowWindow(SW_HIDE);
+		break;
+	case OPENGL: mOpenGLDlg->ShowWindow(SW_HIDE);
 		break;
 	default:
 		break;

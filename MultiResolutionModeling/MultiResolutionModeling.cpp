@@ -4,7 +4,6 @@
 #include "stdafx.h"
 
 #include "resource.h"
-
 #include "aboutdlg.h"
 #include "MainDlg.h"
 
@@ -12,7 +11,7 @@ CAppModule _Module;
 
 int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
 {
-	CMessageLoop theLoop;
+	CGLMessageLoop theLoop;
 	_Module.AddMessageLoop(&theLoop);
 
 	CMainDlg dlgMain;

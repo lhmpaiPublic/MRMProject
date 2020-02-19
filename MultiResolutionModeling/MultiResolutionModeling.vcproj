@@ -741,6 +741,30 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="OpenGL"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\OpenGL\AtlOpengl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\OpenGL\OpenGLDlg.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\OpenGL\OpenGLDlg.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global
