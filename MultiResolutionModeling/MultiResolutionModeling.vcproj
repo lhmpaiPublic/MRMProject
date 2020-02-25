@@ -765,6 +765,50 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="XML"
+			>
+			<Filter
+				Name="Header Files"
+				>
+				<File
+					RelativePath=".\XML\tinystr.h"
+					>
+				</File>
+				<File
+					RelativePath=".\XML\tinyxml.h"
+					>
+				</File>
+				<File
+					RelativePath=".\XML\XMLDlg.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Source Files"
+				>
+				<File
+					RelativePath=".\XML\tinystr.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\XML\tinyxml.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\XML\tinyxmlerror.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\XML\tinyxmlparser.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\XML\XMLDlg.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global

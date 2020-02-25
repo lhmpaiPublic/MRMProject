@@ -183,3 +183,11 @@ LRESULT CMainDlg::OnBnClickedOpengl(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
 
 	return 0;
 }
+
+LRESULT CMainDlg::OnBnClickedXml(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CGAgt::G()->ShowDlg(CGAgt::XML);
+
+	return 0;
+}

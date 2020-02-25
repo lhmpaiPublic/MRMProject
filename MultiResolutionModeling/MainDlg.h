@@ -29,6 +29,8 @@ public:
 		COMMAND_HANDLER(IDC_RESPROPERTYWIN, BN_CLICKED, OnBnClickedRespropertywin)
 		COMMAND_HANDLER(IDC_RESHIPROPWIN, BN_CLICKED, OnBnClickedReshipropwin)
 		COMMAND_HANDLER(IDC_OPENGL, BN_CLICKED, OnBnClickedOpengl)
+
+		COMMAND_HANDLER(IDC_XML, BN_CLICKED, OnBnClickedXml)
 		REFLECT_NOTIFICATIONS()		
 		
 	END_MSG_MAP()
@@ -50,4 +52,5 @@ public:
 	LRESULT OnBnClickedRespropertywin(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnBnClickedReshipropwin(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnBnClickedOpengl(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnBnClickedXml(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };

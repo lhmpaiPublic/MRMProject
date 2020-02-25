@@ -59,26 +59,37 @@ extern CAppModule _Module;
 
 using namespace std;
 
-#include "resource.h"
+//================================
+//이미지 관련 클래스
+#include <atlimage.h> //CImage Class 사용
 
+#include "resource.h"
 
 //================================
 //기본자료형 정의 클래스
 #include "BaseValue/BaseValue.h"
+
+//================================
 //OpenGL 클래스
 #include "OpenGL/AtlOpengl.h"
 
 //================================
-//이미지 관련 클래스
-#include <atlimage.h> //CImage Class 사용
+//Global class
+#include "GlobalApi/GlobalApi.h"
+#include "ImageLoadApi/ImageLoadApi.h"
+
+//================================
+//서브 컨트롤 클래스
 #include "subControl.h"
 
 //================================
 #include "CommonResolution/CommonResolution.h"
 
-#include "ImageLoadApi/ImageLoadApi.h"
+//================================
+//excel automation
 #include "ExcelAuto/XLAutomation.h"
 #include "ExcelAuto/XLEzAutomation.h"
+
 //================================
 //에이전트 클래스
 #include "GAgt.h"

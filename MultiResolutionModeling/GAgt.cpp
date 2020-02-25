@@ -6,6 +6,7 @@
 #include "ResolutionProperty/ResolutionProperty.h"
 #include "ResolutionProperty/PropertyList.h"
 #include "OpenGL/OpenGLDlg.h"
+#include "XML/XMLDlg.h"
 
 //초기화
 CGAgt* CGAgt::mG = NULL;
@@ -32,6 +33,9 @@ CGAgt::CGAgt()
 
 	//OpenGL
 	mOpenGLDlg = NULL;
+
+	//XML
+	mXMLDlg = NULL;
 }
 
 CGAgt::~CGAgt()
@@ -65,6 +69,12 @@ CGAgt::~CGAgt()
 		delete mOpenGLDlg;
 		mOpenGLDlg = NULL;
 	}	
+
+	if(mXMLDlg)
+	{
+		delete mXMLDlg;
+		mXMLDlg = NULL;
+	}
 }
 
 void CGAgt::initGAgt(HWND _hParent)
@@ -89,6 +99,9 @@ void CGAgt::initGAgt(HWND _hParent)
 
 	mOpenGLDlg = new COpenGLDlg();
 	if(mOpenGLDlg)	mOpenGLDlg->Create(hParent);
+
+	mXMLDlg = new CXMLDlg();
+	if(mXMLDlg)	mXMLDlg->Create(hParent);
 }
 
 void CGAgt::releaseDlg()
@@ -108,6 +121,8 @@ void CGAgt::ShowDlg(DLGNAME name)
 		break;
 	case OPENGL: mOpenGLDlg->ShowWindow(SW_SHOW);
 		break;
+	case XML: mXMLDlg->ShowWindow(SW_SHOW);
+		break;
 	default:
 		break;
 	}
@@ -124,6 +139,8 @@ void CGAgt::HideDlg(DLGNAME name)
 	case RESHPPTY:mResHPptyDlg->ShowWindow(SW_HIDE);
 		break;
 	case OPENGL: mOpenGLDlg->ShowWindow(SW_HIDE);
+		break;
+	case XML: mXMLDlg->ShowWindow(SW_HIDE);
 		break;
 	default:
 		break;
