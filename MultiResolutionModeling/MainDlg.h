@@ -31,8 +31,8 @@ public:
 		COMMAND_HANDLER(IDC_OPENGL, BN_CLICKED, OnBnClickedOpengl)
 
 		COMMAND_HANDLER(IDC_XML, BN_CLICKED, OnBnClickedXml)
+		COMMAND_HANDLER(IDC_EXCELAUTO, BN_CLICKED, OnBnClickedExcelauto)
 		REFLECT_NOTIFICATIONS()		
-		
 	END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -53,4 +53,5 @@ public:
 	LRESULT OnBnClickedReshipropwin(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnBnClickedOpengl(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnBnClickedXml(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+	LRESULT OnBnClickedExcelauto(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };

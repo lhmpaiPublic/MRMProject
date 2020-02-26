@@ -7,6 +7,7 @@ class CPropertyList;
 class CResolutionPropertyDlg;
 class CResolHiPropDlg;
 class CXMLDlg;
+class CExcelAutoDlg;
 
 //OpenGL 테스트
 class COpenGLDlg;
@@ -51,6 +52,9 @@ private:
 
 	//XML객체
 	CXMLDlg* mXMLDlg;
+
+	//ExcelAuto 객체
+	CExcelAutoDlg* mExcelAutoDlg;
 public:
 	//CSV open Type 정의
 	enum DLGNAME
@@ -60,6 +64,7 @@ public:
 		RESHPPTY,
 		OPENGL,
 		XML,
+		EXCELAUTO,
 	};
 	//개체 Show
 	void ShowDlg(DLGNAME name);

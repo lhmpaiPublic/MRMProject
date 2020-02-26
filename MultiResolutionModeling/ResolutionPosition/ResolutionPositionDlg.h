@@ -29,8 +29,6 @@ class CResolutionPositionDlg : public CDialogImpl<CResolutionPositionDlg>, publi
 	CPoint startPoint;
 	bool bLClick;
 
-	//엑셀 오토메이션
-	//CXLEzAutomation* xlEz;
 public:
 	//하위 영역 출력 선택 체크박스
 	static CButton childAreaCheck;

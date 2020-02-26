@@ -544,6 +544,10 @@
 				Name="Header Files"
 				>
 				<File
+					RelativePath=".\ExcelAuto\ExcelAutoDlg.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ExcelAuto\XLAutomation.h"
 					>
 				</File>
@@ -555,6 +559,10 @@
 			<Filter
 				Name="Source Files"
 				>
+				<File
+					RelativePath=".\ExcelAuto\ExcelAutoDlg.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\ExcelAuto\XLAutomation.cpp"
 					>

@@ -7,6 +7,7 @@
 #include "ResolutionProperty/PropertyList.h"
 #include "OpenGL/OpenGLDlg.h"
 #include "XML/XMLDlg.h"
+#include "ExcelAuto/ExcelAutoDlg.h"
 
 //초기화
 CGAgt* CGAgt::mG = NULL;
@@ -36,6 +37,9 @@ CGAgt::CGAgt()
 
 	//XML
 	mXMLDlg = NULL;
+
+	//ExcelAuto
+	mExcelAutoDlg = NULL;
 }
 
 CGAgt::~CGAgt()
@@ -75,6 +79,12 @@ CGAgt::~CGAgt()
 		delete mXMLDlg;
 		mXMLDlg = NULL;
 	}
+
+	if(mExcelAutoDlg)
+	{
+		delete mExcelAutoDlg;
+		mExcelAutoDlg = NULL;
+	}
 }
 
 void CGAgt::initGAgt(HWND _hParent)
@@ -102,6 +112,9 @@ void CGAgt::initGAgt(HWND _hParent)
 
 	mXMLDlg = new CXMLDlg();
 	if(mXMLDlg)	mXMLDlg->Create(hParent);
+
+	mExcelAutoDlg = new CExcelAutoDlg();
+	if(mExcelAutoDlg)	mExcelAutoDlg->Create(hParent);
 }
 
 void CGAgt::releaseDlg()
@@ -123,6 +136,8 @@ void CGAgt::ShowDlg(DLGNAME name)
 		break;
 	case XML: mXMLDlg->ShowWindow(SW_SHOW);
 		break;
+	case EXCELAUTO: mExcelAutoDlg->ShowWindow(SW_SHOW);
+		break;
 	default:
 		break;
 	}
@@ -141,6 +156,8 @@ void CGAgt::HideDlg(DLGNAME name)
 	case OPENGL: mOpenGLDlg->ShowWindow(SW_HIDE);
 		break;
 	case XML: mXMLDlg->ShowWindow(SW_HIDE);
+		break;
+	case EXCELAUTO: mExcelAutoDlg->ShowWindow(SW_HIDE);
 		break;
 	default:
 		break;
