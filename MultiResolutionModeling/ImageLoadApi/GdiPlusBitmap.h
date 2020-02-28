@@ -36,6 +36,13 @@ public:
 	static int GetEncoderClsid(const WCHAR* format/*IN*/, CLSID* pClsid/*OUT*/);
 	//
 	static BOOL SaveTransparentHBITMAPPNG(const HBITMAP& hSrcBimap, const CString strSaveFilePath, COLORREF colorRemove, WCHAR* format = CA2T("Image/png"));
+
+	DWORD GetBitmapBits() const
+	{
+		CBitmapHandle hBitmap;
+		m_pBitmap->GetHBITMAP(RGB(0,0,0), &hBitmap.m_hBitmap);
+		return 0;
+	}
 };
 //리소스 이미지를 로드해서 쓰기 위한 클래스
 class CGdiPlusBitmapResource : public CGdiPlusBitmap

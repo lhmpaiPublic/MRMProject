@@ -41,7 +41,6 @@ LRESULT COpenGLDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 	m_fAngle = 0;
 	COpenGL<COpenGLDlg>::OnCreate(uMsg, wParam, lParam, bHandled);
 
-
 	return FALSE;
 }
 
@@ -58,6 +57,14 @@ LRESULT COpenGLDlg::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*
 	pLoop->RemoveMessageFilter(this);
 	pLoop->RemoveIdleHandler(this);
 
+	for (int i = 0; i < 5; i++)
+	{
+		if(buffer[i])
+		{
+			delete []buffer[i];
+		}
+	}
+	
 	return 0;
 }
 
@@ -106,6 +113,34 @@ void COpenGLDlg::OnInit(void) {
 	CRect rc;
 	GetClientRect(rc);
 	OnResize(rc.Width(), rc.Height());
+
+	glGenTextures(5, texId);
+	LPCTSTR imName[5] = {L".\\m1.png", L".\\m2.png", L".\\m3.png", L".\\m4.png", L".\\m5.png"};
+	for (int i = 0; i < 5; i++)
+	{
+		buffer[i] = NULL;
+		CGdiPlusBitmap texture;
+		texture.Load(imName[i]);
+		Gdiplus::Bitmap* bitmap = texture.m_pBitmap;
+		Gdiplus::BitmapData bitmapData;
+		Gdiplus::Rect rect(0, 0, bitmap->GetWidth(), bitmap->GetHeight());
+		if(Gdiplus::Ok == bitmap->LockBits(&rect, Gdiplus::ImageLockModeRead|Gdiplus::ImageLockModeWrite, bitmap->GetPixelFormat(), &bitmapData))
+		{
+			int len = bitmapData.Height*std::abs(bitmapData.Stride);
+			buffer[i] = new GLubyte[len];
+			memcpy( buffer[i], bitmapData.Scan0, len);
+			bitmap->UnlockBits(&bitmapData);
+		}
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texId[i]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap->GetWidth(), bitmap->GetHeight(), 0,
+			GL_RGBA, GL_UNSIGNED_BYTE, buffer[i]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	}	
 }
 
 void COpenGLDlg::OnRender(void) {
@@ -170,51 +205,57 @@ void COpenGLDlg::UpdateFPS()
 //
 void COpenGLDlg::GLCube(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, GLfloat y2, GLfloat z2)
 {
+	glBindTexture(GL_TEXTURE_2D, texId[0]);
+
 	glBegin(GL_POLYGON);
 	glNormal3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(x2, y2, z2);
-	glVertex3f(x1, y2, z2);
-	glVertex3f(x1, y1, z2);
-	glVertex3f(x2, y1, z2);
+	glTexCoord2f(0.0, 0.0); glVertex3f(x2, y2, z2);
+	glTexCoord2f(0.0, 1.0); glVertex3f(x1, y2, z2);
+	glTexCoord2f(1.0, 1.0); glVertex3f(x1, y1, z2);
+	glTexCoord2f(1.0, 0.0); glVertex3f(x2, y1, z2);
 	glEnd();
 
+	glBindTexture(GL_TEXTURE_2D, texId[1]);
 	glBegin(GL_POLYGON);
 	glNormal3f(0.0f, 0.0f, -1.0f);
-	glVertex3f(x2, y2, z1);
-	glVertex3f(x2, y1, z1);
-	glVertex3f(x1, y1, z1);
-	glVertex3f(x1, y2, z1);
+	glTexCoord2f(0.0, 0.0); glVertex3f(x2, y2, z1);
+	glTexCoord2f(0.0, 1.0); glVertex3f(x2, y1, z1);
+	glTexCoord2f(1.0, 1.0); glVertex3f(x1, y1, z1);
+	glTexCoord2f(1.0, 0.0); glVertex3f(x1, y2, z1);
 	glEnd();
 
+	glBindTexture(GL_TEXTURE_2D, texId[2]);
 	glBegin(GL_POLYGON);
 	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(x1, y2, z2);
-	glVertex3f(x1, y2, z1);
-	glVertex3f(x1, y1, z1);
-	glVertex3f(x1, y1, z2);
+	glTexCoord2f(0.0, 0.0); glVertex3f(x1, y2, z2);
+	glTexCoord2f(0.0, 1.0); glVertex3f(x1, y2, z1);
+	glTexCoord2f(1.0, 1.0); glVertex3f(x1, y1, z1);
+	glTexCoord2f(1.0, 0.0); glVertex3f(x1, y1, z2);
 	glEnd();
 
+	glBindTexture(GL_TEXTURE_2D, texId[3]);
 	glBegin(GL_POLYGON);
 	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(x2, y2, z2);
-	glVertex3f(x2, y1, z2);
-	glVertex3f(x2, y1, z1);
-	glVertex3f(x2, y2, z1);
+	glTexCoord2f(0.0, 0.0); glVertex3f(x2, y2, z2);
+	glTexCoord2f(0.0, 1.0); glVertex3f(x2, y1, z2);
+	glTexCoord2f(1.0, 1.0); glVertex3f(x2, y1, z1);
+	glTexCoord2f(1.0, 0.0); glVertex3f(x2, y2, z1);
 	glEnd();
 
+	glBindTexture(GL_TEXTURE_2D, texId[4]);
 	glBegin(GL_POLYGON);
 	glNormal3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(x1, y2, z1);
-	glVertex3f(x1, y2, z2);
-	glVertex3f(x2, y2, z2);
-	glVertex3f(x2, y2, z1);
+	glTexCoord2f(0.0, 0.0); glVertex3f(x1, y2, z1);
+	glTexCoord2f(0.0, 1.0); glVertex3f(x1, y2, z2);
+	glTexCoord2f(1.0, 1.0); glVertex3f(x2, y2, z2);
+	glTexCoord2f(1.0, 0.0); glVertex3f(x2, y2, z1);
 	glEnd();
 
 	glBegin(GL_POLYGON);
 	glNormal3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(x1, y1, z1);
-	glVertex3f(x2, y1, z1);
-	glVertex3f(x2, y1, z2);
-	glVertex3f(x1, y1, z2);
+	glTexCoord2f(0.0, 0.0); glVertex3f(x1, y1, z1);
+	glTexCoord2f(0.0, 1.0); glVertex3f(x2, y1, z1);
+	glTexCoord2f(1.0, 1.0); glVertex3f(x2, y1, z2);
+	glTexCoord2f(1.0, 0.0); glVertex3f(x1, y1, z2);
 	glEnd();
 }

@@ -9,6 +9,9 @@ class COpenGLDlg : public CDialogImpl<COpenGLDlg>, COpenGL<COpenGLDlg> ,public C
 		public CMessageFilter, public CIdleHandler
 {
 	GLfloat m_fAngle;		// Rotation angle of the cube
+
+	GLubyte* buffer[5];
+	GLuint texId[5];
 public:
 
 	enum { IDD = IDD_OPENGLDLG };
