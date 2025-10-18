@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "vecPoint4.h"
+#include "vecPoint.h"
 #include "vector2d.h"
 #include "vector3d.h"
 #include "CSVFile.h"

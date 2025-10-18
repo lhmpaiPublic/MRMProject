@@ -3,7 +3,7 @@
 //
 
 #include "stdafx.h"
-#include "vecPoint4.h"
+#include "vecPoint.h"
 
 CVecPoint4::CVecPoint4()
 {
@@ -103,4 +103,97 @@ CVecPoint4 CVecPoint4::operator+(const int& scalar) const
 CVecPoint4 CVecPoint4::operator-(const int& scalar) const
 {
 	return CVecPoint4(posVal[LT]-scalar, posVal[RT]-scalar, posVal[LB]-scalar, posVal[RB]-scalar);
+}
+
+
+CVecPoint2::CVecPoint2()
+{
+	posVal[LT] = S2Pos(0,0);
+	posVal[RB] = S2Pos(0,0);
+}
+
+CVecPoint2::CVecPoint2(S2Pos lt, S2Pos rb)
+{
+	posVal[LT] = lt;
+	posVal[RB] = rb;
+}
+
+CVecPoint2::CVecPoint2(CVecPoint2& val)
+{
+	posVal[LT] = val.posVal[LT];
+	posVal[RB] = val.posVal[RB];
+}
+
+CVecPoint2 CVecPoint2::operator+(const CVecPoint2 &v) const
+{
+	return CVecPoint2(posVal[LT]+v.posVal[LT], posVal[RB]+v.posVal[RB]);
+}
+
+CVecPoint2 CVecPoint2::operator-(const CVecPoint2 &v) const
+{
+	return CVecPoint2(posVal[LT]-v.posVal[LT], posVal[RB]-v.posVal[RB]);
+}
+
+CVecPoint2 CVecPoint2::operator*(const CVecPoint2 &v) const
+{
+	return CVecPoint2(posVal[LT]*v.posVal[LT], posVal[RB]*v.posVal[RB]);
+}
+
+CVecPoint2 CVecPoint2::operator/(const CVecPoint2 &v) const
+{
+	return CVecPoint2(posVal[LT]/v.posVal[LT], posVal[RB]/v.posVal[RB]);
+}
+
+CVecPoint2 &CVecPoint2::operator=(const CVecPoint2 &v) 
+{ 
+	posVal[LT] = v.posVal[LT];
+	posVal[RB] = v.posVal[RB];
+	return *this; 
+} 
+
+bool CVecPoint2::operator==(const CVecPoint2 &v) const
+{
+	return ((posVal[LT] == v.posVal[LT]) && (posVal[RB] == v.posVal[RB]));
+}
+
+bool CVecPoint2::operator>(const CVecPoint2 &v) const
+{
+	return ((posVal[LT] > v.posVal[LT]) && (posVal[RB] > v.posVal[RB]));
+}
+
+bool CVecPoint2::operator<(const CVecPoint2 &v) const
+{
+	return ((posVal[LT] < v.posVal[LT]) && (posVal[RB] < v.posVal[RB]));
+}
+
+bool CVecPoint2::operator>=(const CVecPoint2 &v) const
+{
+	return ((posVal[LT] > v.posVal[LT]) && (posVal[RB] > v.posVal[RB])) ||
+		((posVal[LT] == v.posVal[LT]) && (posVal[RB] == v.posVal[RB]));
+}
+
+bool CVecPoint2::operator<=(const CVecPoint2 &v) const
+{
+	return ((posVal[LT] < v.posVal[LT]) && (posVal[RB] < v.posVal[RB]))||
+		((posVal[LT] == v.posVal[LT]) && (posVal[RB] == v.posVal[RB]));
+}
+
+CVecPoint2 CVecPoint2::operator*(const int& scalar) const
+{
+	return CVecPoint2(posVal[LT]*scalar, posVal[RB]*scalar);
+}
+
+CVecPoint2 CVecPoint2::operator/(const int& scalar) const
+{
+	return CVecPoint2(posVal[LT]/scalar, posVal[RB]/scalar);
+}
+
+CVecPoint2 CVecPoint2::operator+(const int& scalar) const
+{
+	return CVecPoint2(posVal[LT]+scalar, posVal[RB]+scalar);
+}
+
+CVecPoint2 CVecPoint2::operator-(const int& scalar) const
+{
+	return CVecPoint2(posVal[LT]-scalar, posVal[RB]-scalar);
 }

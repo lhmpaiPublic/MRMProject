@@ -688,7 +688,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CommonResolution\vecPoint4.h"
+					RelativePath=".\CommonResolution\vecPoint.h"
 					>
 				</File>
 				<File
@@ -716,7 +716,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\CommonResolution\vecPoint4.cpp"
+					RelativePath=".\CommonResolution\vecPoint.cpp"
 					>
 				</File>
 				<File

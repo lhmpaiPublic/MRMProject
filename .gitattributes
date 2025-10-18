@@ -1,0 +1,3 @@
+*.cpp diff=euckr
+*.h diff=euckr
+*.rc diff=euckr

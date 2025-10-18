@@ -1,5 +1,5 @@
-#ifndef VECPOINT4_H
-#define VECPOINT4_H
+#ifndef VECPOINT_H
+#define VECPOINT_H
 //谅钎 按眉
 typedef struct _S2Point
 {
@@ -124,4 +124,40 @@ public:
 
 typedef class CVecPoint4 CV4Pos;
 
-#endif //VECPOINT4_H
+//谅钎 2俺 备己 按眉(康开 历厘 按眉)
+class CVecPoint2 {
+public:
+	enum POS
+	{
+		LT = 0,	
+		RB = 1,
+		POS_SIZE
+	};
+	S2Pos posVal[POS_SIZE];
+	//Constructor
+	CVecPoint2();
+	CVecPoint2(S2Pos lt, S2Pos rb);
+	CVecPoint2(CVecPoint2&);
+
+	CVecPoint2 operator+(const CVecPoint2&) const;
+	CVecPoint2 operator-(const CVecPoint2&) const;
+	CVecPoint2 operator*(const CVecPoint2&) const;
+	CVecPoint2 operator/(const CVecPoint2&) const;
+	CVecPoint2 &operator=(const CVecPoint2 &); 
+
+	bool operator==(const CVecPoint2&) const;
+
+	bool operator>(const CVecPoint2&) const;
+	bool operator<(const CVecPoint2&) const;
+	bool operator>=(const CVecPoint2&) const;
+	bool operator<=(const CVecPoint2&) const;
+
+	CVecPoint2 operator*(const int&) const;
+	CVecPoint2 operator/(const int&) const;
+	CVecPoint2 operator+(const int&) const;
+	CVecPoint2 operator-(const int&) const;
+};
+
+typedef class CVecPoint2 CV2Pos;
+
+#endif //VECPOINT_H
